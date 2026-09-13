@@ -2,12 +2,11 @@ export interface CountryBusinessImpact {
   country: string;
   code: string;
   pirateAudience: number; // nombre estimé d'utilisateurs
-  estimatedLossFcfa: number; // en FCFA
+  estimatedLossFcfa: number; // en FCFA (mensuel)
   estimatedLossEur: number; // en EUR
   conversionRate: number; // % de réabonnements post-coupure
   topPirateSource: string;
   activeDistributors: number;
-  // Détails approfondis par territoire
   flag: string;
   majorCities: string[];
   keyHotspots: string[];
@@ -56,7 +55,7 @@ export interface FieldSurveyData {
   piracyPenetrationRate: number; // %
   preferredPirateDevice: string;
   primaryMotivation: string;
-  mobileMoneyUsed: string; // Wave, Orange Money, etc.
+  mobileMoneyUsed: string;
   auditor: string;
 }
 
@@ -66,8 +65,8 @@ export const mockCountryBusinessImpacts: CountryBusinessImpact[] = [
     code: 'SN',
     flag: '🇸🇳',
     pirateAudience: 64500,
-    estimatedLossFcfa: 295000000,
-    estimatedLossEur: 450000,
+    estimatedLossFcfa: 645000000, // 64 500 * 10 000 FCFA/mois
+    estimatedLossEur: 983000,
     conversionRate: 14.8,
     topPirateSource: 'TikTok Live & Boîtiers Sandaga',
     activeDistributors: 2450,
@@ -106,8 +105,8 @@ export const mockCountryBusinessImpacts: CountryBusinessImpact[] = [
     code: 'CI',
     flag: '🇨🇮',
     pirateAudience: 72000,
-    estimatedLossFcfa: 335000000,
-    estimatedLossEur: 510000,
+    estimatedLossFcfa: 720000000,
+    estimatedLossEur: 1097000,
     conversionRate: 16.2,
     topPirateSource: 'Serveurs Xtream & Facebook Live',
     activeDistributors: 3100,
@@ -134,7 +133,7 @@ export const mockCountryBusinessImpacts: CountryBusinessImpact[] = [
       },
       {
         phase: 'Marketing local',
-        action: 'Campagne d\'affichage Abidjan "Le vrai match est sur CHEIKH +" couplée à l\'offre sans engagement',
+        action: 'Campagne d\'affichage Abidjan "Le vrai match est sur CANAL+" couplée à l\'offre sans engagement',
         expectedGainFcfa: 74000000,
         timeline: '3 semaines',
         priority: 'Moyenne (P2)',
@@ -146,8 +145,8 @@ export const mockCountryBusinessImpacts: CountryBusinessImpact[] = [
     code: 'CM',
     flag: '🇨🇲',
     pirateAudience: 36000,
-    estimatedLossFcfa: 165000000,
-    estimatedLossEur: 251000,
+    estimatedLossFcfa: 360000000,
+    estimatedLossEur: 548000,
     conversionRate: 11.4,
     topPirateSource: 'Sites Web de streaming & WhatsApp',
     activeDistributors: 1850,
@@ -179,8 +178,8 @@ export const mockCountryBusinessImpacts: CountryBusinessImpact[] = [
     code: 'ML',
     flag: '🇲🇱',
     pirateAudience: 24000,
-    estimatedLossFcfa: 110000000,
-    estimatedLossEur: 167000,
+    estimatedLossFcfa: 240000000,
+    estimatedLossEur: 365000,
     conversionRate: 9.8,
     topPirateSource: 'Boîtiers satellite patchés & IPTV',
     activeDistributors: 980,
@@ -193,14 +192,14 @@ export const mockCountryBusinessImpacts: CountryBusinessImpact[] = [
     recommendedActionPlan: [
       {
         phase: 'Régulation',
-        action: 'Coopération avec la HAC (Haute Autorité de la Communication) pour interdiction de vente des décodeurs patchés',
+        action: 'Coopération avec la HAC pour interdiction de vente des décodeurs patchés',
         expectedGainFcfa: 28000000,
         timeline: '1 mois',
         priority: 'Moyenne (P2)',
       },
       {
         phase: 'Offre prépayée',
-        action: 'Lancement d\'une recharge flexible par SMS/Orange Money adaptée au pouvoir d\'achat',
+        action: 'Lancement d\'une recharge flexible par SMS/Orange Money',
         expectedGainFcfa: 31000000,
         timeline: '45 jours',
         priority: 'Continue',
@@ -212,8 +211,8 @@ export const mockCountryBusinessImpacts: CountryBusinessImpact[] = [
     code: 'GA/CD',
     flag: '🇬🇦🇨🇩',
     pirateAudience: 21500,
-    estimatedLossFcfa: 98000000,
-    estimatedLossEur: 149000,
+    estimatedLossFcfa: 215000000,
+    estimatedLossEur: 327000,
     conversionRate: 12.1,
     topPirateSource: 'Réseaux locaux câblés pirates & Web',
     activeDistributors: 1420,
@@ -233,7 +232,7 @@ export const mockCountryBusinessImpacts: CountryBusinessImpact[] = [
       },
       {
         phase: 'Partenariats Télécoms',
-        action: 'Offre groupée forfait data + bouquet mobile CHEIKH + avec Airtel et Vodacom',
+        action: 'Offre groupée forfait data + bouquet mobile CANAL+ avec Airtel et Vodacom',
         expectedGainFcfa: 38000000,
         timeline: '60 jours',
         priority: 'Continue',
@@ -257,7 +256,7 @@ export const mockSemrushInsights: SemrushDomainInsight[] = [
     domain: 'direct-match-afrique.net',
     monthlyTraffic: '850K visites',
     africaTrafficShare: '84%',
-    topKeyword: 'regarder can direct gratuit',
+    topKeyword: 'regarder match direct gratuit',
     searchVolume: '33 100 / mois',
     domainAuthority: 41,
     hostingCountry: 'Belize / CDN Cloudflare',
@@ -287,7 +286,7 @@ export const mockSemrushInsights: SemrushDomainInsight[] = [
     domain: 'sport24-direct.club',
     monthlyTraffic: '290K visites',
     africaTrafficShare: '54%',
-    topKeyword: 'chelsea psg direct afrique',
+    topKeyword: 'match direct afrique streaming',
     searchVolume: '14 800 / mois',
     domainAuthority: 32,
     hostingCountry: 'Seychelles / CDN',
@@ -312,7 +311,7 @@ export const mockBlackMarketPrices: BlackMarketPriceItem[] = [
     type: 'IPTV Mensuel',
     channelName: 'Pack "Match Day Express" (Telegram)',
     blackMarketPrice: '2 500 FCFA / mois',
-    officialCheikhPrice: '10 000 FCFA / mois (CHEIKH + Sport)',
+    officialCheikhPrice: '10 000 FCFA / mois (CANAL+ Évasion Sport)',
     gapPercentage: '-75%',
     channelsIncluded: 'Bouquet Sport exclusif',
     paymentMethod: 'Wave Sénégal',
@@ -334,7 +333,7 @@ export const mockBlackMarketPrices: BlackMarketPriceItem[] = [
     type: 'Canal Telegram VIP',
     channelName: 'Canal privé "Foot Direct PANAF"',
     blackMarketPrice: '1 500 FCFA / match',
-    officialCheikhPrice: 'Abonnement mensuel CHEIKH +',
+    officialCheikhPrice: 'Abonnement mensuel CANAL+',
     gapPercentage: '-85%',
     channelsIncluded: 'Lien direct m3u8 sans pub',
     paymentMethod: 'Orange Money Côte d\'Ivoire',
@@ -353,7 +352,7 @@ export const mockFieldSurveys: FieldSurveyData[] = [
     preferredPirateDevice: 'Boîtier Android IPTV (52%)',
     primaryMotivation: 'Tarif & Flexibilité sans engagement',
     mobileMoneyUsed: 'Wave (79%), Orange Money (21%)',
-    auditor: 'Cellule Enquêtes Terrain CHEIKH + SN',
+    auditor: 'Cellule Enquêtes Terrain CANAL+ SN',
   },
   {
     id: 'SURV-2025-02',
@@ -365,7 +364,7 @@ export const mockFieldSurveys: FieldSurveyData[] = [
     preferredPirateDevice: 'Applications Mobile APK & TikTok',
     primaryMotivation: 'Consommation sur smartphone 4G',
     mobileMoneyUsed: 'Wave CI (58%), Orange Money (42%)',
-    auditor: 'Équipe Terrain CHEIKH + CI',
+    auditor: 'Équipe Terrain CANAL+ CI',
   },
   {
     id: 'SURV-2025-03',
@@ -377,7 +376,7 @@ export const mockFieldSurveys: FieldSurveyData[] = [
     preferredPirateDevice: 'Réseaux câblés pirates de quartier',
     primaryMotivation: 'Partage d\'accès collectif',
     mobileMoneyUsed: 'MTN Mobile Money (64%)',
-    auditor: 'Audit Commercial CHEIKH + CM',
+    auditor: 'Audit Commercial CANAL+ CM',
   },
   {
     id: 'SURV-2025-04',
@@ -389,24 +388,24 @@ export const mockFieldSurveys: FieldSurveyData[] = [
     preferredPirateDevice: 'Boîtier IPTV Android vendu à Sandaga',
     primaryMotivation: 'Prix de l\'abonnement annuel',
     mobileMoneyUsed: 'Wave (88%)',
-    auditor: 'Cellule Enquêtes Terrain CHEIKH + SN',
+    auditor: 'Cellule Enquêtes Terrain CANAL+ SN',
   },
 ];
 
 export interface PostActionImpactRecord {
   id: string;
-  date: string;
+  month: string; // ex: Août 2026
   country: string;
   code: string;
   flag: string;
   operationTitle: string;
   operationType: 'Blocage FAI/DNS' | 'Raid Marché & Douanes' | 'Gel Marchand Mobile Money' | 'Fermeture Panel IPTV';
   takedownScope: string;
-  pirateDropPercent: number; // e.g. -74%
-  postActionSalesLiftPercent: number; // e.g. +18.5%
-  additionalSubscribersRecruited: number;
-  measuredRevenueLiftFcfa: number;
-  confidenceScore: 'Élevée (Corrélation 94%)' | 'Forte (Corrélation 88%)' | 'Moyenne';
+  pirateDropPercent: number;
+  monthlyNewSubscribersGained: number; // nouveaux abonnés mensuels réels
+  monthlyRevenueLiftFcfa: number; // Chiffre d'affaires mensuel additionnel
+  annualizedValueFcfa: number; // Valeur sur 12 mois avec rétention
+  whyItWorked: string; // Explication décisionnelle simple
   executiveSummary: string;
 }
 
@@ -415,25 +414,26 @@ export interface CommercialCountryMetric {
   code: string;
   flag: string;
   activeSubscribers: number;
-  newSubscriptionsMonth: number;
+  monthlyNewSubscriptions: number;
   monthlyRevenueFcfa: number;
-  arpuFcfa: number;
+  arpuFcfa: number; // 10 000 FCFA moyen
   churnRatePercent: number;
-  growthVsPreviousMonthPercent: number;
+  monthlyGrowthPercent: number;
   formulaBreakdown: {
     acces: number; // %
     evasionSport: number; // %
     toutCanal: number; // %
   };
-  piracyPressureIndex: 'Critique' | 'Élevée' | 'Modérée';
 }
 
-export interface BusinessCorrelationPoint {
-  weekLabel: string;
-  pirateActivityIndex: number; // 0 à 100
-  officialReactivations: number; // Nombre d'abonnements/réabonnements
-  revenueFcfaM: number; // Millions FCFA
-  keyTakedownEvent?: string;
+// Suivi d'évolution mois par mois (Mois 1 à Mois 6)
+export interface MonthlyBusinessHistoryPoint {
+  monthName: string; // ex: Avril, Mai, Juin, Juillet, Août, Septembre
+  piratePressureScore: number; // 0 à 100 (niveau d'intensité du piratage)
+  totalMonthlySubscriptions: number; // Abonnements mensuels payés
+  monthlyRevenueFcfaM: number; // Chiffre d'Affaires du mois en Millions FCFA
+  keyTakedownAction?: string; // Action forte menée pendant ce mois
+  decisionImpactSummary: string; // Explication du résultat décisionnel
 }
 
 export const mockCommercialCountryMetrics: CommercialCountryMetric[] = [
@@ -442,101 +442,136 @@ export const mockCommercialCountryMetrics: CommercialCountryMetric[] = [
     code: 'SN',
     flag: '🇸🇳',
     activeSubscribers: 285000,
-    newSubscriptionsMonth: 34200,
-    monthlyRevenueFcfa: 2850000000, // 2.85 Milliards FCFA
+    monthlyNewSubscriptions: 34200,
+    monthlyRevenueFcfa: 2850000000, // 2.85 Milliards FCFA / mois
     arpuFcfa: 10000,
     churnRatePercent: 4.8,
-    growthVsPreviousMonthPercent: 8.4,
+    monthlyGrowthPercent: 8.4,
     formulaBreakdown: {
       acces: 32,
       evasionSport: 54,
       toutCanal: 14,
     },
-    piracyPressureIndex: 'Critique',
   },
   {
     country: "Côte d'Ivoire",
     code: 'CI',
     flag: '🇨🇮',
     activeSubscribers: 420000,
-    newSubscriptionsMonth: 48900,
-    monthlyRevenueFcfa: 4620000000, // 4.62 Milliards FCFA
+    monthlyNewSubscriptions: 48900,
+    monthlyRevenueFcfa: 4620000000, // 4.62 Milliards FCFA / mois
     arpuFcfa: 11000,
     churnRatePercent: 4.2,
-    growthVsPreviousMonthPercent: 11.2,
+    monthlyGrowthPercent: 11.2,
     formulaBreakdown: {
       acces: 28,
       evasionSport: 58,
       toutCanal: 14,
     },
-    piracyPressureIndex: 'Critique',
   },
   {
     country: 'Cameroun',
     code: 'CM',
     flag: '🇨🇲',
     activeSubscribers: 195000,
-    newSubscriptionsMonth: 18500,
-    monthlyRevenueFcfa: 1852500000, // 1.85 Milliards FCFA
+    monthlyNewSubscriptions: 18500,
+    monthlyRevenueFcfa: 1852500000, // 1.85 Milliards FCFA / mois
     arpuFcfa: 9500,
     churnRatePercent: 5.4,
-    growthVsPreviousMonthPercent: 5.1,
+    monthlyGrowthPercent: 5.1,
     formulaBreakdown: {
       acces: 41,
       evasionSport: 47,
       toutCanal: 12,
     },
-    piracyPressureIndex: 'Élevée',
   },
   {
     country: 'Mali',
     code: 'ML',
     flag: '🇲🇱',
     activeSubscribers: 110000,
-    newSubscriptionsMonth: 9800,
-    monthlyRevenueFcfa: 935000000, // 935 Millions FCFA
+    monthlyNewSubscriptions: 9800,
+    monthlyRevenueFcfa: 935000000, // 935 Millions FCFA / mois
     arpuFcfa: 8500,
     churnRatePercent: 6.1,
-    growthVsPreviousMonthPercent: 3.2,
+    monthlyGrowthPercent: 3.2,
     formulaBreakdown: {
       acces: 48,
       evasionSport: 42,
       toutCanal: 10,
     },
-    piracyPressureIndex: 'Modérée',
   },
   {
     country: 'Gabon & RDC',
     code: 'GA/CD',
     flag: '🇬🇦🇨🇩',
     activeSubscribers: 165000,
-    newSubscriptionsMonth: 15400,
-    monthlyRevenueFcfa: 1897500000, // 1.89 Milliards FCFA
+    monthlyNewSubscriptions: 15400,
+    monthlyRevenueFcfa: 1897500000, // 1.89 Milliards FCFA / mois
     arpuFcfa: 11500,
     churnRatePercent: 4.9,
-    growthVsPreviousMonthPercent: 6.7,
+    monthlyGrowthPercent: 6.7,
     formulaBreakdown: {
       acces: 25,
       evasionSport: 59,
       toutCanal: 16,
     },
-    piracyPressureIndex: 'Élevée',
   },
 ];
 
-export const mockBusinessCorrelationTimeline: BusinessCorrelationPoint[] = [
-  { weekLabel: 'Sem 1 (Avant action)', pirateActivityIndex: 88, officialReactivations: 14200, revenueFcfaM: 142 },
-  { weekLabel: 'Sem 2 (Pic piratage)', pirateActivityIndex: 96, officialReactivations: 11800, revenueFcfaM: 118 },
-  { weekLabel: 'Sem 3 (Action FAI + Takedowns)', pirateActivityIndex: 42, officialReactivations: 19400, revenueFcfaM: 194, keyTakedownEvent: 'Blocage DNS 42 serveurs + Saisies Sandaga' },
-  { weekLabel: 'Sem 4 (Post-action J+7)', pirateActivityIndex: 28, officialReactivations: 25600, revenueFcfaM: 256, keyTakedownEvent: 'Gel Wave 9 marchands IPTV' },
-  { weekLabel: 'Sem 5 (Stabilisation)', pirateActivityIndex: 34, officialReactivations: 23100, revenueFcfaM: 231 },
-  { weekLabel: 'Sem 6 (Maintien)', pirateActivityIndex: 38, officialReactivations: 22400, revenueFcfaM: 224 },
+// Historique Mensuel Décisionnel (6 Mois)
+export const mockMonthlyBusinessHistory: MonthlyBusinessHistoryPoint[] = [
+  {
+    monthName: 'Mois 1 (Avril)',
+    piratePressureScore: 88,
+    totalMonthlySubscriptions: 92400,
+    monthlyRevenueFcfaM: 924,
+    decisionImpactSummary: 'Aucune coupure FAI majeure : le piratage est à son niveau maximal, les ventes stagnent.',
+  },
+  {
+    monthName: 'Mois 2 (Mai)',
+    piratePressureScore: 95,
+    totalMonthlySubscriptions: 86500,
+    monthlyRevenueFcfaM: 865,
+    decisionImpactSummary: 'Prolifération des serveurs IPTV non bloqués. Baisse directe de 5 900 abonnements vendus sur le mois.',
+  },
+  {
+    monthName: 'Mois 3 (Juin - Démarrage Opérations)',
+    piratePressureScore: 48,
+    totalMonthlySubscriptions: 112000,
+    monthlyRevenueFcfaM: 1120,
+    keyTakedownAction: 'Opération FAI : 42 serveurs coupés + Saisies Sandaga & Treichville',
+    decisionImpactSummary: 'Rebond immédiat : +25 500 abonnements mensuels vendus (+255M FCFA de CA dans le mois) car les pirates étaient privés de signal.',
+  },
+  {
+    monthName: 'Mois 4 (Juillet - Gel Paiements Wave/OM)',
+    piratePressureScore: 32,
+    totalMonthlySubscriptions: 126800,
+    monthlyRevenueFcfaM: 1268,
+    keyTakedownAction: 'Gel judiciaire des comptes Wave & Orange Money des revendeurs pirates',
+    decisionImpactSummary: 'Nouveau record de vente : les utilisateurs ne peuvent plus payer leurs revendeurs pirates et souscrivent en boutique officielle.',
+  },
+  {
+    monthName: 'Mois 5 (Août - Rétention)',
+    piratePressureScore: 36,
+    totalMonthlySubscriptions: 124200,
+    monthlyRevenueFcfaM: 1242,
+    decisionImpactSummary: 'Stabilisation haute : 84% des clients recrutés au Mois 3 ont renouvelé leur abonnement pour le mois suivant.',
+  },
+  {
+    monthName: 'Mois 6 (Septembre - Consolidation)',
+    piratePressureScore: 34,
+    totalMonthlySubscriptions: 126800,
+    monthlyRevenueFcfaM: 1268,
+    keyTakedownAction: 'Blocage automatisé continu des flux Telegram en direct',
+    decisionImpactSummary: 'Le chiffre d\'affaires mensuel se maintient à +404M FCFA par rapport au Mois 2 (avant la mise en place du dispositif).',
+  },
 ];
 
 export const mockPostActionImpacts: PostActionImpactRecord[] = [
   {
     id: 'IMP-01',
-    date: '02/09/2026',
+    month: 'Septembre 2026',
     country: 'Sénégal',
     code: 'SN',
     flag: '🇸🇳',
@@ -544,59 +579,58 @@ export const mockPostActionImpacts: PostActionImpactRecord[] = [
     operationType: 'Blocage FAI/DNS',
     takedownScope: '42 serveurs Xtream neutralisés + 1 200 box Android saisies',
     pirateDropPercent: -78,
-    postActionSalesLiftPercent: 18.4,
-    additionalSubscribersRecruited: 11850,
-    measuredRevenueLiftFcfa: 118500000,
-    confidenceScore: 'Élevée (Corrélation 94%)',
-    executiveSummary: 'Suite à l\'extinction simultanée des flux pirates majeurs 48h avant la journée de championnat, la filiale Sénégal a enregistré +11 850 réactivations directes sur la Formule Évasion Sport (10 000 FCFA).',
+    monthlyNewSubscribersGained: 11850,
+    monthlyRevenueLiftFcfa: 118500000, // 118,5 Millions FCFA / mois
+    annualizedValueFcfa: 1422000000, // 1,42 Milliard FCFA / an
+    whyItWorked: 'Pourquoi ça a marché : Les serveurs pirates ont été coupés 48h avant la reprise du championnat. Les téléspectateurs privés de match se sont rendus en boutique CANAL+ pour prendre un mois d\'abonnement à 10 000 FCFA.',
+    executiveSummary: 'L\'extinction simultanée des flux a forcé 11 850 foyers dakarois à acheter un abonnement mensuel officiel, générant 118,5M FCFA de cash immédiat sur le mois.',
   },
   {
     id: 'IMP-02',
-    date: '28/08/2026',
+    month: 'Août 2026',
     country: "Côte d'Ivoire",
     code: 'CI',
     flag: '🇨🇮',
-    operationTitle: 'Fermeture Réseau Telegram VIP & Gel Wave CI des comptes marchands',
+    operationTitle: 'Fermeture Canaux Telegram & Gel des comptes Wave CI / Orange Money',
     operationType: 'Gel Marchand Mobile Money',
-    takedownScope: '14 canaux Telegram (82K abonnés) fermés + 8 comptes Wave gelés',
+    takedownScope: '14 canaux Telegram fermés (82K membres) + 8 comptes Wave gelés',
     pirateDropPercent: -65,
-    postActionSalesLiftPercent: 22.1,
-    additionalSubscribersRecruited: 15400,
-    measuredRevenueLiftFcfa: 169400000,
-    confidenceScore: 'Élevée (Corrélation 94%)',
-    executiveSummary: 'L\'interruption de la chaîne de paiement Mobile Money a asphyxié les revendeurs informels d\'Abidjan, forçant 15 400 foyers à souscrire à l\'offre officielle décodeur / myCANAL.',
+    monthlyNewSubscribersGained: 15400,
+    monthlyRevenueLiftFcfa: 169400000, // 169,4 Millions FCFA / mois
+    annualizedValueFcfa: 2032800000, // 2,03 Milliards FCFA / an
+    whyItWorked: 'Pourquoi ça a marché : En bloquant les numéros Wave des revendeurs, les clients n\'ont pas pu renouveler leur IPTV pirate et ont dû basculer vers l\'application officielle myCANAL.',
+    executiveSummary: 'Asphyxie totale de la chaîne de paiement informelle à Abidjan : 15 400 nouveaux abonnements mensuels souscrits.',
   },
   {
     id: 'IMP-03',
-    date: '15/08/2026',
+    month: 'Août 2026',
     country: 'Cameroun',
     code: 'CM',
     flag: '🇨🇲',
-    operationTitle: 'Démantèlement Câblo-distributeurs clandestins Akwa & Douala',
+    operationTitle: 'Démantèlement Câblo-distributeurs clandestins Douala & Yaoundé',
     operationType: 'Raid Marché & Douanes',
-    takedownScope: '6 régies clandestines coupées alimentant 18 000 foyers câblés',
+    takedownScope: '6 régies de quartier coupées alimentant 18 000 foyers câblés illégalement',
     pirateDropPercent: -54,
-    postActionSalesLiftPercent: 12.6,
-    additionalSubscribersRecruited: 5200,
-    measuredRevenueLiftFcfa: 49400000,
-    confidenceScore: 'Forte (Corrélation 88%)',
-    executiveSummary: 'Coupure physique des amplificateurs coaxiaux pirates dans 3 quartiers de Douala avec présence d\'équipes commerciales CANAL+ de proximité.',
+    monthlyNewSubscribersGained: 5200,
+    monthlyRevenueLiftFcfa: 49400000, // 49,4 Millions FCFA / mois
+    annualizedValueFcfa: 592800000, // 592,8 Millions FCFA / an
+    whyItWorked: 'Pourquoi ça a marché : La coupure physique des câbles pirates a été immédiatement relayée par des kiosques mobiles CANAL+ installés dans les mêmes quartiers.',
+    executiveSummary: 'Remplacement immédiat de l\'offre pirate par des décodeurs officiels dans 5 200 foyers de Douala.',
   },
   {
     id: 'IMP-04',
-    date: '04/08/2026',
+    month: 'Juillet 2026',
     country: 'Gabon & RDC',
     code: 'GA/CD',
     flag: '🇬🇦🇨🇩',
     operationTitle: 'Blocage CDN Cloudflare & Filtrage FAI Kinshasa / Libreville',
     operationType: 'Fermeture Panel IPTV',
-    takedownScope: '3 domaines web de streaming direct (1.8M visites) bloqués par l\'autorité',
+    takedownScope: '3 domaines web de streaming direct (1.8M visites) filtrés par l\'autorité',
     pirateDropPercent: -61,
-    postActionSalesLiftPercent: 14.2,
-    additionalSubscribersRecruited: 4800,
-    measuredRevenueLiftFcfa: 55200000,
-    confidenceScore: 'Forte (Corrélation 88%)',
-    executiveSummary: 'Réduction de 61% de la bande passante pirate sur les réseaux Vodacom & Airtel, accompagnée d\'une hausse des activations via application mobile.',
+    monthlyNewSubscribersGained: 4800,
+    monthlyRevenueLiftFcfa: 55200000, // 55,2 Millions FCFA / mois
+    annualizedValueFcfa: 662400000, // 662,4 Millions FCFA / an
+    whyItWorked: 'Pourquoi ça a marché : Les FAI locaux (Vodacom, Airtel) ont activé le blocage d\'adresses IP, rendant les sites inaccessibles sur téléphone 4G.',
+    executiveSummary: 'Hausse directe de 4 800 souscriptions mobiles mensuelles pour suivre les compétitions.',
   },
 ];
-
