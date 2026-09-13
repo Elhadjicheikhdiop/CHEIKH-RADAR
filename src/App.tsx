@@ -1,15 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import { Sidebar, NavPage, ExpertTabType } from './components/Sidebar';
 import { Header } from './components/Header';
 import { OverviewPage } from './pages/OverviewPage';
-import { ThreatsPage } from './pages/ThreatsPage';
-import { ThreatDetailPage } from './pages/ThreatDetailPage';
-import { TerritoryDetailPage } from './pages/TerritoryDetailPage';
-import { ApplicationsPage } from './pages/ApplicationsPage';
-import { SocialAccountsPage } from './pages/SocialAccountsPage';
-import { SitesForumsPage } from './pages/SitesForumsPage';
-import { MarketAnalysisPage } from './pages/MarketAnalysisPage';
-import { ExpertModePage } from './pages/ExpertModePage';
 import { ConstatModal } from './components/ConstatModal';
 import {
   mockThreats,
@@ -18,7 +10,25 @@ import {
   mockSitesForums,
 } from './data/mockData';
 import { Threat, ThreatStatus } from './types';
-import { CheckCircle2, AlertCircle } from 'lucide-react';
+import { CheckCircle2, Loader2 } from 'lucide-react';
+
+// Lazy loading des pages secondaires pour un démarrage ultra-rapide (Code Splitting)
+const ThreatsPage = lazy(() => import('./pages/ThreatsPage').then((m) => ({ default: m.ThreatsPage })));
+const ThreatDetailPage = lazy(() => import('./pages/ThreatDetailPage').then((m) => ({ default: m.ThreatDetailPage })));
+const TerritoryDetailPage = lazy(() => import('./pages/TerritoryDetailPage').then((m) => ({ default: m.TerritoryDetailPage })));
+const ApplicationsPage = lazy(() => import('./pages/ApplicationsPage').then((m) => ({ default: m.ApplicationsPage })));
+const SocialAccountsPage = lazy(() => import('./pages/SocialAccountsPage').then((m) => ({ default: m.SocialAccountsPage })));
+const SitesForumsPage = lazy(() => import('./pages/SitesForumsPage').then((m) => ({ default: m.SitesForumsPage })));
+const MarketAnalysisPage = lazy(() => import('./pages/MarketAnalysisPage').then((m) => ({ default: m.MarketAnalysisPage })));
+const ExpertModePage = lazy(() => import('./pages/ExpertModePage').then((m) => ({ default: m.ExpertModePage })));
+
+// Composant de chargement fluide et léger
+const PageLoader: React.FC = () => (
+  <div className="flex flex-col items-center justify-center min-h-[420px] w-full gap-3 text-[#64748b]">
+    <Loader2 className="w-7 h-7 text-[#0b1c30] animate-spin" />
+    <span className="text-[12px] font-medium tracking-wide">Chargement du module...</span>
+  </div>
+);
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<NavPage>('overview');
@@ -114,7 +124,7 @@ export default function App() {
       {/* Main Content Area */}
       <main className="pl-64 pt-[60px] min-h-screen flex flex-col flex-1">
         <div className="max-w-7xl w-full mx-auto px-6 py-7 flex-1">
-          {/* 1. Vue d'ensemble */}
+          {/* 1. Vue d'ensemble (Chargement instantané synchrone) */}
           {currentPage === 'overview' && (
             <OverviewPage
               threats={threats}
@@ -125,79 +135,95 @@ export default function App() {
 
           {/* 2. Menaces */}
           {currentPage === 'threats' && (
-            <ThreatsPage
-              threats={threats}
-              onSelectThreat={handleSelectThreat}
-              onSelectTerritory={handleSelectTerritory}
-              onUpdateStatus={handleUpdateStatus}
-              onOpenPdfExport={(threat) => setConstatThreat(threat)}
-              onShowToast={showToast}
-              externalSearch={searchQuery}
-            />
+            <Suspense fallback={<PageLoader />}>
+              <ThreatsPage
+                threats={threats}
+                onSelectThreat={handleSelectThreat}
+                onSelectTerritory={handleSelectTerritory}
+                onUpdateStatus={handleUpdateStatus}
+                onOpenPdfExport={(threat) => setConstatThreat(threat)}
+                onShowToast={showToast}
+                externalSearch={searchQuery}
+              />
+            </Suspense>
           )}
 
           {/* 3. Détail d'une menace */}
           {currentPage === 'threat-detail' && (
-            <ThreatDetailPage
-              threat={selectedThreat}
-              onUpdateStatus={handleUpdateStatus}
-              onNavigateBack={() => handleNavigate('threats')}
-              onShowToast={showToast}
-              onOpenPdfExport={(threat) => setConstatThreat(threat)}
-            />
+            <Suspense fallback={<PageLoader />}>
+              <ThreatDetailPage
+                threat={selectedThreat}
+                onUpdateStatus={handleUpdateStatus}
+                onNavigateBack={() => handleNavigate('threats')}
+                onShowToast={showToast}
+                onOpenPdfExport={(threat) => setConstatThreat(threat)}
+              />
+            </Suspense>
           )}
 
           {/* 3b. Fiche Détaillée d'un Territoire */}
           {currentPage === 'territory-detail' && (
-            <TerritoryDetailPage
-              countryName={selectedTerritoryName}
-              threats={threats}
-              onNavigateBack={() => handleNavigate('threats')}
-              onSelectThreat={handleSelectThreat}
-              onUpdateStatus={handleUpdateStatus}
-              onOpenPdfExport={(threat) => setConstatThreat(threat)}
-              onShowToast={showToast}
-            />
+            <Suspense fallback={<PageLoader />}>
+              <TerritoryDetailPage
+                countryName={selectedTerritoryName}
+                threats={threats}
+                onNavigateBack={() => handleNavigate('threats')}
+                onSelectThreat={handleSelectThreat}
+                onUpdateStatus={handleUpdateStatus}
+                onOpenPdfExport={(threat) => setConstatThreat(threat)}
+                onShowToast={showToast}
+              />
+            </Suspense>
           )}
 
           {/* 4. Applications */}
           {currentPage === 'applications' && (
-            <ApplicationsPage
-              applications={mockApplications}
-              onShowToast={showToast}
-            />
+            <Suspense fallback={<PageLoader />}>
+              <ApplicationsPage
+                applications={mockApplications}
+                onShowToast={showToast}
+              />
+            </Suspense>
           )}
 
           {/* 5. Comptes & Réseaux */}
           {currentPage === 'accounts' && (
-            <SocialAccountsPage
-              accounts={mockAccounts}
-              onShowToast={showToast}
-            />
+            <Suspense fallback={<PageLoader />}>
+              <SocialAccountsPage
+                accounts={mockAccounts}
+                onShowToast={showToast}
+              />
+            </Suspense>
           )}
 
           {/* 6. Sites & Forums */}
           {currentPage === 'sites-forums' && (
-            <SitesForumsPage
-              sitesForums={mockSitesForums}
-              onShowToast={showToast}
-            />
+            <Suspense fallback={<PageLoader />}>
+              <SitesForumsPage
+                sitesForums={mockSitesForums}
+                onShowToast={showToast}
+              />
+            </Suspense>
           )}
 
           {/* 7. Analyse Marché & Business Intelligence */}
           {currentPage === 'market' && (
-            <MarketAnalysisPage
-              onShowToast={showToast}
-              onSelectTerritory={handleSelectTerritory}
-            />
+            <Suspense fallback={<PageLoader />}>
+              <MarketAnalysisPage
+                onShowToast={showToast}
+                onSelectTerritory={handleSelectTerritory}
+              />
+            </Suspense>
           )}
 
           {/* 8. Mode Expert */}
           {currentPage === 'expert' && (
-            <ExpertModePage
-              onShowToast={showToast}
-              initialTab={currentExpertTab}
-            />
+            <Suspense fallback={<PageLoader />}>
+              <ExpertModePage
+                onShowToast={showToast}
+                initialTab={currentExpertTab}
+              />
+            </Suspense>
           )}
         </div>
       </main>
