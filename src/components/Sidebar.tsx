@@ -6,9 +6,8 @@ import {
   Smartphone,
   Share2,
   Globe,
-  FileText,
   TrendingUp,
-  Building2,
+  Clapperboard,
 } from 'lucide-react';
 
 export type NavPage =
@@ -20,6 +19,7 @@ export type NavPage =
   | 'accounts'
   | 'sites-forums'
   | 'market'
+  | 'series'
   | 'expert';
 
 export type ExpertTabType = 'sources' | 'donnees' | 'regles' | 'logs';
@@ -67,6 +67,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
       id: 'sites-forums',
       label: 'Sites & Forums',
       icon: Globe,
+    },
+    {
+      id: 'series',
+      label: 'Séries & VOD',
+      icon: Clapperboard,
+      badge: 'VOD',
     },
     {
       id: 'market',

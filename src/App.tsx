@@ -20,6 +20,7 @@ const ApplicationsPage = lazy(() => import('./pages/ApplicationsPage').then((m) 
 const SocialAccountsPage = lazy(() => import('./pages/SocialAccountsPage').then((m) => ({ default: m.SocialAccountsPage })));
 const SitesForumsPage = lazy(() => import('./pages/SitesForumsPage').then((m) => ({ default: m.SitesForumsPage })));
 const MarketAnalysisPage = lazy(() => import('./pages/MarketAnalysisPage').then((m) => ({ default: m.MarketAnalysisPage })));
+const SeriesPage = lazy(() => import('./pages/SeriesPage').then((m) => ({ default: m.SeriesPage })));
 const ExpertModePage = lazy(() => import('./pages/ExpertModePage').then((m) => ({ default: m.ExpertModePage })));
 
 // Composant de chargement fluide et léger
@@ -203,6 +204,13 @@ export default function App() {
                 sitesForums={mockSitesForums}
                 onShowToast={showToast}
               />
+            </Suspense>
+          )}
+
+          {/* 6b. Séries & VOD */}
+          {currentPage === 'series' && (
+            <Suspense fallback={<PageLoader />}>
+              <SeriesPage onShowToast={showToast} />
             </Suspense>
           )}
 

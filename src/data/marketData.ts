@@ -2,6 +2,8 @@ export interface CountryBusinessImpact {
   country: string;
   code: string;
   pirateAudience: number; // nombre estimé d'utilisateurs
+  iptvAudience: number; // IPTV & Live Sport
+  cableAudience: number; // Réseaux câblés de quartier
   estimatedLossFcfa: number; // en FCFA (mensuel)
   estimatedLossEur: number; // en EUR
   conversionRate: number; // % de réabonnements post-coupure
@@ -11,6 +13,8 @@ export interface CountryBusinessImpact {
   majorCities: string[];
   keyHotspots: string[];
   dominantPaymentMethods: string[];
+  frozenMobileMoneyAccounts: number; // Nombre de comptes marchands pirates gelés
+  fintechCollaborationStatus: string; // État de la collaboration avec Wave / Orange Money
   activeInvestigations: number;
   averageBlackMarketPriceFcfa: number;
   telecomPartners: string[];
@@ -65,6 +69,8 @@ export const mockCountryBusinessImpacts: CountryBusinessImpact[] = [
     code: 'SN',
     flag: '🇸🇳',
     pirateAudience: 64500,
+    iptvAudience: 46000,
+    cableAudience: 18500,
     estimatedLossFcfa: 645000000, // 64 500 * 10 000 FCFA/mois
     estimatedLossEur: 983000,
     conversionRate: 14.8,
@@ -73,6 +79,8 @@ export const mockCountryBusinessImpacts: CountryBusinessImpact[] = [
     majorCities: ['Dakar', 'Thiès', 'Saint-Louis', 'Touba', 'Ziguinchor'],
     keyHotspots: ['Marché Sandaga (Plateau)', 'Pikine Icotaf', 'Gueule Tapée / Médina', 'Marché HLM'],
     dominantPaymentMethods: ['Wave Sénégal (79%)', 'Orange Money SN (21%)'],
+    frozenMobileMoneyAccounts: 12,
+    fintechCollaborationStatus: 'Wave Sénégal : 9 comptes gelés sous réquisition • OM SN : 3 comptes gélés',
     activeInvestigations: 14,
     averageBlackMarketPriceFcfa: 20000,
     telecomPartners: ['Sonatel (Orange)', 'Free Sénégal', 'Expresso'],
@@ -105,6 +113,8 @@ export const mockCountryBusinessImpacts: CountryBusinessImpact[] = [
     code: 'CI',
     flag: '🇨🇮',
     pirateAudience: 72000,
+    iptvAudience: 54000,
+    cableAudience: 18000,
     estimatedLossFcfa: 720000000,
     estimatedLossEur: 1097000,
     conversionRate: 16.2,
@@ -113,6 +123,8 @@ export const mockCountryBusinessImpacts: CountryBusinessImpact[] = [
     majorCities: ['Abidjan', 'Bouaké', 'Yamoussoukro', 'San Pedro', 'Korhogo'],
     keyHotspots: ['Marché de Treichville', 'Adjamé Black Market', 'Yopougon Siporex', 'Marcory'],
     dominantPaymentMethods: ['Wave CI (58%)', 'Orange Money CI (34%)', 'MTN MoMo (8%)'],
+    frozenMobileMoneyAccounts: 15,
+    fintechCollaborationStatus: 'Wave CI : 10 comptes marchands bloqués • Orange Money CI : 5 comptes sous ordonnance',
     activeInvestigations: 19,
     averageBlackMarketPriceFcfa: 22000,
     telecomPartners: ['Orange CI', 'MTN Côte d\'Ivoire', 'Moov Africa'],
@@ -145,6 +157,8 @@ export const mockCountryBusinessImpacts: CountryBusinessImpact[] = [
     code: 'CM',
     flag: '🇨🇲',
     pirateAudience: 36000,
+    iptvAudience: 14000,
+    cableAudience: 22000,
     estimatedLossFcfa: 360000000,
     estimatedLossEur: 548000,
     conversionRate: 11.4,
@@ -153,6 +167,8 @@ export const mockCountryBusinessImpacts: CountryBusinessImpact[] = [
     majorCities: ['Douala', 'Yaoundé', 'Bafoussam', 'Garoua', 'Kribi'],
     keyHotspots: ['Marché Central de Douala', 'Mokolo (Yaoundé)', 'Akwa', 'Bonabéri'],
     dominantPaymentMethods: ['MTN Mobile Money CM (64%)', 'Orange Money CM (36%)'],
+    frozenMobileMoneyAccounts: 6,
+    fintechCollaborationStatus: 'MTN MoMo : 4 comptes sous séquestre • Orange Money CM : 2 comptes sous audit',
     activeInvestigations: 8,
     averageBlackMarketPriceFcfa: 18000,
     telecomPartners: ['MTN Cameroun', 'Orange Cameroun', 'Camtel'],
@@ -178,6 +194,8 @@ export const mockCountryBusinessImpacts: CountryBusinessImpact[] = [
     code: 'ML',
     flag: '🇲🇱',
     pirateAudience: 24000,
+    iptvAudience: 15000,
+    cableAudience: 9000,
     estimatedLossFcfa: 240000000,
     estimatedLossEur: 365000,
     conversionRate: 9.8,
@@ -186,6 +204,8 @@ export const mockCountryBusinessImpacts: CountryBusinessImpact[] = [
     majorCities: ['Bamako', 'Sikasso', 'Ségou', 'Mopti', 'Kayes'],
     keyHotspots: ['Grand Marché de Bamako', 'Dabanani', 'Badalabougou'],
     dominantPaymentMethods: ['Orange Money ML (72%)', 'Moov Money (28%)'],
+    frozenMobileMoneyAccounts: 3,
+    fintechCollaborationStatus: 'Orange Money ML : 3 comptes marchands bloqués avec la HAC',
     activeInvestigations: 6,
     averageBlackMarketPriceFcfa: 15000,
     telecomPartners: ['Orange Mali', 'Malitel (Moov)'],
@@ -211,6 +231,8 @@ export const mockCountryBusinessImpacts: CountryBusinessImpact[] = [
     code: 'GA/CD',
     flag: '🇬🇦🇨🇩',
     pirateAudience: 21500,
+    iptvAudience: 11500,
+    cableAudience: 10000,
     estimatedLossFcfa: 215000000,
     estimatedLossEur: 327000,
     conversionRate: 12.1,
@@ -219,6 +241,8 @@ export const mockCountryBusinessImpacts: CountryBusinessImpact[] = [
     majorCities: ['Libreville', 'Kinshasa', 'Port-Gentil', 'Lubumbashi', 'Goma'],
     keyHotspots: ['Marché Mont-Bouët (Libreville)', 'Marché Central de Kinshasa', 'Victoire (Kinshasa)'],
     dominantPaymentMethods: ['Airtel Money (55%)', 'M-Pesa Vodacom (35%)', 'Orange Money (10%)'],
+    frozenMobileMoneyAccounts: 2,
+    fintechCollaborationStatus: 'M-Pesa Vodacom : 2 comptes bloqués à Kinshasa',
     activeInvestigations: 7,
     averageBlackMarketPriceFcfa: 24000,
     telecomPartners: ['Airtel Gabon', 'Vodacom RDC', 'Orange RDC', 'Moov Gabon'],
@@ -403,8 +427,10 @@ export interface PostActionImpactRecord {
   takedownScope: string;
   pirateDropPercent: number;
   monthlyNewSubscribersGained: number; // nouveaux abonnés mensuels réels
-  monthlyRevenueLiftFcfa: number; // Chiffre d'affaires mensuel additionnel
+  monthlyRevenueLiftFcfa: number; // Chiffre d'affaires mensuel additionnel (Mois 1)
+  ltvRetentionFcfa: number; // Valeur réelle sur le cycle de vie client (rétention 4.5 mois)
   annualizedValueFcfa: number; // Valeur sur 12 mois avec rétention
+  liveReactivityMttr: string; // Temps moyen de coupure live (ex: 22 min)
   whyItWorked: string; // Explication décisionnelle simple
   executiveSummary: string;
 }
@@ -581,9 +607,11 @@ export const mockPostActionImpacts: PostActionImpactRecord[] = [
     pirateDropPercent: -78,
     monthlyNewSubscribersGained: 11850,
     monthlyRevenueLiftFcfa: 118500000, // 118,5 Millions FCFA / mois
+    ltvRetentionFcfa: 533250000, // 118.5M * 4.5 = 533.25 Millions FCFA LTV
     annualizedValueFcfa: 1422000000, // 1,42 Milliard FCFA / an
-    whyItWorked: 'Pourquoi ça a marché : Les serveurs pirates ont été coupés 48h avant la reprise du championnat. Les téléspectateurs privés de match se sont rendus en boutique CANAL+ pour prendre un mois d\'abonnement à 10 000 FCFA.',
-    executiveSummary: 'L\'extinction simultanée des flux a forcé 11 850 foyers dakarois à acheter un abonnement mensuel officiel, générant 118,5M FCFA de cash immédiat sur le mois.',
+    liveReactivityMttr: '18 min',
+    whyItWorked: 'Pourquoi ça a marché : Les serveurs pirates ont été coupés 18 minutes après le coup d\'envoi. Les téléspectateurs privés de match se sont rendus en boutique CANAL+ pour prendre un mois d\'abonnement à 10 000 FCFA.',
+    executiveSummary: 'L\'extinction simultanée des flux a forcé 11 850 foyers dakarois à acheter un abonnement mensuel officiel, générant 118,5M FCFA immédiats et 533M FCFA de LTV rétention.',
   },
   {
     id: 'IMP-02',
@@ -593,11 +621,13 @@ export const mockPostActionImpacts: PostActionImpactRecord[] = [
     flag: '🇨🇮',
     operationTitle: 'Fermeture Canaux Telegram & Gel des comptes Wave CI / Orange Money',
     operationType: 'Gel Marchand Mobile Money',
-    takedownScope: '14 canaux Telegram fermés (82K membres) + 8 comptes Wave gelés',
+    takedownScope: '14 canaux Telegram fermés (82K membres) + 15 comptes Wave & OM gelés',
     pirateDropPercent: -65,
     monthlyNewSubscribersGained: 15400,
     monthlyRevenueLiftFcfa: 169400000, // 169,4 Millions FCFA / mois
+    ltvRetentionFcfa: 762300000, // 169.4M * 4.5 = 762.3 Millions FCFA LTV
     annualizedValueFcfa: 2032800000, // 2,03 Milliards FCFA / an
+    liveReactivityMttr: '22 min',
     whyItWorked: 'Pourquoi ça a marché : En bloquant les numéros Wave des revendeurs, les clients n\'ont pas pu renouveler leur IPTV pirate et ont dû basculer vers l\'application officielle myCANAL.',
     executiveSummary: 'Asphyxie totale de la chaîne de paiement informelle à Abidjan : 15 400 nouveaux abonnements mensuels souscrits.',
   },
@@ -613,8 +643,10 @@ export const mockPostActionImpacts: PostActionImpactRecord[] = [
     pirateDropPercent: -54,
     monthlyNewSubscribersGained: 5200,
     monthlyRevenueLiftFcfa: 49400000, // 49,4 Millions FCFA / mois
+    ltvRetentionFcfa: 222300000, // 49.4M * 4.5 = 222.3 Millions FCFA LTV
     annualizedValueFcfa: 592800000, // 592,8 Millions FCFA / an
-    whyItWorked: 'Pourquoi ça a marché : La coupure physique des câbles pirates a été immédiatement relayée par des kiosques mobiles CANAL+ installés dans les mêmes quartiers.',
+    liveReactivityMttr: 'N/A (Action Physique)',
+    whyItWorked: 'Pourquoi ça a marché : La coupure physique des câbles pirates a été immédiatement relayée par des kiosques mobiles CANAL+ installés dans les mêmes quartiers avec l\'offre Access à 5 000 FCFA.',
     executiveSummary: 'Remplacement immédiat de l\'offre pirate par des décodeurs officiels dans 5 200 foyers de Douala.',
   },
   {
@@ -629,7 +661,9 @@ export const mockPostActionImpacts: PostActionImpactRecord[] = [
     pirateDropPercent: -61,
     monthlyNewSubscribersGained: 4800,
     monthlyRevenueLiftFcfa: 55200000, // 55,2 Millions FCFA / mois
+    ltvRetentionFcfa: 248400000, // 55.2M * 4.5 = 248.4 Millions FCFA LTV
     annualizedValueFcfa: 662400000, // 662,4 Millions FCFA / an
+    liveReactivityMttr: '26 min',
     whyItWorked: 'Pourquoi ça a marché : Les FAI locaux (Vodacom, Airtel) ont activé le blocage d\'adresses IP, rendant les sites inaccessibles sur téléphone 4G.',
     executiveSummary: 'Hausse directe de 4 800 souscriptions mobiles mensuelles pour suivre les compétitions.',
   },
