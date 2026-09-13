@@ -1,0 +1,6 @@
+{
+  "name": "PANAF CHEIKH + Intelligence",
+  "description": "Plateforme d'intelligence anti-piratage, d'analyse de données de marché (Power BI / SEMrush) et d'évaluation d'impact commercial pour la cellule Anti Piracy Factory de CHEIKH + International à Dakar.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
