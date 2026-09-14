@@ -93,6 +93,11 @@ export interface SiteForumItem {
   ipAddress: string;
   protocol: string;
   keySharedCount?: number;
+  semrushTraffic?: string;
+  semrushAuthority?: number;
+  semrushKeywordsCount?: number;
+  semrushTopKeyword?: string;
+  semrushEnrichedAt?: string;
 }
 
 export interface ReportData {

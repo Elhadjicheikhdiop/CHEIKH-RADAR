@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Threat } from '../types';
+import { Threat, SiteForumItem } from '../types';
 import {
   Shield,
   TrendingUp,
@@ -22,19 +22,26 @@ import {
   RotateCcw,
 } from 'lucide-react';
 import { ModernDateRangeButton } from '../components/ModernDateRangeButton';
+import { SemrushOverviewMetrics } from '../components/SemrushOverviewMetrics';
 
 interface OverviewPageProps {
   threats: Threat[];
+  sitesForums?: SiteForumItem[];
   onSelectThreat: (threatId: string) => void;
   onNavigateToThreats: () => void;
   onNavigateToMarket?: () => void;
+  onNavigateToImport?: () => void;
+  onShowToast?: (message: string) => void;
 }
 
 export const OverviewPage: React.FC<OverviewPageProps> = ({
   threats,
+  sitesForums = [],
   onSelectThreat,
   onNavigateToThreats,
   onNavigateToMarket,
+  onNavigateToImport,
+  onShowToast,
 }) => {
   // Filtres globaux de la page
   const [globalCountry, setGlobalCountry] = useState<string>('all');
@@ -1377,6 +1384,13 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({
           </div>
         </div>
       </div>
+
+      {/* 7. MÉTRIQUES ET INTELLIGENCE D'AUDIENCE SEMRUSH (TOUT EN BAS) */}
+      <SemrushOverviewMetrics
+        sitesForums={sitesForums}
+        onNavigateToImport={onNavigateToImport}
+        onShowToast={onShowToast}
+      />
     </div>
   );
 };

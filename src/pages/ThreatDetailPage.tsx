@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Threat, ThreatStatus } from '../types';
+import { UserRole, getUserAccount } from '../utils/userAccounts';
 import {
   ChevronRight,
   User,
@@ -25,6 +26,7 @@ interface ThreatDetailPageProps {
   onNavigateBack: () => void;
   onShowToast: (message: string) => void;
   onOpenPdfExport: (threat: Threat) => void;
+  currentRole?: UserRole;
 }
 
 export const ThreatDetailPage: React.FC<ThreatDetailPageProps> = ({
@@ -33,11 +35,17 @@ export const ThreatDetailPage: React.FC<ThreatDetailPageProps> = ({
   onNavigateBack,
   onShowToast,
   onOpenPdfExport,
+  currentRole = 'admin',
 }) => {
+  const currentAccount = getUserAccount(currentRole);
   const [selectedStatus, setSelectedStatus] = useState<ThreatStatus>(threat.status);
   const [isZoomOpen, setIsZoomOpen] = useState(false);
 
   const handleStatusChange = (status: ThreatStatus) => {
+    if (!currentAccount.canEdit) {
+      onShowToast(`Action restreinte : Le compte ${currentAccount.title} est en lecture seule.`);
+      return;
+    }
     setSelectedStatus(status);
     onUpdateStatus(threat.id, status);
 
@@ -118,9 +126,18 @@ export const ThreatDetailPage: React.FC<ThreatDetailPageProps> = ({
 
           {/* Quick status button toggles */}
           <div className="flex items-center gap-1 p-1 bg-[#eff4ff] border border-[#e5eeff] rounded-lg shadow-xs">
+            {!currentAccount.canEdit && (
+              <span className="flex items-center gap-1 text-[11px] font-bold text-amber-800 bg-amber-100/80 px-2 py-1 rounded">
+                <Lock className="w-3 h-3" />
+                Lecture Seule
+              </span>
+            )}
             <button
               onClick={() => handleStatusChange('follow')}
+              disabled={!currentAccount.canEdit}
               className={`px-3 py-1.5 rounded text-[12px] transition-colors flex items-center gap-1.5 ${
+                !currentAccount.canEdit ? 'cursor-not-allowed opacity-80' : 'cursor-pointer'
+              } ${
                 selectedStatus === 'follow'
                   ? 'bg-white text-[#0b1c30] font-bold shadow-xs'
                   : 'text-[#45464d] hover:bg-white/60'
@@ -132,7 +149,10 @@ export const ThreatDetailPage: React.FC<ThreatDetailPageProps> = ({
 
             <button
               onClick={() => handleStatusChange('analyse')}
+              disabled={!currentAccount.canEdit}
               className={`px-3 py-1.5 rounded text-[12px] transition-colors flex items-center gap-1.5 ${
+                !currentAccount.canEdit ? 'cursor-not-allowed opacity-80' : 'cursor-pointer'
+              } ${
                 selectedStatus === 'analyse'
                   ? 'bg-white text-[#0b1c30] font-bold shadow-xs'
                   : 'text-[#45464d] hover:bg-white/60'
@@ -144,7 +164,10 @@ export const ThreatDetailPage: React.FC<ThreatDetailPageProps> = ({
 
             <button
               onClick={() => handleStatusChange('transmit')}
+              disabled={!currentAccount.canEdit}
               className={`px-3 py-1.5 rounded text-[12px] transition-colors flex items-center gap-1.5 ${
+                !currentAccount.canEdit ? 'cursor-not-allowed opacity-80' : 'cursor-pointer'
+              } ${
                 selectedStatus === 'transmit'
                   ? 'bg-white text-[#0b1c30] font-bold shadow-xs'
                   : 'text-[#45464d] hover:bg-white/60'
@@ -156,7 +179,10 @@ export const ThreatDetailPage: React.FC<ThreatDetailPageProps> = ({
 
             <button
               onClick={() => handleStatusChange('close')}
+              disabled={!currentAccount.canEdit}
               className={`px-3 py-1.5 rounded text-[12px] transition-colors flex items-center gap-1.5 ${
+                !currentAccount.canEdit ? 'cursor-not-allowed opacity-80' : 'cursor-pointer'
+              } ${
                 selectedStatus === 'close'
                   ? 'bg-white text-[#0b1c30] font-bold shadow-xs'
                   : 'text-[#45464d] hover:bg-white/60'

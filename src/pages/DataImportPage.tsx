@@ -24,6 +24,7 @@ import {
   X,
   Sliders,
   ExternalLink,
+  Lock,
 } from 'lucide-react';
 import {
   Threat,
@@ -41,6 +42,8 @@ import {
   downloadCsvTemplate,
   downloadAllTemplatesMasterWorkbook,
 } from '../utils/excelTemplates';
+import { SemrushDataImportTab } from '../components/SemrushDataImportTab';
+import { UserRole, getUserAccount } from '../utils/userAccounts';
 
 interface DataImportPageProps {
   threats: Threat[];
@@ -57,9 +60,10 @@ interface DataImportPageProps {
   onAddEvidence: (newEvidence: EvidenceItem) => void;
   onShowToast: (message: string) => void;
   onNavigateToPage: (page: any) => void;
+  currentRole?: UserRole;
 }
 
-type TabType = 'import' | 'templates' | 'google-forms' | 'captures' | 'history';
+type TabType = 'import' | 'semrush' | 'templates' | 'google-forms' | 'captures' | 'history';
 
 export const DataImportPage: React.FC<DataImportPageProps> = ({
   threats,
@@ -76,9 +80,16 @@ export const DataImportPage: React.FC<DataImportPageProps> = ({
   onAddEvidence,
   onShowToast,
   onNavigateToPage,
+  currentRole = 'super_admin',
 }) => {
+  const currentAccount = getUserAccount(currentRole);
   const [activeTab, setActiveTab] = useState<TabType>('import');
   const [selectedCategory, setSelectedCategory] = useState<DataImportCategory>('threats');
+
+  const handleApplySemrushSites = (enrichedSites: SiteForumItem[]) => {
+    onImportSitesForums(enrichedSites);
+    onShowToast(`Mise à jour réussie : ${enrichedSites.length} sites & forums enrichis avec les données SEMrush.`);
+  };
 
   // État du fichier en cours d'analyse
   const [parsedFileName, setParsedFileName] = useState<string | null>(null);
@@ -565,6 +576,23 @@ export const DataImportPage: React.FC<DataImportPageProps> = ({
           </button>
 
           <button
+            onClick={() => setActiveTab('semrush')}
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-[12px] font-bold transition-all whitespace-nowrap cursor-pointer ${
+              activeTab === 'semrush'
+                ? 'bg-orange-600 text-white shadow-xs'
+                : 'text-[#64748b] hover:bg-orange-50 hover:text-orange-600'
+            }`}
+          >
+            <span className="w-4 h-4 rounded bg-orange-500 text-white text-[9px] font-black flex items-center justify-center">
+              SE
+            </span>
+            <span>2. Enrichissement SEMrush API</span>
+            <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-orange-100 text-orange-800 font-bold">
+              API
+            </span>
+          </button>
+
+          <button
             onClick={() => setActiveTab('templates')}
             className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-[12px] font-bold transition-all whitespace-nowrap cursor-pointer ${
               activeTab === 'templates'
@@ -573,7 +601,7 @@ export const DataImportPage: React.FC<DataImportPageProps> = ({
             }`}
           >
             <Download className="w-4 h-4" />
-            2. Modèles Téléchargeables (.xlsx & .csv)
+            3. Modèles Téléchargeables (.xlsx & .csv)
           </button>
 
           <button
@@ -585,7 +613,7 @@ export const DataImportPage: React.FC<DataImportPageProps> = ({
             }`}
           >
             <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
-            3. Rapports Google Forms & Terrain
+            4. Rapports Google Forms & Terrain
           </button>
 
           <button
@@ -597,7 +625,7 @@ export const DataImportPage: React.FC<DataImportPageProps> = ({
             }`}
           >
             <ImageIcon className="w-4 h-4" />
-            4. Captures d'Écran & Preuves ({evidenceList.length})
+            5. Captures d'Écran & Preuves ({evidenceList.length})
           </button>
 
           <button
@@ -609,7 +637,7 @@ export const DataImportPage: React.FC<DataImportPageProps> = ({
             }`}
           >
             <Clock className="w-4 h-4" />
-            5. Historique des Ingestions ({importHistory.length})
+            6. Historique des Ingestions ({importHistory.length})
           </button>
         </div>
       </div>
@@ -617,6 +645,49 @@ export const DataImportPage: React.FC<DataImportPageProps> = ({
       {/* TAB 1: IMPORT FICHIER EXCEL / CSV */}
       {activeTab === 'import' && (
         <div className="space-y-6">
+          {!currentAccount.canImport && (
+            <div className="bg-amber-50 border border-amber-300 text-amber-900 rounded-2xl p-4 sm:p-5 flex items-start gap-3 shadow-2xs">
+              <Lock className="w-5 h-5 text-amber-700 shrink-0 mt-0.5" />
+              <div>
+                <h4 className="text-[13px] font-bold">
+                  Compte en Consultation Seule : {currentAccount.title}
+                </h4>
+                <p className="text-[12px] text-amber-800 mt-0.5 leading-relaxed">
+                  Votre profil de Direction ne dispose pas des droits d'ingestion ou de modification des données sources. Vous pouvez librement télécharger les modèles Excel / CSV, consulter les preuves, l'historique et exporter les rapports. Pour importer de nouvelles données, reconnectez-vous avec le <strong>Super Administrateur Référent</strong> ou le compte <strong>Directeur Service Analyse de Données & Marché</strong>.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Bannière d'accès rapide Enrichissement SEMrush */}
+          <div className="bg-linear-to-r from-orange-50 via-amber-50 to-white border border-orange-200 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-orange-500 text-white flex items-center justify-center font-black text-[15px] shrink-0 shadow-xs">
+                SE
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h4 className="text-[13px] font-bold text-orange-950">
+                    Enrichissement de Données via l'API SEMrush
+                  </h4>
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-orange-100 text-orange-800 uppercase">
+                    Nouveau
+                  </span>
+                </div>
+                <p className="text-[12px] text-orange-800 mt-0.5">
+                  Interrogez directement l'API SEMrush pour enrichir vos domaines pirates avec le trafic mensuel estimé, l'Authority Score Google et les requêtes captées.
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => setActiveTab('semrush')}
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-[12px] font-bold shadow-xs transition-all cursor-pointer whitespace-nowrap self-start sm:self-auto"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Ouvrir l'Enrichissement SEMrush</span>
+            </button>
+          </div>
+
           {/* Sélection du Type de Données Cible */}
           <div className="bg-white rounded-2xl border border-[#e2e8f0] p-5 shadow-xs">
             <label className="text-[12px] font-bold text-[#0b1c30] uppercase tracking-wider block mb-3">
@@ -678,14 +749,25 @@ export const DataImportPage: React.FC<DataImportPageProps> = ({
             <div
               onDragOver={handleDragOver}
               onDrop={handleDrop}
-              onClick={() => fileInputRef.current?.click()}
-              className="border-2 border-dashed border-[#cbd5e1] hover:border-[#0b1c30] bg-[#f8fafc] hover:bg-white rounded-2xl p-8 text-center transition-all cursor-pointer flex flex-col items-center justify-center min-h-[220px]"
+              onClick={() => {
+                if (!currentAccount.canImport) {
+                  onShowToast(`Accès restreint : Le profil ${currentAccount.title} est en consultation seule.`);
+                  return;
+                }
+                fileInputRef.current?.click();
+              }}
+              className={`border-2 border-dashed rounded-2xl p-8 text-center transition-all flex flex-col items-center justify-center min-h-[220px] ${
+                !currentAccount.canImport
+                  ? 'border-slate-300 bg-slate-100/70 cursor-not-allowed'
+                  : 'border-[#cbd5e1] hover:border-[#0b1c30] bg-[#f8fafc] hover:bg-white cursor-pointer'
+              }`}
             >
               <input
                 ref={fileInputRef}
                 type="file"
                 accept=".xlsx, .xls, .csv, .tsv"
                 className="hidden"
+                disabled={!currentAccount.canImport}
                 onChange={(e) => {
                   if (e.target.files && e.target.files[0]) {
                     handleFileUpload(e.target.files[0]);
@@ -693,29 +775,39 @@ export const DataImportPage: React.FC<DataImportPageProps> = ({
                 }}
               />
               <div className="w-14 h-14 rounded-2xl bg-[#0b1c30]/10 flex items-center justify-center text-[#0b1c30] mb-3">
-                <UploadCloud className="w-7 h-7" />
+                {!currentAccount.canImport ? (
+                  <Lock className="w-7 h-7 text-slate-500" />
+                ) : (
+                  <UploadCloud className="w-7 h-7" />
+                )}
               </div>
               <h3 className="text-[15px] font-bold text-[#0b1c30]">
-                Glissez votre fichier ici ou cliquez pour parcourir vos dossiers
+                {!currentAccount.canImport
+                  ? `Importation désactivée (${currentAccount.title})`
+                  : "Glissez votre fichier ici ou cliquez pour parcourir vos dossiers"}
               </h3>
               <p className="text-[12px] text-[#64748b] mt-1 max-w-md">
-                Formats acceptés : <span className="font-semibold text-[#0b1c30]">.xlsx (Excel), .xls, .csv</span>. Le système détectera automatiquement la structure des colonnes.
+                {!currentAccount.canImport
+                  ? "Seul le Super Administrateur Référent ou le Directeur Service Analyse de Données peuvent injecter des fichiers."
+                  : "Formats acceptés : .xlsx (Excel), .xls, .csv. Le système détectera automatiquement la structure des colonnes."}
               </p>
 
-              <div className="flex items-center gap-3 mt-4">
-                <span className="text-[11px] text-[#64748b]">Pas de fichier sous la main ?</span>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleLoadSampleData();
-                  }}
-                  className="px-3 py-1 rounded-lg bg-white border border-[#cbd5e1] hover:border-[#0b1c30] text-[#0b1c30] text-[11px] font-bold shadow-2xs transition-all cursor-pointer flex items-center gap-1.5"
-                >
-                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                  Charger un jeu d'essai CHEIKH + Afrique
-                </button>
-              </div>
+              {currentAccount.canImport && (
+                <div className="flex items-center gap-3 mt-4">
+                  <span className="text-[11px] text-[#64748b]">Pas de fichier sous la main ?</span>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleLoadSampleData();
+                    }}
+                    className="px-3 py-1 rounded-lg bg-white border border-[#cbd5e1] hover:border-[#0b1c30] text-[#0b1c30] text-[11px] font-bold shadow-2xs transition-all cursor-pointer flex items-center gap-1.5"
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                    Charger un jeu d'essai CHEIKH + Afrique
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -790,7 +882,16 @@ export const DataImportPage: React.FC<DataImportPageProps> = ({
         </div>
       )}
 
-      {/* TAB 2: MODÈLES D'IMPORT TÉLÉCHARGEABLES */}
+      {/* TAB SEMRUSH: ENRICHISSEMENT VIA API SEMRUSH */}
+      {activeTab === 'semrush' && (
+        <SemrushDataImportTab
+          sitesForums={sitesForums}
+          onApplyEnrichment={handleApplySemrushSites}
+          onShowToast={onShowToast}
+        />
+      )}
+
+      {/* TAB 3: MODÈLES D'IMPORT TÉLÉCHARGEABLES */}
       {activeTab === 'templates' && (
         <div className="space-y-6">
           <div className="bg-white rounded-2xl border border-[#e2e8f0] p-5 sm:p-6 shadow-xs">

@@ -29,8 +29,10 @@ import {
   ArrowRight,
   ArrowLeft,
   Users,
+  Lock,
 } from 'lucide-react';
 import { ModernDateRangeButton } from '../components/ModernDateRangeButton';
+import { UserRole, getUserAccount } from '../utils/userAccounts';
 
 type ViewMode = 'table' | 'kanban' | 'map';
 type PeriodFilter = 'all' | 'today' | 'this_week' | 'this_month' | 'this_year' | 'last_year' | 'custom';
@@ -44,6 +46,7 @@ interface ThreatsPageProps {
   onOpenPdfExport?: (threat: Threat) => void;
   onShowToast?: (msg: string) => void;
   externalSearch?: string;
+  currentRole?: UserRole;
 }
 
 export const ThreatsPage: React.FC<ThreatsPageProps> = ({
@@ -54,7 +57,9 @@ export const ThreatsPage: React.FC<ThreatsPageProps> = ({
   onOpenPdfExport,
   onShowToast,
   externalSearch = '',
+  currentRole = 'admin',
 }) => {
+  const currentAccount = getUserAccount(currentRole);
   // View states
   const [viewMode, setViewMode] = useState<ViewMode>('table');
 
@@ -788,45 +793,54 @@ export const ThreatsPage: React.FC<ThreatsPageProps> = ({
                         <div className="pt-2 border-t border-[#f1f5f9] flex items-center justify-between text-[11px]">
                           <span className="text-[#94a3b8]">{threat.country || 'N/A'}</span>
 
-                          {/* Quick Workflow Transitions */}
+                          {/* Quick Workflow Transitions (Uniquement pour le binôme administrateur habilité) */}
                           <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
-                            {column.id !== 'analyse' && onUpdateStatus && (
-                              <button
-                                onClick={() => {
-                                  onUpdateStatus(threat.id, 'analyse');
-                                  if (onShowToast) onShowToast(`Statut mis à jour : À analyser`);
-                                }}
-                                title="Passer en À analyser"
-                                className="p-1 rounded bg-[#f1f5f9] hover:bg-[#e2e8f0] text-[#0b1c30]"
-                              >
-                                <ArrowLeft className="w-3 h-3" />
-                              </button>
-                            )}
+                            {currentAccount.canEdit ? (
+                              <>
+                                {column.id !== 'analyse' && onUpdateStatus && (
+                                  <button
+                                    onClick={() => {
+                                      onUpdateStatus(threat.id, 'analyse');
+                                      if (onShowToast) onShowToast(`Statut mis à jour : À analyser`);
+                                    }}
+                                    title="Passer en À analyser"
+                                    className="p-1 rounded bg-[#f1f5f9] hover:bg-[#e2e8f0] text-[#0b1c30] cursor-pointer"
+                                  >
+                                    <ArrowLeft className="w-3 h-3" />
+                                  </button>
+                                )}
 
-                            {column.id !== 'transmit' && onUpdateStatus && (
-                              <button
-                                onClick={() => {
-                                  onUpdateStatus(threat.id, 'transmit');
-                                  if (onShowToast) onShowToast(`Statut mis à jour : À transmettre`);
-                                }}
-                                title="Transmettre à l'équipe juridique"
-                                className="px-2 py-0.5 rounded bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold"
-                              >
-                                Transmettre
-                              </button>
-                            )}
+                                {column.id !== 'transmit' && onUpdateStatus && (
+                                  <button
+                                    onClick={() => {
+                                      onUpdateStatus(threat.id, 'transmit');
+                                      if (onShowToast) onShowToast(`Statut mis à jour : À transmettre`);
+                                    }}
+                                    title="Transmettre à l'équipe juridique"
+                                    className="px-2 py-0.5 rounded bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-[10px] cursor-pointer"
+                                  >
+                                    Transmettre
+                                  </button>
+                                )}
 
-                            {column.id !== 'close' && onUpdateStatus && (
-                              <button
-                                onClick={() => {
-                                  onUpdateStatus(threat.id, 'close');
-                                  if (onShowToast) onShowToast(`Dossier clôturé`);
-                                }}
-                                title="Clôturer le dossier"
-                                className="p-1 rounded bg-green-50 hover:bg-green-100 text-green-700"
-                              >
-                                <CheckCircle2 className="w-3 h-3" />
-                              </button>
+                                {column.id !== 'close' && onUpdateStatus && (
+                                  <button
+                                    onClick={() => {
+                                      onUpdateStatus(threat.id, 'close');
+                                      if (onShowToast) onShowToast(`Dossier clôturé`);
+                                    }}
+                                    title="Clôturer le dossier"
+                                    className="p-1 rounded bg-green-50 hover:bg-green-100 text-green-700 cursor-pointer"
+                                  >
+                                    <CheckCircle2 className="w-3 h-3" />
+                                  </button>
+                                )}
+                              </>
+                            ) : (
+                              <span className="text-[10px] font-semibold text-slate-400 flex items-center gap-1 py-0.5 px-1.5 bg-slate-50 rounded border border-slate-200">
+                                <Lock className="w-2.5 h-2.5 text-slate-400" />
+                                Consultation
+                              </span>
                             )}
                           </div>
                         </div>

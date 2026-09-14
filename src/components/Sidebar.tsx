@@ -9,7 +9,11 @@ import {
   TrendingUp,
   FileSpreadsheet,
   X,
+  Lock,
+  ShieldCheck,
+  Building,
 } from 'lucide-react';
+import { UserRole, getUserAccount } from '../utils/userAccounts';
 
 export type NavPage =
   | 'overview'
@@ -32,6 +36,7 @@ interface SidebarProps {
   threatsCount: number;
   isOpenOnMobile?: boolean;
   onCloseMobile?: () => void;
+  currentRole?: UserRole;
 }
 
 interface NavItem {
@@ -46,8 +51,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onNavigate,
   isOpenOnMobile = false,
   onCloseMobile,
+  currentRole = 'admin',
 }) => {
-  const surveillanceItems: NavItem[] = [
+  const currentAccount = getUserAccount(currentRole);
+  const allSurveillanceItems: NavItem[] = [
     {
       id: 'overview',
       label: "Vue d'ensemble",
@@ -85,6 +92,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
       badge: 'Excel / Forms',
     },
   ];
+
+  // Filtrage strict : seules les pages assignées au rôle sont affichées dans le menu
+  const surveillanceItems = allSurveillanceItems.filter((item) =>
+    currentAccount.allowedPages.includes(item.id)
+  );
 
   const handleItemClick = (id: NavPage) => {
     onNavigate(id);
@@ -160,14 +172,28 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </nav>
       </div>
 
-      {/* Institutional Context Footer */}
-      <div className="p-4 border-t border-[#f1f5f9] bg-[#f8fafc] m-3 rounded-xl border">
-        <div className="flex items-center gap-2 mb-1">
-          <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-          <span className="text-[11px] font-bold text-[#0b1c30]">Anti Piracy Factory</span>
+      {/* Institutional Context Footer & Current Account */}
+      <div className="p-3.5 border-t border-[#f1f5f9] bg-[#f8fafc] m-3 rounded-xl border">
+        <div className="flex items-center justify-between mb-1.5">
+          <div className="flex items-center gap-1.5">
+            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+            <span className="text-[11px] font-bold text-[#0b1c30]">Anti Piracy Factory</span>
+          </div>
+          <span
+            className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full border ${
+              currentAccount.canEdit
+                ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                : 'bg-slate-100 text-slate-700 border-slate-300'
+            }`}
+          >
+            {currentAccount.canEdit ? 'Édition' : 'Lecture Seule'}
+          </span>
         </div>
-        <p className="text-[10px] text-[#64748b] leading-tight">
-          Cellule Analyse de Données & Marché • CHEIKH + International Dakar
+        <p className="text-[10px] font-semibold text-[#0b1c30] truncate">
+          {currentAccount.title}
+        </p>
+        <p className="text-[9px] text-[#64748b] leading-tight truncate mt-0.5 font-mono">
+          {currentAccount.email}
         </p>
       </div>
     </>
