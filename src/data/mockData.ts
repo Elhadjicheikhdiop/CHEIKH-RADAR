@@ -553,7 +553,7 @@ export const mockReports: Record<string, ReportData> = {
       { country: 'Sénégal', code: 'SN', count: 254, percentage: 30 },
       { country: 'Côte d\'Ivoire', code: 'CI', count: 211, percentage: 25 },
       { country: 'Cameroun', code: 'CM', count: 178, percentage: 21 },
-      { country: 'Autres Territoires', code: 'AFR', count: 204, percentage: 24 },
+      { country: 'Autres Pays & Filiales', code: 'AFR', count: 204, percentage: 24 },
     ],
   },
   monthly: {

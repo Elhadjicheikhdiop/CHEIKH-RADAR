@@ -30,9 +30,10 @@ import {
   ArrowLeft,
   Users,
 } from 'lucide-react';
+import { ModernDateRangeButton } from '../components/ModernDateRangeButton';
 
 type ViewMode = 'table' | 'kanban' | 'map';
-type PeriodFilter = 'all' | '2h' | 'today' | '24h' | '7d';
+type PeriodFilter = 'all' | 'today' | 'this_week' | 'this_month' | 'this_year' | 'last_year' | 'custom';
 type AudienceFilter = 'all' | 'critical' | 'high' | 'moderate';
 
 interface ThreatsPageProps {
@@ -60,6 +61,8 @@ export const ThreatsPage: React.FC<ThreatsPageProps> = ({
   // Filter states
   const [selectedCategory, setSelectedCategory] = useState<ThreatCategory>('all');
   const [selectedPeriod, setSelectedPeriod] = useState<PeriodFilter>('all');
+  const [customStartDate, setCustomStartDate] = useState<string>('2025-02-01');
+  const [customEndDate, setCustomEndDate] = useState<string>('2025-02-16');
   const [selectedStatus, setSelectedStatus] = useState<'all' | ThreatStatus>('all');
   const [selectedAudience, setSelectedAudience] = useState<AudienceFilter>('all');
   const [selectedCountry, setSelectedCountry] = useState<string>('all');
@@ -95,6 +98,8 @@ export const ThreatsPage: React.FC<ThreatsPageProps> = ({
   const resetAllFilters = () => {
     setSelectedCategory('all');
     setSelectedPeriod('all');
+    setCustomStartDate('2025-02-01');
+    setCustomEndDate('2025-02-16');
     setSelectedStatus('all');
     setSelectedAudience('all');
     setSelectedCountry('all');
@@ -125,18 +130,44 @@ export const ThreatsPage: React.FC<ThreatsPageProps> = ({
       }
 
       // 3. Period filter
-      if (selectedPeriod === '2h') {
-        // Only today recent ones
-        if (!threat.detectionDate.includes('20:') && !threat.detectionDate.includes('19:')) {
-          return false;
-        }
-      } else if (selectedPeriod === 'today') {
+      if (selectedPeriod === 'today') {
         if (!threat.detectionDate.toLowerCase().includes("aujourd'hui")) {
           return false;
         }
-      } else if (selectedPeriod === '24h') {
-        if (threat.detectionDate.toLowerCase().includes('février 2025')) {
+      } else if (selectedPeriod === 'this_week') {
+        if (
+          !threat.detectionDate.toLowerCase().includes("aujourd'hui") &&
+          !threat.detectionDate.toLowerCase().includes("hier") &&
+          !threat.detectionDate.toLowerCase().includes('16 février') &&
+          !threat.detectionDate.toLowerCase().includes('15 février')
+        ) {
           return false;
+        }
+      } else if (selectedPeriod === 'this_month') {
+        if (
+          !threat.detectionDate.toLowerCase().includes("aujourd'hui") &&
+          !threat.detectionDate.toLowerCase().includes("hier") &&
+          !threat.detectionDate.toLowerCase().includes('février 2025')
+        ) {
+          return false;
+        }
+      } else if (selectedPeriod === 'this_year') {
+        if (
+          !threat.detectionDate.includes('2025') &&
+          !threat.detectionDate.toLowerCase().includes("aujourd'hui") &&
+          !threat.detectionDate.toLowerCase().includes("hier")
+        ) {
+          return false;
+        }
+      } else if (selectedPeriod === 'last_year') {
+        if (!threat.detectionDate.includes('2024')) {
+          return false;
+        }
+      } else if (selectedPeriod === 'custom') {
+        const itemTimestamp = threat.detectionTimestamp ? threat.detectionTimestamp.substring(0, 10) : '';
+        if (itemTimestamp) {
+          if (customStartDate && itemTimestamp < customStartDate) return false;
+          if (customEndDate && itemTimestamp > customEndDate) return false;
         }
       }
 
@@ -295,7 +326,7 @@ export const ThreatsPage: React.FC<ThreatsPageProps> = ({
             </p>
           </div>
 
-          {/* Top Actions: Switcher de Vues (Tableau, Pipeline, Territoires) */}
+          {/* Top Actions: Switcher de Vues (Tableau, Pipeline, Filiales) */}
           <div className="flex items-center gap-3 flex-wrap">
             {/* View Mode Selector */}
             <div className="flex items-center p-1 bg-white rounded-xl border border-[#e5eeff] shadow-2xs">
@@ -327,7 +358,7 @@ export const ThreatsPage: React.FC<ThreatsPageProps> = ({
 
               <button
                 onClick={() => setViewMode('map')}
-                title="Vue Carte & Territoires"
+                title="Vue Carte & Filiales"
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-semibold transition-all cursor-pointer ${
                   viewMode === 'map'
                     ? 'bg-[#0b1c30] text-white shadow-xs'
@@ -335,7 +366,7 @@ export const ThreatsPage: React.FC<ThreatsPageProps> = ({
                 }`}
               >
                 <MapPin className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Territoires</span>
+                <span className="hidden sm:inline">Filiales</span>
               </button>
             </div>
           </div>
@@ -452,17 +483,41 @@ export const ThreatsPage: React.FC<ThreatsPageProps> = ({
               <label className="text-[11px] font-bold text-[#64748b] uppercase tracking-wider">
                 Période
               </label>
-              <select
-                value={selectedPeriod}
-                onChange={(e) => setSelectedPeriod(e.target.value as PeriodFilter)}
-                className="bg-[#f8fafc] border border-[#e2e8f0] text-[#0b1c30] text-[12px] rounded-lg p-2 focus:outline-none focus:border-[#0b1c30]"
-              >
-                <option value="all">Toutes les dates</option>
-                <option value="2h">Dernières 2 heures</option>
-                <option value="today">Aujourd'hui</option>
-                <option value="24h">Dernières 24 heures</option>
-                <option value="7d">7 derniers jours</option>
-              </select>
+              <div className="flex flex-col gap-1.5">
+                <select
+                  value={selectedPeriod === 'custom' ? 'custom' : selectedPeriod}
+                  onChange={(e) => {
+                    const val = e.target.value as PeriodFilter;
+                    if (val !== 'custom') {
+                      setSelectedPeriod(val);
+                    }
+                  }}
+                  className="bg-[#f8fafc] border border-[#e2e8f0] text-[#0b1c30] text-[12px] rounded-lg p-2 focus:outline-none focus:border-[#0b1c30] cursor-pointer"
+                >
+                  <option value="all">Toutes les périodes</option>
+                  <option value="today">Aujourd'hui</option>
+                  <option value="this_week">Cette semaine</option>
+                  <option value="this_month">Ce mois</option>
+                  <option value="this_year">Cette année</option>
+                  <option value="last_year">L'année dernière</option>
+                  {selectedPeriod === 'custom' && (
+                    <option value="custom">Fourchette personnalisée</option>
+                  )}
+                </select>
+
+                <ModernDateRangeButton
+                  startDate={customStartDate}
+                  endDate={customEndDate}
+                  isActive={selectedPeriod === 'custom'}
+                  onChange={(start, end) => {
+                    setCustomStartDate(start);
+                    setCustomEndDate(end);
+                    setSelectedPeriod('custom');
+                  }}
+                  onClear={() => setSelectedPeriod('all')}
+                  className="w-full"
+                />
+              </div>
             </div>
 
             {/* 2. Statut */}
@@ -500,17 +555,17 @@ export const ThreatsPage: React.FC<ThreatsPageProps> = ({
               </select>
             </div>
 
-            {/* 4. Territoire / Pays */}
+            {/* 4. Filiale / Pays */}
             <div className="flex flex-col gap-1">
               <label className="text-[11px] font-bold text-[#64748b] uppercase tracking-wider">
-                Territoire
+                Filiale / Pays
               </label>
               <select
                 value={selectedCountry}
                 onChange={(e) => setSelectedCountry(e.target.value)}
                 className="bg-[#f8fafc] border border-[#e2e8f0] text-[#0b1c30] text-[12px] rounded-lg p-2 focus:outline-none focus:border-[#0b1c30]"
               >
-                <option value="all">Tous les pays</option>
+                <option value="all">Toutes les filiales</option>
                 <option value="Sénégal">Sénégal</option>
                 <option value="Côte d'Ivoire">Côte d'Ivoire</option>
                 <option value="Cameroun">Cameroun</option>
@@ -588,7 +643,7 @@ export const ThreatsPage: React.FC<ThreatsPageProps> = ({
                       )}
                       <span className="inline-flex items-center gap-1 text-[11px] text-[#76777d]">
                         <Globe className="w-3 h-3" />
-                        {item.country || 'Territoire non spécifié'}
+                        {item.country || 'Pays non spécifié'}
                       </span>
                     </div>
 
@@ -786,7 +841,7 @@ export const ThreatsPage: React.FC<ThreatsPageProps> = ({
       )}
 
       {/* ========================================================= */}
-      {/* 4. VUE CARTE & TERRITOIRES                                */}
+      {/* 4. VUE CARTE & FILIALES                                  */}
       {/* ========================================================= */}
       {viewMode === 'map' && (
         <div className="flex flex-col gap-6">
@@ -797,7 +852,7 @@ export const ThreatsPage: React.FC<ThreatsPageProps> = ({
                   Cartographie des foyers de diffusion non autorisée
                 </h3>
                 <p className="text-[12px] text-[#64748b]">
-                  Répartition des flux constatés et des audiences par territoire géographique
+                  Répartition des flux constatés et des audiences par pays et filiale
                 </p>
               </div>
               <span className="text-[11px] font-semibold text-[#0b1c30] bg-[#f8fafc] px-3 py-1 rounded-full border border-[#e2e8f0]">
@@ -871,7 +926,7 @@ export const ThreatsPage: React.FC<ThreatsPageProps> = ({
                     } else {
                       setSelectedCountry(region.country === 'Serveurs & VPN Externes' ? 'International' : region.country);
                       setViewMode('table');
-                      if (onShowToast) onShowToast(`Filtré sur le territoire : ${region.country}`);
+                      if (onShowToast) onShowToast(`Filtré sur la filiale : ${region.country}`);
                     }
                   }}
                   className="group p-5 rounded-2xl border border-[#e2e8f0] bg-[#f8fafc] hover:bg-white hover:border-[#0b1c30] hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"

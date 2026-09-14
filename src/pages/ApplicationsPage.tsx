@@ -191,17 +191,17 @@ export const ApplicationsPage: React.FC<ApplicationsPageProps> = ({
           </select>
         </div>
 
-        {/* Territoire */}
+        {/* Filiale / Pays */}
         <div className="flex flex-col gap-1">
           <label className="text-[11px] font-bold text-[#64748b] uppercase tracking-wider">
-            Territoire
+            Filiale / Pays
           </label>
           <select
             value={selectedCountry}
             onChange={(e) => setSelectedCountry(e.target.value)}
             className="bg-[#f8fafc] border border-[#e2e8f0] text-[#0b1c30] text-[12px] rounded-lg p-2 focus:outline-none focus:border-[#0b1c30]"
           >
-            <option value="all">Tous les territoires</option>
+            <option value="all">Toutes les filiales</option>
             <option value="Sénégal">Sénégal</option>
             <option value="Côte d'Ivoire">Côte d'Ivoire</option>
             <option value="Cameroun">Cameroun</option>
@@ -300,7 +300,7 @@ export const ApplicationsPage: React.FC<ApplicationsPageProps> = ({
                     </div>
                     <div>
                       <span className="text-[11px] font-bold uppercase text-[#64748b] block mb-0.5">
-                        Territoire ciblé
+                        Filiale / Pays ciblé(e)
                       </span>
                       <span className="text-[#0b1c30] font-medium block">
                         {app.country}
@@ -311,7 +311,7 @@ export const ApplicationsPage: React.FC<ApplicationsPageProps> = ({
 
                 {/* Capture */}
                 <div className="px-5">
-                  <div className="relative rounded-xl overflow-hidden border border-[#e2e8f0] bg-[#0b1c30] group">
+                  <div className="relative rounded-xl overflow-hidden border border-[#e2e8f0] bg-slate-100 group">
                     <img
                       src={app.captureUrl}
                       alt={`Capture de l'application ${app.name}`}
@@ -370,7 +370,7 @@ export const ApplicationsPage: React.FC<ApplicationsPageProps> = ({
                 <tr className="bg-[#f8fafc] border-b border-[#e2e8f0] text-[11px] font-bold text-[#64748b] uppercase tracking-wider">
                   <th className="py-3 px-4">Application & Package</th>
                   <th className="py-3 px-4">Source</th>
-                  <th className="py-3 px-4">Territoire</th>
+                  <th className="py-3 px-4">Pays / Filiale</th>
                   <th className="py-3 px-4">Installations</th>
                   <th className="py-3 px-4">Statut</th>
                   <th className="py-3 px-4 text-right">Actions</th>

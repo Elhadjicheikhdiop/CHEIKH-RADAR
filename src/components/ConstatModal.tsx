@@ -98,7 +98,7 @@ export const ConstatModal: React.FC<ConstatModalProps> = ({
                 <span className="font-bold font-mono">{threat.name}</span>
               </div>
               <div>
-                <span className="text-[#76777d] block">Plateforme / Canal :</span>
+                <span className="text-[#76777d] block">Plateforme / Vecteur :</span>
                 <span className="font-bold">{threat.channel} ({threat.platform})</span>
               </div>
               <div>

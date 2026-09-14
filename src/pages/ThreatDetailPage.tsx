@@ -237,8 +237,8 @@ export const ThreatDetailPage: React.FC<ThreatDetailPageProps> = ({
 
             <div className="space-y-3">
               <div>
-                <div className="text-[11px] text-[#76777d]">Canal de diffusion</div>
-                <div className="text-[15px] font-bold text-[#0b1c30] mt-0.5">{threat.channel} Live</div>
+                <div className="text-[11px] text-[#76777d]">Vecteur de diffusion</div>
+                <div className="text-[15px] font-bold text-[#0b1c30] mt-0.5">{threat.channel}</div>
               </div>
 
               <div>
@@ -359,7 +359,7 @@ export const ThreatDetailPage: React.FC<ThreatDetailPageProps> = ({
             </div>
             <div className="flex justify-between items-center mt-1 text-[11px] font-mono">
               <span className="text-[#76777d]">Signal persistant</span>
-              <span className="text-[#bb0112] font-bold">Live en cours</span>
+              <span className="text-[#bb0112] font-bold">Diffusion en cours</span>
             </div>
           </div>
         </div>
@@ -387,12 +387,12 @@ export const ThreatDetailPage: React.FC<ThreatDetailPageProps> = ({
               liens sont conservés à des fins de signalement et de procédure.
             </p>
 
-            {/* Preuve 1 : Capture horodatée du flux live */}
+            {/* Preuve 1 : Capture horodatée du flux constaté */}
             <div className="mt-5 flex flex-col gap-1.5">
               <div className="flex items-center justify-between">
                 <span className="text-[12px] font-bold text-[#0b1c30] flex items-center gap-1.5">
                   <ShieldAlert className="w-3.5 h-3.5 text-[#0b1c30]" />
-                  Preuve 1 : Capture horodatée du flux live (Capture à 20:45 GMT)
+                  Preuve 1 : Capture horodatée du flux constaté (Capture à 20:45 GMT)
                 </span>
                 <span className="text-[11px] font-mono text-[#76777d]">
                   SHA256: {threat.sha256 ? threat.sha256.substring(0, 16) + '...' : '7f8c12a...0b9d'}
@@ -403,7 +403,7 @@ export const ThreatDetailPage: React.FC<ThreatDetailPageProps> = ({
               <div className="relative bg-[#0b1c30] rounded-lg overflow-hidden group border border-[#dce9ff]">
                 <img
                   src={threat.evidenceCaptureUrl || 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=800&q=80'}
-                  alt="Capture preuve live"
+                  alt="Capture preuve vidéo"
                   className="w-full h-80 object-cover object-top filter brightness-90 cursor-pointer"
                   onClick={() => setIsZoomOpen(true)}
                 />

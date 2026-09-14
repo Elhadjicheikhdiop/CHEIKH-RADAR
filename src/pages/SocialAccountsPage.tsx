@@ -164,17 +164,17 @@ export const SocialAccountsPage: React.FC<SocialAccountsPageProps> = ({
           </select>
         </div>
 
-        {/* Territoire */}
+        {/* Filiale / Pays */}
         <div className="flex flex-col gap-1">
           <label className="text-[11px] font-bold text-[#64748b] uppercase tracking-wider">
-            Territoire
+            Filiale / Pays
           </label>
           <select
             value={selectedCountry}
             onChange={(e) => setSelectedCountry(e.target.value)}
             className="bg-[#f8fafc] border border-[#e2e8f0] text-[#0b1c30] text-[12px] rounded-lg p-2 focus:outline-none focus:border-[#0b1c30]"
           >
-            <option value="all">Tous territoires</option>
+            <option value="all">Toutes les filiales</option>
             <option value="Sénégal">Sénégal</option>
             <option value="Côte d'Ivoire">Côte d'Ivoire</option>
             <option value="Cameroun">Cameroun</option>
@@ -289,7 +289,7 @@ export const SocialAccountsPage: React.FC<SocialAccountsPageProps> = ({
 
                 {/* Capture */}
                 <div className="px-5">
-                  <div className="relative rounded-xl overflow-hidden border border-[#e2e8f0] bg-[#0b1c30] group">
+                  <div className="relative rounded-xl overflow-hidden border border-[#e2e8f0] bg-slate-100 group">
                     <img
                       src={acc.captureUrl}
                       alt={`Capture profil ${acc.name}`}
@@ -358,7 +358,7 @@ export const SocialAccountsPage: React.FC<SocialAccountsPageProps> = ({
                   <th className="py-3 px-4">Plateforme</th>
                   <th className="py-3 px-4">Abonnés</th>
                   <th className="py-3 px-4">Portée estimée</th>
-                  <th className="py-3 px-4">Territoire</th>
+                  <th className="py-3 px-4">Pays / Filiale</th>
                   <th className="py-3 px-4 text-right">Lien</th>
                 </tr>
               </thead>

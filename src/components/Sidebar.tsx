@@ -7,7 +7,8 @@ import {
   Share2,
   Globe,
   TrendingUp,
-  Clapperboard,
+  FileSpreadsheet,
+  X,
 } from 'lucide-react';
 
 export type NavPage =
@@ -19,7 +20,7 @@ export type NavPage =
   | 'accounts'
   | 'sites-forums'
   | 'market'
-  | 'series'
+  | 'data-import'
   | 'expert';
 
 export type ExpertTabType = 'sources' | 'donnees' | 'regles' | 'logs';
@@ -29,6 +30,8 @@ interface SidebarProps {
   currentExpertTab?: ExpertTabType;
   onNavigate: (page: NavPage, threatId?: string, expertTab?: ExpertTabType) => void;
   threatsCount: number;
+  isOpenOnMobile?: boolean;
+  onCloseMobile?: () => void;
 }
 
 interface NavItem {
@@ -41,6 +44,8 @@ interface NavItem {
 export const Sidebar: React.FC<SidebarProps> = ({
   currentPage,
   onNavigate,
+  isOpenOnMobile = false,
+  onCloseMobile,
 }) => {
   const surveillanceItems: NavItem[] = [
     {
@@ -69,25 +74,41 @@ export const Sidebar: React.FC<SidebarProps> = ({
       icon: Globe,
     },
     {
-      id: 'series',
-      label: 'Séries & VOD',
-      icon: Clapperboard,
-      badge: 'VOD',
+      id: 'market',
+      label: 'Intelligence Marché & Filiales',
+      icon: TrendingUp,
     },
     {
-      id: 'market',
-      label: 'Analyse Marché & BI',
-      icon: TrendingUp,
+      id: 'data-import',
+      label: 'Import de Données',
+      icon: FileSpreadsheet,
+      badge: 'Excel / Forms',
     },
   ];
 
-  return (
-    <aside className="fixed left-0 top-0 h-full w-64 bg-white border-r border-[#e2e8f0] z-50 flex flex-col justify-between select-none">
+  const handleItemClick = (id: NavPage) => {
+    onNavigate(id);
+    if (onCloseMobile) {
+      onCloseMobile();
+    }
+  };
+
+  const sidebarContent = (
+    <>
       {/* Top Header & Navigation */}
       <div className="flex flex-col">
         {/* Logo area */}
-        <div className="h-[60px] px-5 flex items-center border-b border-[#f1f5f9]">
+        <div className="h-[60px] px-5 flex items-center justify-between border-b border-[#f1f5f9]">
           <Logo />
+          {onCloseMobile && (
+            <button
+              onClick={onCloseMobile}
+              className="lg:hidden p-1.5 rounded-lg text-[#64748b] hover:text-[#0b1c30] hover:bg-[#f1f5f9] cursor-pointer"
+              title="Fermer le menu"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          )}
         </div>
 
         {/* Section Surveillance */}
@@ -105,7 +126,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <button
                 key={item.id}
                 id={`nav-item-${item.id}`}
-                onClick={() => onNavigate(item.id)}
+                onClick={() => handleItemClick(item.id)}
                 className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-left transition-colors cursor-pointer ${
                   isActive
                     ? 'bg-[#0b1c30] text-white font-medium shadow-xs'
@@ -149,7 +170,34 @@ export const Sidebar: React.FC<SidebarProps> = ({
           Cellule Analyse de Données & Marché • CHEIKH + International Dakar
         </p>
       </div>
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Desktop Sidebar */}
+      <aside className="fixed left-0 top-0 h-full w-64 bg-white border-r border-[#e2e8f0] z-40 hidden lg:flex flex-col justify-between select-none">
+        {sidebarContent}
+      </aside>
+
+      {/* Mobile Drawer Backdrop */}
+      {isOpenOnMobile && (
+        <div
+          onClick={onCloseMobile}
+          className="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 lg:hidden transition-opacity duration-200"
+          aria-hidden="true"
+        />
+      )}
+
+      {/* Mobile Drawer */}
+      <aside
+        className={`fixed left-0 top-0 h-full w-72 max-w-[85vw] bg-white border-r border-[#e2e8f0] z-50 flex lg:hidden flex-col justify-between shadow-2xl transition-transform duration-300 ease-in-out select-none ${
+          isOpenOnMobile ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        {sidebarContent}
+      </aside>
+    </>
   );
 };
 

@@ -309,7 +309,7 @@ export const SitesForumsPage: React.FC<SitesForumsPageProps> = ({
                     </div>
                     <div>
                       <span className="text-[11px] font-bold uppercase text-[#64748b] block mb-0.5">
-                        Territoire ciblé
+                        Filiale / Pays ciblé(e)
                       </span>
                       <span className="text-[#0b1c30] font-medium block">
                         {item.country}
@@ -320,7 +320,7 @@ export const SitesForumsPage: React.FC<SitesForumsPageProps> = ({
 
                 {/* Capture */}
                 <div className="px-5">
-                  <div className="relative rounded-xl overflow-hidden border border-[#e2e8f0] bg-[#0b1c30] group">
+                  <div className="relative rounded-xl overflow-hidden border border-[#e2e8f0] bg-slate-100 group">
                     <img
                       src={item.captureUrl}
                       alt={`Capture ${item.siteDomain}`}
@@ -377,7 +377,7 @@ export const SitesForumsPage: React.FC<SitesForumsPageProps> = ({
                   <th className="py-3 px-4">Domaine / Nom</th>
                   <th className="py-3 px-4">Type</th>
                   <th className="py-3 px-4">Hébergement</th>
-                  <th className="py-3 px-4">Territoire</th>
+                  <th className="py-3 px-4">Pays / Filiale</th>
                   <th className="py-3 px-4">Statut</th>
                   <th className="py-3 px-4 text-right">Actions</th>
                 </tr>

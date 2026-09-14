@@ -9,7 +9,17 @@ import {
   mockAccounts,
   mockSitesForums,
 } from './data/mockData';
-import { Threat, ThreatStatus } from './types';
+import { mockFieldSurveys } from './data/marketData';
+import { mockEvidenceItems } from './data/mockEvidence';
+import {
+  Threat,
+  ThreatStatus,
+  AppItem,
+  AccountItem,
+  SiteForumItem,
+  EvidenceItem,
+} from './types';
+import { FieldSurveyData } from './data/marketData';
 import { CheckCircle2, Loader2 } from 'lucide-react';
 
 // Lazy loading des pages secondaires pour un démarrage ultra-rapide (Code Splitting)
@@ -20,8 +30,8 @@ const ApplicationsPage = lazy(() => import('./pages/ApplicationsPage').then((m) 
 const SocialAccountsPage = lazy(() => import('./pages/SocialAccountsPage').then((m) => ({ default: m.SocialAccountsPage })));
 const SitesForumsPage = lazy(() => import('./pages/SitesForumsPage').then((m) => ({ default: m.SitesForumsPage })));
 const MarketAnalysisPage = lazy(() => import('./pages/MarketAnalysisPage').then((m) => ({ default: m.MarketAnalysisPage })));
-const SeriesPage = lazy(() => import('./pages/SeriesPage').then((m) => ({ default: m.SeriesPage })));
 const ExpertModePage = lazy(() => import('./pages/ExpertModePage').then((m) => ({ default: m.ExpertModePage })));
+const DataImportPage = lazy(() => import('./pages/DataImportPage').then((m) => ({ default: m.DataImportPage })));
 
 // Composant de chargement fluide et léger
 const PageLoader: React.FC = () => (
@@ -37,9 +47,39 @@ export default function App() {
   const [selectedThreatId, setSelectedThreatId] = useState<string>('INC-202502-8841-TK');
   const [selectedTerritoryName, setSelectedTerritoryName] = useState<string>('Sénégal');
   const [threats, setThreats] = useState<Threat[]>(mockThreats);
+  const [applications, setApplications] = useState<AppItem[]>(mockApplications);
+  const [accounts, setAccounts] = useState<AccountItem[]>(mockAccounts);
+  const [sitesForums, setSitesForums] = useState<SiteForumItem[]>(mockSitesForums);
+  const [fieldSurveys, setFieldSurveys] = useState<FieldSurveyData[]>(mockFieldSurveys);
+  const [evidenceList, setEvidenceList] = useState<EvidenceItem[]>(mockEvidenceItems);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [constatThreat, setConstatThreat] = useState<Threat | null>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+
+  const handleImportThreats = (newThreats: Threat[]) => {
+    setThreats((prev) => [...newThreats, ...prev]);
+  };
+
+  const handleImportApplications = (newApps: AppItem[]) => {
+    setApplications((prev) => [...newApps, ...prev]);
+  };
+
+  const handleImportAccounts = (newAccounts: AccountItem[]) => {
+    setAccounts((prev) => [...newAccounts, ...prev]);
+  };
+
+  const handleImportSitesForums = (newSites: SiteForumItem[]) => {
+    setSitesForums((prev) => [...newSites, ...prev]);
+  };
+
+  const handleImportFieldSurveys = (newSurveys: FieldSurveyData[]) => {
+    setFieldSurveys((prev) => [...newSurveys, ...prev]);
+  };
+
+  const handleAddEvidence = (newEvidence: EvidenceItem) => {
+    setEvidenceList((prev) => [newEvidence, ...prev]);
+  };
 
   const showToast = (message: string) => {
     setToastMessage(message);
@@ -56,18 +96,21 @@ export default function App() {
       setCurrentExpertTab(expertTab);
     }
     setCurrentPage(page);
+    setIsMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleSelectThreat = (threatId: string) => {
     setSelectedThreatId(threatId);
     setCurrentPage('threat-detail');
+    setIsMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleSelectTerritory = (countryName: string) => {
     setSelectedTerritoryName(countryName);
     setCurrentPage('territory-detail');
+    setIsMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -104,6 +147,8 @@ export default function App() {
         currentExpertTab={currentExpertTab}
         onNavigate={handleNavigate}
         threatsCount={threats.length}
+        isOpenOnMobile={isMobileMenuOpen}
+        onCloseMobile={() => setIsMobileMenuOpen(false)}
       />
 
       {/* Top Header */}
@@ -120,17 +165,20 @@ export default function App() {
             setCurrentPage('threats');
           }
         }}
+        onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        onNavigateToImport={() => handleNavigate('data-import')}
       />
 
       {/* Main Content Area */}
-      <main className="pl-64 pt-[60px] min-h-screen flex flex-col flex-1">
-        <div className="max-w-7xl w-full mx-auto px-6 py-7 flex-1">
+      <main className="lg:pl-64 pl-0 pt-[60px] min-h-screen flex flex-col flex-1 transition-all">
+        <div className="max-w-7xl w-full mx-auto px-3 sm:px-5 md:px-6 py-4 sm:py-6 flex-1">
           {/* 1. Vue d'ensemble (Chargement instantané synchrone) */}
           {currentPage === 'overview' && (
             <OverviewPage
               threats={threats}
               onSelectThreat={handleSelectThreat}
               onNavigateToThreats={() => handleNavigate('threats')}
+              onNavigateToMarket={() => handleNavigate('market')}
             />
           )}
 
@@ -162,7 +210,7 @@ export default function App() {
             </Suspense>
           )}
 
-          {/* 3b. Fiche Détaillée d'un Territoire */}
+          {/* 3b. Fiche Détaillée d'une Filiale */}
           {currentPage === 'territory-detail' && (
             <Suspense fallback={<PageLoader />}>
               <TerritoryDetailPage
@@ -181,7 +229,7 @@ export default function App() {
           {currentPage === 'applications' && (
             <Suspense fallback={<PageLoader />}>
               <ApplicationsPage
-                applications={mockApplications}
+                applications={applications}
                 onShowToast={showToast}
               />
             </Suspense>
@@ -191,7 +239,7 @@ export default function App() {
           {currentPage === 'accounts' && (
             <Suspense fallback={<PageLoader />}>
               <SocialAccountsPage
-                accounts={mockAccounts}
+                accounts={accounts}
                 onShowToast={showToast}
               />
             </Suspense>
@@ -201,20 +249,13 @@ export default function App() {
           {currentPage === 'sites-forums' && (
             <Suspense fallback={<PageLoader />}>
               <SitesForumsPage
-                sitesForums={mockSitesForums}
+                sitesForums={sitesForums}
                 onShowToast={showToast}
               />
             </Suspense>
           )}
 
-          {/* 6b. Séries & VOD */}
-          {currentPage === 'series' && (
-            <Suspense fallback={<PageLoader />}>
-              <SeriesPage onShowToast={showToast} />
-            </Suspense>
-          )}
-
-          {/* 7. Analyse Marché & Business Intelligence */}
+          {/* 7. Intelligence Marché & Filiales */}
           {currentPage === 'market' && (
             <Suspense fallback={<PageLoader />}>
               <MarketAnalysisPage
@@ -224,7 +265,29 @@ export default function App() {
             </Suspense>
           )}
 
-          {/* 8. Mode Expert */}
+          {/* 8. Import de Données & Modèles Excel */}
+          {currentPage === 'data-import' && (
+            <Suspense fallback={<PageLoader />}>
+              <DataImportPage
+                threats={threats}
+                applications={applications}
+                accounts={accounts}
+                sitesForums={sitesForums}
+                fieldSurveys={fieldSurveys}
+                evidenceList={evidenceList}
+                onImportThreats={handleImportThreats}
+                onImportApplications={handleImportApplications}
+                onImportAccounts={handleImportAccounts}
+                onImportSitesForums={handleImportSitesForums}
+                onImportFieldSurveys={handleImportFieldSurveys}
+                onAddEvidence={handleAddEvidence}
+                onShowToast={showToast}
+                onNavigateToPage={handleNavigate}
+              />
+            </Suspense>
+          )}
+
+          {/* 9. Mode Expert */}
           {currentPage === 'expert' && (
             <Suspense fallback={<PageLoader />}>
               <ExpertModePage

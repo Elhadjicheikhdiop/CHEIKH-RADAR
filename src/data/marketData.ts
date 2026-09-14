@@ -40,7 +40,7 @@ export interface SemrushDomainInsight {
 
 export interface BlackMarketPriceItem {
   id: string;
-  type: 'IPTV Annuel' | 'IPTV Mensuel' | 'Boîtier Android physique' | 'Canal Telegram VIP';
+  type: 'IPTV Annuel' | 'IPTV Mensuel' | 'Boîtier Android physique' | 'Groupe Telegram VIP';
   channelName: string;
   blackMarketPrice: string;
   officialCheikhPrice: string;
@@ -145,7 +145,7 @@ export const mockCountryBusinessImpacts: CountryBusinessImpact[] = [
       },
       {
         phase: 'Marketing local',
-        action: 'Campagne d\'affichage Abidjan "Le vrai match est sur CANAL+" couplée à l\'offre sans engagement',
+        action: 'Campagne d\'affichage Abidjan "Le vrai match est sur CHEIKH +" couplée à l\'offre sans engagement',
         expectedGainFcfa: 74000000,
         timeline: '3 semaines',
         priority: 'Moyenne (P2)',
@@ -256,7 +256,7 @@ export const mockCountryBusinessImpacts: CountryBusinessImpact[] = [
       },
       {
         phase: 'Partenariats Télécoms',
-        action: 'Offre groupée forfait data + bouquet mobile CANAL+ avec Airtel et Vodacom',
+        action: 'Offre groupée forfait data + bouquet mobile CHEIKH + avec Airtel et Vodacom',
         expectedGainFcfa: 38000000,
         timeline: '60 jours',
         priority: 'Continue',
@@ -270,7 +270,7 @@ export const mockSemrushInsights: SemrushDomainInsight[] = [
     domain: 'stream-foot-dakar.xyz',
     monthlyTraffic: '1.2M visites',
     africaTrafficShare: '78%',
-    topKeyword: 'canal sport live senegal',
+    topKeyword: 'cheikh sport live senegal',
     searchVolume: '49 500 / mois',
     domainAuthority: 46,
     hostingCountry: 'Russie (Offshore)',
@@ -300,7 +300,7 @@ export const mockSemrushInsights: SemrushDomainInsight[] = [
     domain: 'livefootball-abidjan.tv',
     monthlyTraffic: '380K visites',
     africaTrafficShare: '89%',
-    topKeyword: 'canal plus foot streaming hd',
+    topKeyword: 'cheikh plus foot streaming hd',
     searchVolume: '27 400 / mois',
     domainAuthority: 38,
     hostingCountry: 'Roumanie',
@@ -335,7 +335,7 @@ export const mockBlackMarketPrices: BlackMarketPriceItem[] = [
     type: 'IPTV Mensuel',
     channelName: 'Pack "Match Day Express" (Telegram)',
     blackMarketPrice: '2 500 FCFA / mois',
-    officialCheikhPrice: '10 000 FCFA / mois (CANAL+ Évasion Sport)',
+    officialCheikhPrice: '10 000 FCFA / mois (CHEIKH + Évasion Sport)',
     gapPercentage: '-75%',
     channelsIncluded: 'Bouquet Sport exclusif',
     paymentMethod: 'Wave Sénégal',
@@ -354,10 +354,10 @@ export const mockBlackMarketPrices: BlackMarketPriceItem[] = [
   },
   {
     id: 'BMP-04',
-    type: 'Canal Telegram VIP',
-    channelName: 'Canal privé "Foot Direct PANAF"',
+    type: 'Groupe Telegram VIP',
+    channelName: 'Groupe privé "Foot Direct PANAF"',
     blackMarketPrice: '1 500 FCFA / match',
-    officialCheikhPrice: 'Abonnement mensuel CANAL+',
+    officialCheikhPrice: 'Abonnement mensuel CHEIKH +',
     gapPercentage: '-85%',
     channelsIncluded: 'Lien direct m3u8 sans pub',
     paymentMethod: 'Orange Money Côte d\'Ivoire',
@@ -376,7 +376,7 @@ export const mockFieldSurveys: FieldSurveyData[] = [
     preferredPirateDevice: 'Boîtier Android IPTV (52%)',
     primaryMotivation: 'Tarif & Flexibilité sans engagement',
     mobileMoneyUsed: 'Wave (79%), Orange Money (21%)',
-    auditor: 'Cellule Enquêtes Terrain CANAL+ SN',
+    auditor: 'Cellule Enquêtes Terrain CHEIKH + SN',
   },
   {
     id: 'SURV-2025-02',
@@ -388,7 +388,7 @@ export const mockFieldSurveys: FieldSurveyData[] = [
     preferredPirateDevice: 'Applications Mobile APK & TikTok',
     primaryMotivation: 'Consommation sur smartphone 4G',
     mobileMoneyUsed: 'Wave CI (58%), Orange Money (42%)',
-    auditor: 'Équipe Terrain CANAL+ CI',
+    auditor: 'Équipe Terrain CHEIKH + CI',
   },
   {
     id: 'SURV-2025-03',
@@ -400,7 +400,7 @@ export const mockFieldSurveys: FieldSurveyData[] = [
     preferredPirateDevice: 'Réseaux câblés pirates de quartier',
     primaryMotivation: 'Partage d\'accès collectif',
     mobileMoneyUsed: 'MTN Mobile Money (64%)',
-    auditor: 'Audit Commercial CANAL+ CM',
+    auditor: 'Audit Commercial CHEIKH + CM',
   },
   {
     id: 'SURV-2025-04',
@@ -412,7 +412,7 @@ export const mockFieldSurveys: FieldSurveyData[] = [
     preferredPirateDevice: 'Boîtier IPTV Android vendu à Sandaga',
     primaryMotivation: 'Prix de l\'abonnement annuel',
     mobileMoneyUsed: 'Wave (88%)',
-    auditor: 'Cellule Enquêtes Terrain CANAL+ SN',
+    auditor: 'Cellule Enquêtes Terrain CHEIKH + SN',
   },
 ];
 
@@ -448,7 +448,7 @@ export interface CommercialCountryMetric {
   formulaBreakdown: {
     acces: number; // %
     evasionSport: number; // %
-    toutCanal: number; // %
+    toutCheikh: number; // %
   };
 }
 
@@ -476,7 +476,7 @@ export const mockCommercialCountryMetrics: CommercialCountryMetric[] = [
     formulaBreakdown: {
       acces: 32,
       evasionSport: 54,
-      toutCanal: 14,
+      toutCheikh: 14,
     },
   },
   {
@@ -492,7 +492,7 @@ export const mockCommercialCountryMetrics: CommercialCountryMetric[] = [
     formulaBreakdown: {
       acces: 28,
       evasionSport: 58,
-      toutCanal: 14,
+      toutCheikh: 14,
     },
   },
   {
@@ -508,7 +508,7 @@ export const mockCommercialCountryMetrics: CommercialCountryMetric[] = [
     formulaBreakdown: {
       acces: 41,
       evasionSport: 47,
-      toutCanal: 12,
+      toutCheikh: 12,
     },
   },
   {
@@ -524,7 +524,7 @@ export const mockCommercialCountryMetrics: CommercialCountryMetric[] = [
     formulaBreakdown: {
       acces: 48,
       evasionSport: 42,
-      toutCanal: 10,
+      toutCheikh: 10,
     },
   },
   {
@@ -540,7 +540,7 @@ export const mockCommercialCountryMetrics: CommercialCountryMetric[] = [
     formulaBreakdown: {
       acces: 25,
       evasionSport: 59,
-      toutCanal: 16,
+      toutCheikh: 16,
     },
   },
 ];
@@ -607,11 +607,11 @@ export const mockPostActionImpacts: PostActionImpactRecord[] = [
     pirateDropPercent: -78,
     monthlyNewSubscribersGained: 11850,
     monthlyRevenueLiftFcfa: 118500000, // 118,5 Millions FCFA / mois
-    ltvRetentionFcfa: 533250000, // 118.5M * 4.5 = 533.25 Millions FCFA LTV
+    ltvRetentionFcfa: 533250000, // 118.5M * 4.5 = 533.25 Millions FCFA cumulés (4.5 mois)
     annualizedValueFcfa: 1422000000, // 1,42 Milliard FCFA / an
     liveReactivityMttr: '18 min',
-    whyItWorked: 'Pourquoi ça a marché : Les serveurs pirates ont été coupés 18 minutes après le coup d\'envoi. Les téléspectateurs privés de match se sont rendus en boutique CANAL+ pour prendre un mois d\'abonnement à 10 000 FCFA.',
-    executiveSummary: 'L\'extinction simultanée des flux a forcé 11 850 foyers dakarois à acheter un abonnement mensuel officiel, générant 118,5M FCFA immédiats et 533M FCFA de LTV rétention.',
+    whyItWorked: 'Pourquoi ça a marché : Les serveurs pirates ont été coupés 18 minutes après le coup d\'envoi. Les téléspectateurs privés de match se sont rendus en boutique CHEIKH + pour prendre un mois d\'abonnement à 10 000 FCFA.',
+    executiveSummary: 'L\'extinction simultanée des flux a forcé 11 850 foyers dakarois à acheter un abonnement mensuel officiel, générant 118,5M FCFA immédiats et 533M FCFA cumulés sur la durée d\'abonnement (4,5 mois).',
   },
   {
     id: 'IMP-02',
@@ -619,16 +619,16 @@ export const mockPostActionImpacts: PostActionImpactRecord[] = [
     country: "Côte d'Ivoire",
     code: 'CI',
     flag: '🇨🇮',
-    operationTitle: 'Fermeture Canaux Telegram & Gel des comptes Wave CI / Orange Money',
+    operationTitle: 'Fermeture Groupes Telegram & Gel des comptes Wave CI / Orange Money',
     operationType: 'Gel Marchand Mobile Money',
-    takedownScope: '14 canaux Telegram fermés (82K membres) + 15 comptes Wave & OM gelés',
+    takedownScope: '14 groupes Telegram fermés (82K membres) + 15 comptes Wave & OM gelés',
     pirateDropPercent: -65,
     monthlyNewSubscribersGained: 15400,
     monthlyRevenueLiftFcfa: 169400000, // 169,4 Millions FCFA / mois
-    ltvRetentionFcfa: 762300000, // 169.4M * 4.5 = 762.3 Millions FCFA LTV
+    ltvRetentionFcfa: 762300000, // 169.4M * 4.5 = 762.3 Millions FCFA cumulés (4.5 mois)
     annualizedValueFcfa: 2032800000, // 2,03 Milliards FCFA / an
     liveReactivityMttr: '22 min',
-    whyItWorked: 'Pourquoi ça a marché : En bloquant les numéros Wave des revendeurs, les clients n\'ont pas pu renouveler leur IPTV pirate et ont dû basculer vers l\'application officielle myCANAL.',
+    whyItWorked: 'Pourquoi ça a marché : En bloquant les numéros Wave des revendeurs, les clients n\'ont pas pu renouveler leur IPTV pirate et ont dû basculer vers l\'application officielle CHEIKH +.',
     executiveSummary: 'Asphyxie totale de la chaîne de paiement informelle à Abidjan : 15 400 nouveaux abonnements mensuels souscrits.',
   },
   {
@@ -643,10 +643,10 @@ export const mockPostActionImpacts: PostActionImpactRecord[] = [
     pirateDropPercent: -54,
     monthlyNewSubscribersGained: 5200,
     monthlyRevenueLiftFcfa: 49400000, // 49,4 Millions FCFA / mois
-    ltvRetentionFcfa: 222300000, // 49.4M * 4.5 = 222.3 Millions FCFA LTV
+    ltvRetentionFcfa: 222300000, // 49.4M * 4.5 = 222.3 Millions FCFA cumulés (4.5 mois)
     annualizedValueFcfa: 592800000, // 592,8 Millions FCFA / an
     liveReactivityMttr: 'N/A (Action Physique)',
-    whyItWorked: 'Pourquoi ça a marché : La coupure physique des câbles pirates a été immédiatement relayée par des kiosques mobiles CANAL+ installés dans les mêmes quartiers avec l\'offre Access à 5 000 FCFA.',
+    whyItWorked: 'Pourquoi ça a marché : La coupure physique des câbles pirates a été immédiatement relayée par des kiosques mobiles CHEIKH + installés dans les mêmes quartiers avec l\'offre Access à 5 000 FCFA.',
     executiveSummary: 'Remplacement immédiat de l\'offre pirate par des décodeurs officiels dans 5 200 foyers de Douala.',
   },
   {
@@ -661,7 +661,7 @@ export const mockPostActionImpacts: PostActionImpactRecord[] = [
     pirateDropPercent: -61,
     monthlyNewSubscribersGained: 4800,
     monthlyRevenueLiftFcfa: 55200000, // 55,2 Millions FCFA / mois
-    ltvRetentionFcfa: 248400000, // 55.2M * 4.5 = 248.4 Millions FCFA LTV
+    ltvRetentionFcfa: 248400000, // 55.2M * 4.5 = 248.4 Millions FCFA cumulés (4.5 mois)
     annualizedValueFcfa: 662400000, // 662,4 Millions FCFA / an
     liveReactivityMttr: '26 min',
     whyItWorked: 'Pourquoi ça a marché : Les FAI locaux (Vodacom, Airtel) ont activé le blocage d\'adresses IP, rendant les sites inaccessibles sur téléphone 4G.',

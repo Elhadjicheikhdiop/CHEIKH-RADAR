@@ -578,7 +578,7 @@ export const ExpertModePage: React.FC<ExpertModePageProps> = ({ onShowToast, ini
 
               <div>
                 <label className="text-[11px] font-bold uppercase text-[#76777d] block mb-1">
-                  Canal d'alerte instantanée (Telegram / Slack)
+                  Webhook d'alerte instantanée (Telegram / Slack)
                 </label>
                 <input
                   defaultValue="https://api.telegram.org/bot6128.../sendAlert"

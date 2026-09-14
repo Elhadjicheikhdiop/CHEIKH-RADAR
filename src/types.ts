@@ -152,3 +152,33 @@ export interface ReportConfig {
   includeForensics: boolean;
   includeActionLogs: boolean;
 }
+
+export type DataImportCategory =
+  | 'threats'
+  | 'applications'
+  | 'accounts'
+  | 'sites'
+  | 'google_forms';
+
+export interface EvidenceItem {
+  id: string;
+  fileName: string;
+  fileSize: string;
+  fileUrl: string;
+  uploadedAt: string;
+  type: 'stream_capture' | 'payment_receipt' | 'field_photo' | 'legal_bailiff' | 'app_screenshot';
+  title: string;
+  relatedEntityName?: string;
+  country?: string;
+  notes?: string;
+}
+
+export interface ImportHistoryRecord {
+  id: string;
+  fileName: string;
+  category: DataImportCategory;
+  rowsCount: number;
+  importedAt: string;
+  status: 'success' | 'warning' | 'error';
+  details: string;
+}

@@ -76,7 +76,7 @@ export const territoryProfiles: Record<string, TerritoryDetailData> = {
     activeInvestigations: 14,
     analyticalObservations: [
       {
-        theme: 'Canal de vente physique & boîtiers flashés',
+        theme: 'Vecteur de vente physique & boîtiers flashés',
         diagnostic: 'Forte concentration d\'échoppes physiques à Sandaga et Pikine commercialisant des box Android pré-paramétrées (abonnement 1 an inclus).',
         impactBusiness: 'Érosion directe des recrutements d\'abonnés sur la région Dakar.',
         suggestedTrack: 'Rapport d\'identification transmis au service juridique pour préparation des dossiers de saisie Douane / DSC.',
@@ -265,7 +265,7 @@ export const territoryProfiles: Record<string, TerritoryDetailData> = {
   'Serveurs & VPN Externes': {
     country: 'Serveurs & VPN Externes',
     code: 'INT',
-    flag: '🌐',
+    flag: '',
     streams: 12,
     percentage: '8%',
     audience: '~5 100 spectateurs',
@@ -312,11 +312,11 @@ export const TerritoryDetailPage: React.FC<TerritoryDetailPageProps> = ({
   onOpenPdfExport,
   onShowToast,
 }) => {
-  // Récupération des données du territoire
+  // Récupération des données de la filiale
   const territory = territoryProfiles[countryName] || {
     country: countryName,
     code: countryName.slice(0, 2).toUpperCase(),
-    flag: '🌍',
+    flag: '',
     streams: 15,
     percentage: '10%',
     audience: '~5 000 spectateurs',
@@ -354,7 +354,7 @@ export const TerritoryDetailPage: React.FC<TerritoryDetailPageProps> = ({
     return t.country === countryName || t.countryCode === territory.code;
   });
 
-  // Enquêtes terrain liées à ce territoire
+  // Enquêtes terrain liées à cette filiale
   const relatedSurveys = mockFieldSurveys.filter((s) => {
     if (territory.country === 'Sénégal') return s.city.toLowerCase().includes('dakar');
     if (territory.country === "Côte d'Ivoire") return s.city.toLowerCase().includes('abidjan');
@@ -366,7 +366,7 @@ export const TerritoryDetailPage: React.FC<TerritoryDetailPageProps> = ({
 
   const handleExportData = () => {
     // Export des données statistiques structurées
-    const headers = ['Territoire', 'Code', 'Flux_Recenses', 'Part_Trafic', 'Audience_Estimee', 'Manque_A_Gagner_FCFA', 'Prix_Moyen_Pirate', 'Paiements_Dominants'];
+    const headers = ['Filiale_Pays', 'Code', 'Flux_Recenses', 'Part_Trafic', 'Audience_Estimee', 'Manque_A_Gagner_FCFA', 'Prix_Moyen_Pirate', 'Paiements_Dominants'];
     const row = [
       `"${territory.country}"`,
       `"${territory.code}"`,
@@ -381,12 +381,12 @@ export const TerritoryDetailPage: React.FC<TerritoryDetailPageProps> = ({
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `analyse_statistique_territoire_${territory.code}.csv`);
+    link.setAttribute('download', `analyse_statistique_filiale_${territory.code}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
 
-    onShowToast(`Dataset statistique du territoire ${territory.country} exporté (format CSV structuré)`);
+    onShowToast(`Dataset statistique de la filiale ${territory.country} exporté (format CSV structuré)`);
   };
 
   return (
@@ -403,16 +403,16 @@ export const TerritoryDetailPage: React.FC<TerritoryDetailPageProps> = ({
           </button>
           <ChevronRight className="w-3.5 h-3.5" />
           <button onClick={onNavigateBack} className="hover:text-[#0b1c30] transition-colors cursor-pointer">
-            Territoires
+            Filiales & Pays
           </button>
           <ChevronRight className="w-3.5 h-3.5" />
-          <span className="font-bold text-[#0b1c30] flex items-center gap-1">
-            <span>{territory.flag}</span>
+          <span className="font-bold text-[#0b1c30] flex items-center gap-1.5">
+            {territory.flag && <span>{territory.flag}</span>}
             <span>{territory.country}</span>
           </span>
         </nav>
 
-        {/* 2. GRAND EN-TÊTE DU TERRITOIRE */}
+        {/* 2. GRAND EN-TÊTE DE LA FILIALE */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pt-2 pb-5 border-b border-[#e2e8f0]">
           <div className="flex items-start gap-3">
             <button
@@ -424,9 +424,9 @@ export const TerritoryDetailPage: React.FC<TerritoryDetailPageProps> = ({
             </button>
             <div>
               <div className="flex items-center gap-3 flex-wrap">
-                <span className="text-3xl">{territory.flag}</span>
+                {territory.flag && <span className="text-3xl">{territory.flag}</span>}
                 <h1 className="text-2xl lg:text-3xl font-bold tracking-tight text-[#0b1c30]">
-                  Fiche Territoire : {territory.country}
+                  Fiche Filiale : {territory.country}
                 </h1>
                 <span className="font-mono text-[12px] font-bold px-2.5 py-0.5 rounded bg-[#0b1c30] text-white">
                   Code : {territory.code}
@@ -461,7 +461,7 @@ export const TerritoryDetailPage: React.FC<TerritoryDetailPageProps> = ({
               <span>Exporter les données (CSV / Excel)</span>
             </button>
             <button
-              onClick={() => onShowToast(`Fiche de synthèse statistique du territoire ${territory.country} générée en PDF`)}
+              onClick={() => onShowToast(`Fiche de synthèse statistique de la filiale ${territory.country} générée en PDF`)}
               className="px-3.5 py-2 rounded-xl bg-[#0b1c30] hover:bg-[#1e40af] text-white text-[12px] font-bold flex items-center gap-2 shadow-xs transition-colors cursor-pointer"
             >
               <FileDown className="w-4 h-4" />
@@ -590,7 +590,7 @@ export const TerritoryDetailPage: React.FC<TerritoryDetailPageProps> = ({
               <ShieldAlert className="w-8 h-8 text-[#94a3b8] mx-auto mb-2" />
               <div className="text-[14px] font-bold text-[#0b1c30]">Aucun flux illégal actif rattaché</div>
               <p className="text-[12px] text-[#64748b] mt-1">
-                La veille multi-sources n'a pas détecté de signalement non traité pour ce territoire.
+                La veille multi-sources n'a pas détecté de signalement non traité pour cette filiale.
               </p>
             </div>
           ) : (
@@ -630,7 +630,7 @@ export const TerritoryDetailPage: React.FC<TerritoryDetailPageProps> = ({
                         </span>
                       </div>
                       <div className="text-[12px] text-[#475569] mt-1">
-                        {item.content} • {item.rightsHolder || 'CANAL+'}
+                        {item.content} • {item.rightsHolder || 'CHEIKH +'}
                       </div>
                       <div className="text-[11px] text-[#64748b] mt-1 flex items-center gap-2">
                         <span>Réf : {item.id}</span>
@@ -718,7 +718,7 @@ export const TerritoryDetailPage: React.FC<TerritoryDetailPageProps> = ({
                         ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                         : obs.department === 'Juridique / Régulation'
                         ? 'bg-blue-50 text-blue-700 border border-blue-200'
-                        : 'bg-purple-50 text-purple-700 border border-purple-200'
+                        : 'bg-slate-100 text-slate-700 border border-slate-200'
                     }`}
                   >
                     Pour l'équipe : {obs.department}

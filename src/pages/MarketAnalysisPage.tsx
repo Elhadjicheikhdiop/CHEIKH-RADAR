@@ -3,25 +3,24 @@ import {
   Download,
   Sliders,
   CheckCircle2,
-  Globe2,
+  MapPin,
   TrendingUp,
   X,
   ShieldAlert,
   Users,
   Database,
   Zap,
-  Sparkles,
+  Coins,
   Tv2,
-  Calendar,
   Lock,
   Clock,
   Wallet,
   Smartphone,
+  ChevronRight,
 } from 'lucide-react';
 import {
   mockCountryBusinessImpacts,
   mockCommercialCountryMetrics,
-  mockMonthlyBusinessHistory,
   mockPostActionImpacts,
   PostActionImpactRecord,
 } from '../data/marketData';
@@ -31,8 +30,8 @@ interface MarketAnalysisPageProps {
   onSelectTerritory?: (countryName: string) => void;
 }
 
-export const MarketAnalysisPage: React.FC<MarketAnalysisPageProps> = ({ onShowToast }) => {
-  // Filtre Pays
+export const MarketAnalysisPage: React.FC<MarketAnalysisPageProps> = ({ onShowToast, onSelectTerritory }) => {
+  // Filtre Pays / Filiale
   const [selectedCountryCode, setSelectedCountryCode] = useState<string>('all');
   
   // Modal fiche opération
@@ -68,17 +67,13 @@ export const MarketAnalysisPage: React.FC<MarketAnalysisPageProps> = ({ onShowTo
     return filteredCountryImpacts.reduce((sum, c) => sum + (c.iptvAudience || 0), 0);
   }, [filteredCountryImpacts]);
 
-  const totalFrozenMobileMoney = useMemo(() => {
-    return filteredCountryImpacts.reduce((sum, c) => sum + (c.frozenMobileMoneyAccounts || 0), 0);
-  }, [filteredCountryImpacts]);
-
   // Simulation pas-à-pas
   const peopleBlocked = Math.round(totalAudience * (takedownEfficiency / 100));
   const recoveredSubscribers = Math.round(peopleBlocked * (conversionRate / 100));
   const monthlyRecoveredFcfa = recoveredSubscribers * selectedFormulaPrice;
   const ltvRecoveredFcfa = monthlyRecoveredFcfa * 4.5; // Rétention moyenne de 4,5 mois
 
-  // Vrais chiffres commerciaux CANAL+
+  // Vrais chiffres commerciaux CHEIKH +
   const totalRealSubscribers = useMemo(() => {
     return filteredCommercialMetrics.reduce((sum, c) => sum + c.activeSubscribers, 0);
   }, [filteredCommercialMetrics]);
@@ -108,37 +103,37 @@ export const MarketAnalysisPage: React.FC<MarketAnalysisPageProps> = ({ onShowTo
   return (
     <div className="flex flex-col w-full pb-12" id="market-bi-dashboard">
       
-      {/* 1. EN-TÊTE SIMPLIFIÉ */}
+      {/* 1. EN-TÊTE DE LA PAGE */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-[#e2e8f0] mb-6">
         <div>
           <div className="flex items-center gap-2.5">
             <h1 className="text-[20px] font-bold text-[#0b1c30] tracking-tight">
-              Analyse d'Impact Business & Conversion Commerciale
+              Intelligence Marché & Filiales
             </h1>
-            <span className="px-2.5 py-0.5 rounded text-[11px] font-bold bg-blue-50 text-blue-700 border border-blue-200">
-              Chiffres Réels & Retombées Financières
+            <span className="px-2.5 py-0.5 rounded text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
+              Performance Commerciale & Monétisation
             </span>
           </div>
           <p className="text-[13px] text-[#64748b] mt-0.5">
-            Mesure des abonnements gagnés, du chiffre d'affaires généré par le blocage des flux pirates et du gel des paiements illégaux (Wave & Orange Money).
+            Mesure des abonnements gagnés, du chiffre d'affaires généré par le blocage des flux pirates et du gel des paiements illégaux (Wave & Orange Money) par filiale.
           </p>
         </div>
 
-        {/* Filtre Pays & Export */}
+        {/* Filtre Filiale & Export */}
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-1.5 bg-white border border-[#cbd5e1] rounded-lg px-3 py-1.5 shadow-2xs">
-            <Globe2 className="w-3.5 h-3.5 text-[#64748b]" />
+            <MapPin className="w-3.5 h-3.5 text-[#64748b]" />
             <select
               value={selectedCountryCode}
               onChange={(e) => setSelectedCountryCode(e.target.value)}
               className="text-[12px] font-semibold text-[#0b1c30] bg-transparent outline-none cursor-pointer"
             >
-              <option value="all">🌍 Tous les pays</option>
-              <option value="SN">🇸🇳 Sénégal</option>
-              <option value="CI">🇨🇮 Côte d'Ivoire</option>
-              <option value="CM">🇨🇲 Cameroun</option>
-              <option value="ML">🇲🇱 Mali</option>
-              <option value="GA/CD">🇬🇦🇨🇩 Gabon & RDC</option>
+              <option value="all">Toutes les filiales (Panafrique)</option>
+              <option value="SN">Sénégal (SN)</option>
+              <option value="CI">Côte d'Ivoire (CI)</option>
+              <option value="CM">Cameroun (CM)</option>
+              <option value="ML">Mali (ML)</option>
+              <option value="GA/CD">Gabon & RDC (GA/CD)</option>
             </select>
           </div>
 
@@ -164,14 +159,14 @@ export const MarketAnalysisPage: React.FC<MarketAnalysisPageProps> = ({ onShowTo
                 Indicateurs Commerciaux & Abonnements Récupérés
               </h2>
             </div>
-            <span className="text-[11px] font-bold text-[#1e40af] bg-blue-50 px-2.5 py-1 rounded-md border border-blue-200 flex items-center gap-1.5">
-              <Clock className="w-3.5 h-3.5" />
-              <span>Réactivité en direct : Blocage en &lt; 22 minutes</span>
+            <span className="text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200 flex items-center gap-1.5">
+              <TrendingUp className="w-3.5 h-3.5 text-emerald-700" />
+              <span>Conversion observée : ~11% des foyers coupés s'abonnent</span>
             </span>
           </div>
 
-          {/* 5 Cartes d'Impact */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
+          {/* 4 Cartes d'Impact */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
             
             <div className="bg-white p-3.5 rounded-xl border border-[#e2e8f0] shadow-2xs">
               <div className="flex items-center justify-between text-[#64748b] text-[11px] font-bold uppercase mb-1">
@@ -199,20 +194,6 @@ export const MarketAnalysisPage: React.FC<MarketAnalysisPageProps> = ({ onShowTo
               </div>
             </div>
 
-            {/* Gel des comptes marchands */}
-            <div className="bg-white p-3.5 rounded-xl border border-purple-200 bg-purple-50/30 shadow-2xs">
-              <div className="flex items-center justify-between text-purple-900 text-[11px] font-bold uppercase mb-1">
-                <span>Comptes Pirates Gelés</span>
-                <Lock className="w-3.5 h-3.5 text-purple-700" />
-              </div>
-              <div className="text-[20px] font-black text-purple-900 font-mono">
-                {totalFrozenMobileMoney} Comptes
-              </div>
-              <div className="text-[10px] text-purple-800 font-medium mt-1 truncate">
-                Wave & Orange Money bloqués
-              </div>
-            </div>
-
             {/* Gain Cash Mensuel (Mois 1) */}
             <div className="bg-white p-3.5 rounded-xl border border-emerald-300 bg-emerald-50/40 shadow-2xs">
               <div className="flex items-center justify-between text-emerald-800 text-[11px] font-bold uppercase mb-1">
@@ -228,97 +209,19 @@ export const MarketAnalysisPage: React.FC<MarketAnalysisPageProps> = ({ onShowTo
             </div>
 
             {/* Revenu Estimé sur 4.5 mois */}
-            <div className="bg-white p-3.5 rounded-xl border border-[#0b1c30] bg-[#0b1c30] text-white shadow-2xs">
-              <div className="flex items-center justify-between text-blue-200 text-[11px] font-bold uppercase mb-1">
-                <span>Revenu sur 4,5 mois</span>
-                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+            <div className="bg-white p-3.5 rounded-xl border border-emerald-300 bg-emerald-50/20 shadow-2xs">
+              <div className="flex items-center justify-between text-emerald-800 text-[11px] font-bold uppercase mb-1">
+                <span>Revenu Cumulé (4,5 mois)</span>
+                <Coins className="w-3.5 h-3.5 text-emerald-700" />
               </div>
-              <div className="text-[20px] font-black text-amber-300 font-mono">
+              <div className="text-[20px] font-black text-emerald-800 font-mono">
                 +{(totalLtvRevenueLift / 1000000).toFixed(0)}M FCFA
               </div>
-              <div className="text-[10px] text-blue-200 font-medium mt-1 truncate">
-                Durée moyenne de réabonnement
+              <div className="text-[10px] text-emerald-700 font-medium mt-1 truncate">
+                Durée moyenne d'abonnement
               </div>
             </div>
 
-          </div>
-
-          {/* CHRONOLOGIE MENTSUELLE DES OPÉRATIONS & REBONDS */}
-          <div className="bg-white rounded-xl border border-[#0b1c30] shadow-sm p-5">
-            <div className="pb-3 border-b border-[#f1f5f9] mb-4 flex items-center justify-between">
-              <div>
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-[#0b1c30]" />
-                  <h3 className="text-[15px] font-bold text-[#0b1c30]">
-                    Historique des Blocages & Progression des Ventes
-                  </h3>
-                </div>
-                <p className="text-[12px] text-[#64748b] mt-0.5">
-                  Suivi de l'impact direct entre la coupure des réseaux pirates, le gel des paiements et le retour des clients vers les boutiques officielles CANAL+.
-                </p>
-              </div>
-              <div className="text-right hidden sm:block">
-                <span className="text-[11px] text-[#64748b]">Rétention moyenne : </span>
-                <span className="text-[12px] font-bold text-emerald-700">4,5 mois par abonné</span>
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              {mockMonthlyBusinessHistory.map((item, idx) => (
-                <div
-                  key={idx}
-                  className={`p-3.5 rounded-xl border transition-all ${
-                    item.keyTakedownAction
-                      ? 'bg-emerald-50/40 border-emerald-300'
-                      : 'bg-[#f8fafc] border-[#e2e8f0]'
-                  }`}
-                >
-                  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-2 mb-2">
-                    <div className="flex items-center gap-2">
-                      <span className="font-bold text-[13px] text-[#0b1c30]">{item.monthName}</span>
-                      {item.keyTakedownAction ? (
-                        <span className="px-2 py-0.5 rounded bg-emerald-600 text-white text-[10px] font-bold flex items-center gap-1">
-                          <Zap className="w-3 h-3" />
-                          <span>Opération Clé</span>
-                        </span>
-                      ) : (
-                        <span className="px-2 py-0.5 rounded bg-gray-200 text-gray-700 text-[10px] font-medium">
-                          Activité Régulière
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="flex items-center gap-4 text-[12px] font-mono">
-                      <div>
-                        <span className="text-[#64748b] text-[11px] mr-1">Abonnements :</span>
-                        <span className="font-bold text-emerald-700 font-mono">
-                          {formatNumber(item.totalMonthlySubscriptions)}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="text-[#64748b] text-[11px] mr-1">Chiffre d'Affaires :</span>
-                        <span className="font-black text-[#0b1c30] font-mono">
-                          {item.monthlyRevenueFcfaM}M FCFA
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Explication du Rebond */}
-                  <div className="text-[12px] text-[#334155] leading-relaxed bg-white/80 p-2.5 rounded-lg border border-[#e2e8f0]">
-                    <span className="font-bold text-[#0b1c30] mr-1">💡 Résultat :</span>
-                    {item.decisionImpactSummary}
-                  </div>
-
-                  {item.keyTakedownAction && (
-                    <div className="mt-2 text-[11px] font-semibold text-emerald-800 flex items-center gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                      <span>Action réalisée : {item.keyTakedownAction}</span>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
           </div>
 
           {/* TABLEAU DES OPÉRATIONS DE BLOCAGE */}
@@ -338,7 +241,7 @@ export const MarketAnalysisPage: React.FC<MarketAnalysisPageProps> = ({ onShowTo
               <table className="w-full text-left text-[12px]">
                 <thead>
                   <tr className="bg-[#f8fafc] border-b border-[#e2e8f0] text-[11px] font-bold text-[#64748b]">
-                    <th className="py-2.5 px-4">Pays</th>
+                    <th className="py-2.5 px-4">Filiale / Pays</th>
                     <th className="py-2.5 px-4">Opération</th>
                     <th className="py-2.5 px-4">Vitesse d'Intervention</th>
                     <th className="py-2.5 px-4">Clients Gagnés</th>
@@ -421,7 +324,7 @@ export const MarketAnalysisPage: React.FC<MarketAnalysisPageProps> = ({ onShowTo
               </span>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3 pt-3 border-t border-gray-100 text-[12px]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 mt-3 pt-3 border-t border-gray-100 text-[12px]">
               <div>
                 <span className="text-[#64748b] text-[11px] block">Utilisateurs Pirates Détectés :</span>
                 <span className="font-mono font-bold text-[18px] text-[#dc2626]">
@@ -446,15 +349,15 @@ export const MarketAnalysisPage: React.FC<MarketAnalysisPageProps> = ({ onShowTo
           </div>
 
           {/* SIMULATEUR SIMPLE DE REBOND COMMERCIAL */}
-          <div className="bg-white rounded-xl border border-[#0b1c30] shadow-sm p-5">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-[#f1f5f9] mb-4 gap-2">
+          <div className="bg-white rounded-xl border border-[#0b1c30] shadow-sm p-4 sm:p-5">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-[#f1f5f9] mb-4 gap-2.5">
               <div className="flex items-center gap-2">
                 <Sliders className="w-4 h-4 text-[#0b1c30]" />
                 <h3 className="text-[15px] font-bold text-[#0b1c30]">
                   Simulateur de Rebond Commercial & Gains Financiers
                 </h3>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <button
                   onClick={() => setSelectedFormulaPrice(10000)}
                   className={`px-3 py-1 rounded text-[11px] font-bold cursor-pointer transition-colors ${
@@ -505,8 +408,9 @@ export const MarketAnalysisPage: React.FC<MarketAnalysisPageProps> = ({ onShowTo
                     onChange={(e) => setTakedownEfficiency(Number(e.target.value))}
                     className="w-full h-2 bg-[#cbd5e1] rounded-lg appearance-none cursor-pointer accent-[#0b1c30]"
                   />
-                  <div className="text-[11px] font-semibold text-[#0b1c30] mt-2">
-                    👉 {formatNumber(peopleBlocked)} personnes privées de signal
+                  <div className="text-[11px] font-semibold text-[#0b1c30] mt-2 flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#0b1c30]"></span>
+                    <span>{formatNumber(peopleBlocked)} personnes privées de signal</span>
                   </div>
                 </div>
               </div>
@@ -535,41 +439,46 @@ export const MarketAnalysisPage: React.FC<MarketAnalysisPageProps> = ({ onShowTo
                     onChange={(e) => setConversionRate(Number(e.target.value))}
                     className="w-full h-2 bg-[#cbd5e1] rounded-lg appearance-none cursor-pointer accent-emerald-600"
                   />
-                  <div className="text-[11px] font-semibold text-emerald-700 mt-2">
-                    👉 +{formatNumber(recoveredSubscribers)} nouveaux abonnés CANAL+
+                  <div className="text-[11px] font-semibold text-emerald-700 mt-2 flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                    <span>+{formatNumber(recoveredSubscribers)} nouveaux abonnés CHEIKH +</span>
                   </div>
                 </div>
               </div>
 
               {/* Étape 3 : Chiffre d'Affaires */}
-              <div className="bg-[#0b1c30] text-white p-4 rounded-xl flex flex-col justify-between">
+              <div className="bg-white border border-emerald-300 p-4 rounded-xl flex flex-col justify-between shadow-2xs">
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-[10px] font-bold bg-white/20 text-white px-2 py-0.5 rounded">Chiffre d'Affaires Généré</span>
-                    <span className="text-[10px] text-amber-300 font-bold">Rétention 4,5 mois</span>
+                    <span className="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">
+                      Chiffre d'Affaires Généré
+                    </span>
+                    <span className="text-[10px] text-emerald-800 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                      Rétention 4,5 mois
+                    </span>
                   </div>
-                  <div className="font-bold text-[13px] text-white mb-1">
+                  <div className="font-bold text-[13px] text-[#0b1c30] mb-1">
                     Revenu Immédiat vs Revenu Cumulé
                   </div>
-                  <div className="text-[11px] text-gray-300 mb-2">
+                  <div className="text-[11px] text-[#64748b] mb-2">
                     {formatNumber(recoveredSubscribers)} abonnés × {formatNumber(selectedFormulaPrice)} FCFA
                   </div>
                 </div>
 
-                <div className="pt-2 border-t border-white/10 space-y-2">
+                <div className="pt-2 border-t border-[#f1f5f9] space-y-2">
                   <div>
-                    <div className="text-[10px] text-gray-400">Gain direct Mois 1 :</div>
-                    <div className="text-[18px] font-black text-emerald-400 font-mono">
+                    <div className="text-[10px] text-[#64748b]">Gain direct Mois 1 :</div>
+                    <div className="text-[18px] font-black text-emerald-700 font-mono">
                       +{Math.round(monthlyRecoveredFcfa / 1000000)} Millions FCFA / mois
                     </div>
                   </div>
 
-                  <div className="p-2 rounded bg-amber-400/10 border border-amber-400/30 text-[11px]">
-                    <div className="text-amber-300 font-bold flex items-center gap-1">
-                      <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                      <span>Revenu estimé sur 4,5 mois (rétention moyenne) :</span>
+                  <div className="p-2.5 rounded-lg bg-emerald-50/60 border border-emerald-200 text-[11px]">
+                    <div className="text-emerald-900 font-bold flex items-center gap-1.5">
+                      <Coins className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+                      <span>Revenu cumulé estimé sur 4,5 mois :</span>
                     </div>
-                    <div className="text-[16px] font-black text-amber-300 font-mono mt-0.5">
+                    <div className="text-[16px] font-black text-emerald-800 font-mono mt-0.5">
                       +{(ltvRecoveredFcfa / 1000000).toFixed(1)} Millions FCFA
                     </div>
                   </div>
@@ -579,12 +488,12 @@ export const MarketAnalysisPage: React.FC<MarketAnalysisPageProps> = ({ onShowTo
             </div>
           </div>
 
-          {/* TABLEAU DES PAYS & COLLABORATION MOBILE MONEY */}
+          {/* TABLEAU DES FILIALES & COLLABORATION MOBILE MONEY */}
           <div className="bg-white rounded-xl border border-[#e2e8f0] shadow-2xs overflow-hidden">
             <div className="p-4 border-b border-[#f1f5f9] flex items-center justify-between">
               <div>
                 <h3 className="text-[13px] font-bold text-[#0b1c30]">
-                  Répartition par Pays & Gel des Paiements Mobile Money (Wave / Orange Money)
+                  Répartition par Filiale & Gel des Flux Mobile Money (Wave / Orange Money)
                 </h3>
                 <p className="text-[11px] text-[#64748b] mt-0.5">
                   Principaux moyens de paiement interceptés et statut du blocage judiciaire des comptes marchands pirates.
@@ -596,11 +505,12 @@ export const MarketAnalysisPage: React.FC<MarketAnalysisPageProps> = ({ onShowTo
               <table className="w-full text-left text-[12px]">
                 <thead>
                   <tr className="bg-[#f8fafc] border-b border-[#e2e8f0] text-[11px] font-bold text-[#64748b]">
-                    <th className="py-2.5 px-4">Pays</th>
-                    <th className="py-2.5 px-4">Utilisateurs Pirates</th>
+                    <th className="py-2.5 px-4">Filiale / Pays</th>
+                    <th className="py-2.5 px-4">Foyers Pirates Estimés</th>
                     <th className="py-2.5 px-4">Manque à Gagner Mensuel</th>
                     <th className="py-2.5 px-4">Moyen de Paiement Intercepté</th>
-                    <th className="py-2.5 px-4">Statut Gel des Comptes</th>
+                    <th className="py-2.5 px-4">Statut Gel FinTech</th>
+                    <th className="py-2.5 px-4 text-right">Fiche Filiale</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#f1f5f9]">
@@ -620,15 +530,26 @@ export const MarketAnalysisPage: React.FC<MarketAnalysisPageProps> = ({ onShowTo
                       </td>
                       <td className="py-2.5 px-4 text-[#334155]">
                         <div className="font-semibold flex items-center gap-1">
-                          <Smartphone className="w-3.5 h-3.5 text-purple-700" />
+                          <Smartphone className="w-3.5 h-3.5 text-blue-700" />
                           <span>{c.dominantPaymentMethods[0]}</span>
                         </div>
                       </td>
                       <td className="py-2.5 px-4">
-                        <div className="flex items-center gap-1.5 text-[11px] text-purple-900 font-semibold bg-purple-50 px-2.5 py-1 rounded-md border border-purple-200">
-                          <Lock className="w-3.5 h-3.5 text-purple-700 shrink-0" />
+                        <div className="flex items-center gap-1.5 text-[11px] text-blue-900 font-semibold bg-blue-50 px-2.5 py-1 rounded-md border border-blue-200">
+                          <Lock className="w-3.5 h-3.5 text-blue-700 shrink-0" />
                           <span>{c.fintechCollaborationStatus}</span>
                         </div>
+                      </td>
+                      <td className="py-2.5 px-4 text-right">
+                        {onSelectTerritory && (
+                          <button
+                            onClick={() => onSelectTerritory(c.country)}
+                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#f8fafc] hover:bg-[#0b1c30] text-[#0b1c30] hover:text-white border border-[#cbd5e1] text-[11px] font-bold transition-all cursor-pointer"
+                          >
+                            <span>Détails</span>
+                            <ChevronRight className="w-3 h-3" />
+                          </button>
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -663,7 +584,7 @@ export const MarketAnalysisPage: React.FC<MarketAnalysisPageProps> = ({ onShowTo
             {/* Explication Simple */}
             <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-[12px] text-emerald-950 space-y-1.5">
               <span className="font-bold flex items-center gap-1.5 text-emerald-900">
-                <Sparkles className="w-3.5 h-3.5 text-emerald-700" />
+                <TrendingUp className="w-3.5 h-3.5 text-emerald-700" />
                 Pourquoi le rebond commercial a eu lieu :
               </span>
               <p className="leading-relaxed">{selectedOperation.whyItWorked}</p>
