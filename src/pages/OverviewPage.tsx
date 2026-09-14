@@ -1353,7 +1353,7 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({
                     10 500 F
                   </div>
                   <div className="text-[10px] text-[#64748b] mt-0.5">
-                    Formule Sport & Access
+                    Formule Horizon Sport & Essentiel
                   </div>
                 </div>
 

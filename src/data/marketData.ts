@@ -324,7 +324,7 @@ export const mockBlackMarketPrices: BlackMarketPriceItem[] = [
     type: 'IPTV Annuel',
     channelName: 'Abonnement "Mega Xtream 4K" (WhatsApp)',
     blackMarketPrice: '20 000 FCFA / an',
-    officialCheikhPrice: '120 000 FCFA / an (Évasion)',
+    officialCheikhPrice: '120 000 FCFA / an (Formule Horizon)',
     gapPercentage: '-83%',
     channelsIncluded: '12 000 chaînes + VOD',
     paymentMethod: 'Wave / Orange Money',
@@ -335,7 +335,7 @@ export const mockBlackMarketPrices: BlackMarketPriceItem[] = [
     type: 'IPTV Mensuel',
     channelName: 'Pack "Match Day Express" (Telegram)',
     blackMarketPrice: '2 500 FCFA / mois',
-    officialCheikhPrice: '10 000 FCFA / mois (CHEIKH + Évasion Sport)',
+    officialCheikhPrice: '10 000 FCFA / mois (Formule Horizon Sport)',
     gapPercentage: '-75%',
     channelsIncluded: 'Bouquet Sport exclusif',
     paymentMethod: 'Wave Sénégal',
@@ -446,9 +446,9 @@ export interface CommercialCountryMetric {
   churnRatePercent: number;
   monthlyGrowthPercent: number;
   formulaBreakdown: {
-    acces: number; // %
-    evasionSport: number; // %
-    toutCheikh: number; // %
+    essentiel: number; // %
+    horizonSport: number; // %
+    toutInclus: number; // %
   };
 }
 
@@ -474,9 +474,9 @@ export const mockCommercialCountryMetrics: CommercialCountryMetric[] = [
     churnRatePercent: 4.8,
     monthlyGrowthPercent: 8.4,
     formulaBreakdown: {
-      acces: 32,
-      evasionSport: 54,
-      toutCheikh: 14,
+      essentiel: 32,
+      horizonSport: 54,
+      toutInclus: 14,
     },
   },
   {
@@ -490,9 +490,9 @@ export const mockCommercialCountryMetrics: CommercialCountryMetric[] = [
     churnRatePercent: 4.2,
     monthlyGrowthPercent: 11.2,
     formulaBreakdown: {
-      acces: 28,
-      evasionSport: 58,
-      toutCheikh: 14,
+      essentiel: 28,
+      horizonSport: 58,
+      toutInclus: 14,
     },
   },
   {
@@ -506,9 +506,9 @@ export const mockCommercialCountryMetrics: CommercialCountryMetric[] = [
     churnRatePercent: 5.4,
     monthlyGrowthPercent: 5.1,
     formulaBreakdown: {
-      acces: 41,
-      evasionSport: 47,
-      toutCheikh: 12,
+      essentiel: 41,
+      horizonSport: 47,
+      toutInclus: 12,
     },
   },
   {
@@ -522,9 +522,9 @@ export const mockCommercialCountryMetrics: CommercialCountryMetric[] = [
     churnRatePercent: 6.1,
     monthlyGrowthPercent: 3.2,
     formulaBreakdown: {
-      acces: 48,
-      evasionSport: 42,
-      toutCheikh: 10,
+      essentiel: 48,
+      horizonSport: 42,
+      toutInclus: 10,
     },
   },
   {
@@ -538,9 +538,9 @@ export const mockCommercialCountryMetrics: CommercialCountryMetric[] = [
     churnRatePercent: 4.9,
     monthlyGrowthPercent: 6.7,
     formulaBreakdown: {
-      acces: 25,
-      evasionSport: 59,
-      toutCheikh: 16,
+      essentiel: 25,
+      horizonSport: 59,
+      toutInclus: 16,
     },
   },
 ];
@@ -646,7 +646,7 @@ export const mockPostActionImpacts: PostActionImpactRecord[] = [
     ltvRetentionFcfa: 222300000, // 49.4M * 4.5 = 222.3 Millions FCFA cumulés (4.5 mois)
     annualizedValueFcfa: 592800000, // 592,8 Millions FCFA / an
     liveReactivityMttr: 'N/A (Action Physique)',
-    whyItWorked: 'Pourquoi ça a marché : La coupure physique des câbles pirates a été immédiatement relayée par des kiosques mobiles CHEIKH + installés dans les mêmes quartiers avec l\'offre Access à 5 000 FCFA.',
+    whyItWorked: 'Pourquoi ça a marché : La coupure physique des câbles pirates a été immédiatement relayée par des kiosques mobiles installés dans les mêmes quartiers avec l\'offre Essentiel à 5 000 FCFA.',
     executiveSummary: 'Remplacement immédiat de l\'offre pirate par des décodeurs officiels dans 5 200 foyers de Douala.',
   },
   {

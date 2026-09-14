@@ -27,7 +27,18 @@
   }
 }
 
-/* Custom scrollbars */
+/* Hide any injected Netlify Badge or Drawer widget */
+#netlify-drawer,
+.netlify-drawer-container,
+[data-netlify-drawer],
+.netlify-badge,
+a[href*="netlify.com"][style*="position: fixed"],
+div[style*="z-index: 2147483647"]:has(a[href*="netlify.com"]) {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;

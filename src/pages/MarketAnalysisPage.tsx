@@ -333,7 +333,7 @@ export const MarketAnalysisPage: React.FC<MarketAnalysisPageProps> = ({ onShowTo
               </div>
               <div>
                 <span className="text-[#64748b] text-[11px] block">Offre Recommandée :</span>
-                <span className="font-bold text-[#0b1c30]">Formule Évasion Sport (10 000 FCFA)</span>
+                <span className="font-bold text-[#0b1c30]">Formule Horizon Sport (10 000 FCFA)</span>
               </div>
               <div>
                 <span className="text-[#64748b] text-[11px] block">Taux de Conversion Estimé :</span>
@@ -366,7 +366,7 @@ export const MarketAnalysisPage: React.FC<MarketAnalysisPageProps> = ({ onShowTo
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
-                  Formule Évasion Sport (10 000 FCFA)
+                  Formule Horizon Sport (10 000 FCFA)
                 </button>
                 <button
                   onClick={() => setSelectedFormulaPrice(5000)}
@@ -376,7 +376,7 @@ export const MarketAnalysisPage: React.FC<MarketAnalysisPageProps> = ({ onShowTo
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
-                  Formule Access (5 000 FCFA)
+                  Formule Essentiel (5 000 FCFA)
                 </button>
               </div>
             </div>
