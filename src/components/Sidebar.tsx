@@ -25,6 +25,7 @@ export type NavPage =
   | 'sites-forums'
   | 'market'
   | 'data-import'
+  | 'audit-trail'
   | 'expert';
 
 export type ExpertTabType = 'sources' | 'donnees' | 'regles' | 'logs';
@@ -90,6 +91,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
       label: 'Import de Données',
       icon: FileSpreadsheet,
       badge: 'Excel / Forms',
+    },
+    {
+      id: 'audit-trail',
+      label: "Journal d'Audit Trail",
+      icon: ShieldCheck,
+      badge: 'SHA-256',
     },
   ];
 

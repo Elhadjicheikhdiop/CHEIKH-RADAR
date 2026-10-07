@@ -21,6 +21,7 @@ import {
 import { SemrushEnrichmentModal } from '../components/SemrushEnrichmentModal';
 import { semrushService, SemrushEnrichedData } from '../utils/semrushService';
 import { UserRole, getUserAccount } from '../utils/userAccounts';
+import { auditTrailService } from '../utils/auditTrailService';
 
 interface SitesForumsPageProps {
   sitesForums: SiteForumItem[];
@@ -163,6 +164,15 @@ export const SitesForumsPage: React.FC<SitesForumsPageProps> = ({
     }));
 
     semrushService.exportToExcel(dataToExport, 'AUDIT_SEMRUSH_SITES_PIRATES_PANAF.xlsx');
+    auditTrailService.log({
+      actorRole: currentRole || 'admin',
+      actionCode: 'EXPORT_SEMRUSH_EXCEL',
+      actionLabel: 'Export Tableau SEMrush (Sites Pirates)',
+      category: 'EXPORT',
+      severity: 'INFO',
+      targetLabel: 'AUDIT_SEMRUSH_SITES_PIRATES_PANAF.xlsx',
+      details: `Extraction Excel des métriques d'audience SEMrush de veille des plateformes et forums (${localSites.length} domaines).`,
+    });
     onShowToast('Fichier Excel exporté avec les données SEMrush');
   };
 
@@ -670,6 +680,7 @@ export const SitesForumsPage: React.FC<SitesForumsPageProps> = ({
         onClose={() => setIsSemrushModalOpen(false)}
         onApplyEnrichment={handleApplyEnrichment}
         onShowToast={onShowToast}
+        currentRole={currentRole}
       />
 
       {/* Zoom Modal */}

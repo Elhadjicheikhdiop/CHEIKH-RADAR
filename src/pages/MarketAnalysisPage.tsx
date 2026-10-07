@@ -24,13 +24,20 @@ import {
   mockPostActionImpacts,
   PostActionImpactRecord,
 } from '../data/marketData';
+import { auditTrailService } from '../utils/auditTrailService';
+import { UserRole } from '../utils/userAccounts';
 
 interface MarketAnalysisPageProps {
   onShowToast: (msg: string) => void;
   onSelectTerritory?: (countryName: string) => void;
+  currentRole?: UserRole;
 }
 
-export const MarketAnalysisPage: React.FC<MarketAnalysisPageProps> = ({ onShowToast, onSelectTerritory }) => {
+export const MarketAnalysisPage: React.FC<MarketAnalysisPageProps> = ({
+  onShowToast,
+  onSelectTerritory,
+  currentRole = 'direction',
+}) => {
   // Filtre Pays / Filiale
   const [selectedCountryCode, setSelectedCountryCode] = useState<string>('all');
   
@@ -97,7 +104,56 @@ export const MarketAnalysisPage: React.FC<MarketAnalysisPageProps> = ({ onShowTo
   const formatNumber = (num: number) => new Intl.NumberFormat('fr-FR').format(num);
 
   const handleExport = () => {
-    onShowToast('Rapport d\'impact business exporté.');
+    const headers = [
+      'CODE_FILIALE',
+      'PAYS',
+      'OPERATION',
+      'DATE',
+      'TYPE_CIBLE',
+      'VITESSE_INTERVENTION',
+      'ABONNES_RECUPERES',
+      'GAIN_FINANCIER_MOIS1_FCFA',
+      'REVENU_LTV_4_5_MOIS_FCFA',
+      'MOYEN_PAIEMENT_BLOQUE',
+    ];
+
+    const rows = filteredPostActionImpacts.map((op) => [
+      op.code,
+      `"${op.country}"`,
+      `"${op.operationName}"`,
+      op.date,
+      `"${op.targetType}"`,
+      `"${op.reactionSpeed}"`,
+      op.monthlyNewSubscribersGained,
+      op.monthlyRevenueLiftFcfa,
+      op.ltvRetentionFcfa || op.monthlyRevenueLiftFcfa * 4.5,
+      `"${op.paymentChannelCut}"`,
+    ]);
+
+    const csvContent =
+      'data:text/csv;charset=utf-8,\uFEFF' +
+      [headers.join(';'), ...rows.map((r) => r.join(';'))].join('\n');
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    const fileName = `RAPPORT_IMPACT_BUSINESS_FILIALES_${new Date().toISOString().slice(0, 10)}.csv`;
+    link.setAttribute('download', fileName);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    auditTrailService.log({
+      actorRole: currentRole,
+      actionCode: 'EXPORT_MARKET_REPORT',
+      actionLabel: 'Export Rapport Performance Commerciale & Filiales',
+      category: 'EXPORT',
+      severity: 'INFO',
+      targetLabel: fileName,
+      details: `Extraction CSV des gains d'abonnements et revenus recouvrés par filiale (${filteredPostActionImpacts.length} opérations tracées).`,
+    });
+
+    onShowToast(`Rapport d'impact business (${fileName}) exporté avec succès.`);
   };
 
   return (

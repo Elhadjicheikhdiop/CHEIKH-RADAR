@@ -34,6 +34,8 @@ const SitesForumsPage = lazy(() => import('./pages/SitesForumsPage').then((m) =>
 const MarketAnalysisPage = lazy(() => import('./pages/MarketAnalysisPage').then((m) => ({ default: m.MarketAnalysisPage })));
 const ExpertModePage = lazy(() => import('./pages/ExpertModePage').then((m) => ({ default: m.ExpertModePage })));
 const DataImportPage = lazy(() => import('./pages/DataImportPage').then((m) => ({ default: m.DataImportPage })));
+const AuditTrailPage = lazy(() => import('./pages/AuditTrailPage').then((m) => ({ default: m.AuditTrailPage })));
+import { auditTrailService } from './utils/auditTrailService';
 
 // Composant de chargement fluide et léger
 const PageLoader: React.FC = () => (
@@ -89,9 +91,25 @@ export default function App() {
     } catch {
       // ignore
     }
+    auditTrailService.log({
+      actorRole: role,
+      actionCode: 'AUTH_LOGIN',
+      actionLabel: 'Ouverture de Session Utilisateur',
+      category: 'SECURITY',
+      severity: 'INFO',
+      details: `Session sécurisée initiée pour le profil ${getUserAccount(role).title} (${getUserAccount(role).email}).`,
+    });
   };
 
   const handleLogout = () => {
+    auditTrailService.log({
+      actorRole: currentRole,
+      actionCode: 'AUTH_LOGOUT',
+      actionLabel: 'Fermeture de Session Utilisateur',
+      category: 'SECURITY',
+      severity: 'INFO',
+      details: `Déconnexion volontaire de la session du profil ${getUserAccount(currentRole).title}.`,
+    });
     setIsAuthenticated(false);
     try {
       localStorage.removeItem('antipiracy_auth_logged_in');
@@ -101,12 +119,23 @@ export default function App() {
   };
 
   const handleRoleChange = (role: UserRole) => {
+    const prev = currentRole;
     setCurrentRole(role);
     try {
       localStorage.setItem('antipiracy_auth_role', role);
     } catch {
       // ignore
     }
+    auditTrailService.log({
+      actorRole: role,
+      actionCode: 'ROLE_SWITCHED',
+      actionLabel: 'Bascule de Périmètre Utilisateur',
+      category: 'SECURITY',
+      severity: 'WARNING',
+      previousState: getUserAccount(prev).title,
+      newState: getUserAccount(role).title,
+      details: `Changement de profil actif de ${getUserAccount(prev).title} vers ${getUserAccount(role).title}.`,
+    });
     if (!isPageAllowedForRole(role, currentPage)) {
       setCurrentPage('overview');
       showToast(`Périmètre ${getUserAccount(role).title} : redirection vers votre vue d'ensemble.`);
@@ -118,37 +147,102 @@ export default function App() {
   const handleImportThreats = (newThreats: Threat[]) => {
     const account = getUserAccount(currentRole);
     if (!account.canImport) {
+      auditTrailService.log({
+        actorRole: currentRole,
+        actionCode: 'SECURITY_IMPORT_BLOCKED',
+        actionLabel: 'Tentative d’Import Non Autorisée Bloquée',
+        category: 'SECURITY',
+        severity: 'WARNING',
+        details: `Tentative d'importation de menaces par le profil non-administrateur ${account.title} interceptée et refusée.`,
+      });
       showToast("Importation bloquée : seuls les administrateurs référents peuvent importer des données.");
       return;
     }
     setThreats((prev) => [...newThreats, ...prev]);
+    auditTrailService.log({
+      actorRole: currentRole,
+      actionCode: 'DATA_IMPORTED_THREATS',
+      actionLabel: 'Ingestion de Données Menaces',
+      category: 'DATA_INTEGRITY',
+      severity: 'WARNING',
+      details: `Importation réussie de ${newThreats.length} menaces dans la base opérationnelle.`,
+    });
+    showToast(`${newThreats.length} menaces ajoutées à la base.`);
   };
 
   const handleImportApplications = (newApps: AppItem[]) => {
     const account = getUserAccount(currentRole);
     if (!account.canImport) {
+      auditTrailService.log({
+        actorRole: currentRole,
+        actionCode: 'SECURITY_IMPORT_BLOCKED',
+        actionLabel: 'Tentative d’Import Non Autorisée Bloquée',
+        category: 'SECURITY',
+        severity: 'WARNING',
+        details: `Tentative d'importation d'applications par le profil ${account.title} refusée.`,
+      });
       showToast("Importation bloquée : seuls les administrateurs référents peuvent importer des données.");
       return;
     }
     setApplications((prev) => [...newApps, ...prev]);
+    auditTrailService.log({
+      actorRole: currentRole,
+      actionCode: 'DATA_IMPORTED_APPS',
+      actionLabel: 'Ingestion Applications APK & Stores',
+      category: 'DATA_INTEGRITY',
+      severity: 'WARNING',
+      details: `Importation validée de ${newApps.length} applications et fichiers APK illicites dans le référentiel.`,
+    });
   };
 
   const handleImportAccounts = (newAccounts: AccountItem[]) => {
     const account = getUserAccount(currentRole);
     if (!account.canImport) {
+      auditTrailService.log({
+        actorRole: currentRole,
+        actionCode: 'SECURITY_IMPORT_BLOCKED',
+        actionLabel: 'Tentative d’Import Non Autorisée Bloquée',
+        category: 'SECURITY',
+        severity: 'WARNING',
+        details: `Tentative d'importation de comptes sociaux par le profil ${account.title} refusée.`,
+      });
       showToast("Importation bloquée : seuls les administrateurs référents peuvent importer des données.");
       return;
     }
     setAccounts((prev) => [...newAccounts, ...prev]);
+    auditTrailService.log({
+      actorRole: currentRole,
+      actionCode: 'DATA_IMPORTED_ACCOUNTS',
+      actionLabel: 'Ingestion Comptes & Réseaux Sociaux',
+      category: 'DATA_INTEGRITY',
+      severity: 'WARNING',
+      details: `Importation validée de ${newAccounts.length} comptes de propagande pirate (Telegram, Facebook, WhatsApp).`,
+    });
   };
 
   const handleImportSitesForums = (newSites: SiteForumItem[]) => {
     const account = getUserAccount(currentRole);
     if (!account.canImport) {
+      auditTrailService.log({
+        actorRole: currentRole,
+        actionCode: 'SECURITY_IMPORT_BLOCKED',
+        actionLabel: 'Tentative d’Import Non Autorisée Bloquée',
+        category: 'SECURITY',
+        severity: 'WARNING',
+        details: `Tentative d'importation de sites web par le profil ${account.title} refusée.`,
+      });
       showToast("Importation bloquée : seuls les administrateurs référents peuvent importer des données.");
       return;
     }
     setSitesForums(newSites);
+    auditTrailService.log({
+      actorRole: currentRole,
+      actionCode: 'DATA_IMPORTED_SITES',
+      actionLabel: 'Mise à Jour Base Sites & Forums',
+      category: 'DATA_INTEGRITY',
+      severity: 'WARNING',
+      details: `Injection globale de ${newSites.length} domaines et plateformes de streaming illégal.`,
+    });
   };
 
   const handleUpdateSiteForum = (updated: SiteForumItem) => {
@@ -158,6 +252,17 @@ export default function App() {
       return;
     }
     setSitesForums((prev) => prev.map((s) => (s.id === updated.id ? updated : s)));
+    auditTrailService.log({
+      actorRole: currentRole,
+      actionCode: 'SITE_METRICS_UPDATED',
+      actionLabel: 'Modification Fiche Site / Forum',
+      category: 'DATA_INTEGRITY',
+      severity: 'INFO',
+      targetId: updated.id,
+      targetLabel: updated.siteDomain,
+      territory: updated.country,
+      details: `Mise à jour des paramètres du domaine "${updated.siteDomain}" (Statut: ${updated.status}, Hébergeur: ${updated.hostingAsn}).`,
+    });
   };
 
   const handleImportFieldSurveys = (newSurveys: FieldSurveyData[]) => {
@@ -167,6 +272,14 @@ export default function App() {
       return;
     }
     setFieldSurveys((prev) => [...newSurveys, ...prev]);
+    auditTrailService.log({
+      actorRole: currentRole,
+      actionCode: 'DATA_IMPORTED_SURVEYS',
+      actionLabel: 'Ingestion Enquêtes Terrain Filiales',
+      category: 'DATA_INTEGRITY',
+      severity: 'INFO',
+      details: `Importation de ${newSurveys.length} enquêtes terrain de piratage marchand et revendeurs locaux.`,
+    });
   };
 
   const handleAddEvidence = (newEvidence: EvidenceItem) => {
@@ -176,6 +289,17 @@ export default function App() {
       return;
     }
     setEvidenceList((prev) => [newEvidence, ...prev]);
+    auditTrailService.log({
+      actorRole: currentRole,
+      actionCode: 'EVIDENCE_RECORDED',
+      actionLabel: 'Enregistrement de Pièce à Conviction',
+      category: 'LEGAL',
+      severity: 'WARNING',
+      targetId: newEvidence.id,
+      targetLabel: newEvidence.title,
+      territory: newEvidence.country,
+      details: `Dépôt au dossier probatoire d'une pièce (${newEvidence.type}) : "${newEvidence.title}" (${newEvidence.fileName}) pour le territoire ${newEvidence.country}.`,
+    });
   };
 
   const showToast = (message: string) => {
@@ -418,6 +542,7 @@ export default function App() {
                   <MarketAnalysisPage
                     onShowToast={showToast}
                     onSelectTerritory={handleSelectTerritory}
+                    currentRole={currentRole}
                   />
                 </Suspense>
               )}
@@ -445,7 +570,18 @@ export default function App() {
                 </Suspense>
               )}
 
-              {/* 9. Mode Expert */}
+              {/* 9. Journal d'Audit Trail & Traçabilité */}
+              {currentPage === 'audit-trail' && (
+                <Suspense fallback={<PageLoader />}>
+                  <AuditTrailPage
+                    currentRole={currentRole}
+                    onShowToast={showToast}
+                    onNavigateToThreat={(threatId) => handleNavigate('threat-detail', threatId)}
+                  />
+                </Suspense>
+              )}
+
+              {/* 10. Mode Expert */}
               {currentPage === 'expert' && (
                 <Suspense fallback={<PageLoader />}>
                   <ExpertModePage

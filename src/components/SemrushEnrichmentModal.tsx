@@ -18,6 +18,8 @@ import {
   SemrushEnrichedData,
   SemrushStatusResponse,
 } from '../utils/semrushService';
+import { auditTrailService } from '../utils/auditTrailService';
+import { UserRole } from '../utils/userAccounts';
 
 interface SemrushEnrichmentModalProps {
   initialDomain?: string;
@@ -25,6 +27,7 @@ interface SemrushEnrichmentModalProps {
   onClose: () => void;
   onApplyEnrichment?: (data: SemrushEnrichedData) => void;
   onShowToast: (msg: string) => void;
+  currentRole?: UserRole;
 }
 
 export const SemrushEnrichmentModal: React.FC<SemrushEnrichmentModalProps> = ({
@@ -33,6 +36,7 @@ export const SemrushEnrichmentModal: React.FC<SemrushEnrichmentModalProps> = ({
   onClose,
   onApplyEnrichment,
   onShowToast,
+  currentRole = 'admin',
 }) => {
   const [domainInput, setDomainInput] = useState(initialDomain);
   const [loading, setLoading] = useState(false);
@@ -71,12 +75,32 @@ export const SemrushEnrichmentModal: React.FC<SemrushEnrichmentModalProps> = ({
   const handleExportExcel = () => {
     if (!enrichedData) return;
     semrushService.exportToExcel([enrichedData], `SEMRUSH_AUDIT_${enrichedData.domain}.xlsx`);
+    auditTrailService.log({
+      actorRole: currentRole,
+      actionCode: 'EXPORT_SEMRUSH_DOSSIER',
+      actionLabel: 'Export Fiche SEMrush Domaine',
+      category: 'EXPORT',
+      severity: 'INFO',
+      targetId: enrichedData.domain,
+      targetLabel: enrichedData.domain,
+      details: `Extraction Excel de la fiche d'investigation technique SEMrush pour le domaine ${enrichedData.domain} (${enrichedData.monthlyTraffic}, DA ${enrichedData.domainAuthority}).`,
+    });
     onShowToast(`Rapport Excel SEMrush exporté pour ${enrichedData.domain}`);
   };
 
   const handleApply = () => {
     if (enrichedData && onApplyEnrichment) {
       onApplyEnrichment(enrichedData);
+      auditTrailService.log({
+        actorRole: currentRole,
+        actionCode: 'SEMRUSH_DOMAIN_SAVED',
+        actionLabel: 'Enregistrement Métriques SEMrush',
+        category: 'DATA_INTEGRITY',
+        severity: 'INFO',
+        targetId: enrichedData.domain,
+        targetLabel: enrichedData.domain,
+        details: `Métriques d'audience SEMrush appliquées avec succès au domaine "${enrichedData.domain}". Trafic: ${enrichedData.monthlyTraffic}, DA: ${enrichedData.domainAuthority}, Mot-clé: "${enrichedData.topKeyword}".`,
+      });
       onShowToast(`Données SEMrush enregistrées pour le domaine ${enrichedData.domain}`);
       onClose();
     }

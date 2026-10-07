@@ -1,23 +1,48 @@
 import React from 'react';
 import { Threat } from '../types';
 import { ShieldAlert, Printer, Download, X, CheckCircle2, Lock } from 'lucide-react';
+import { auditTrailService } from '../utils/auditTrailService';
 
 interface ConstatModalProps {
   threat: Threat;
   onClose: () => void;
   onShowToast: (msg: string) => void;
+  currentRole?: string;
 }
 
 export const ConstatModal: React.FC<ConstatModalProps> = ({
   threat,
   onClose,
   onShowToast,
+  currentRole = 'juridique',
 }) => {
   const handlePrint = () => {
+    auditTrailService.log({
+      actorRole: (currentRole as any) || 'juridique',
+      actionCode: 'CONSTAT_PRINTED',
+      actionLabel: 'Impression du Procès-Verbal d’Huissier',
+      category: 'LEGAL',
+      severity: 'WARNING',
+      targetId: threat.id,
+      targetLabel: threat.name,
+      territory: threat.country,
+      details: `Impression physique du constat d’infraction horodaté pour le dossier #${threat.id}.`,
+    });
     window.print();
   };
 
   const handleDownload = () => {
+    auditTrailService.log({
+      actorRole: (currentRole as any) || 'juridique',
+      actionCode: 'CONSTAT_GENERATED',
+      actionLabel: 'Génération de Procès-Verbal d’Huissier (PDF)',
+      category: 'LEGAL',
+      severity: 'CRITICAL',
+      targetId: threat.id,
+      targetLabel: threat.name,
+      territory: threat.country,
+      details: `Export du procès-verbal certifié conforme avec empreinte numérique SHA-256 pour le dossier #${threat.id} (${threat.name}).`,
+    });
     onShowToast(`Procès-verbal de constat horodaté #${threat.id} exporté.`);
   };
 
@@ -69,8 +94,8 @@ export const ConstatModal: React.FC<ConstatModalProps> = ({
           <div className="flex justify-between items-start pb-4 mb-4 border-b-2 border-[#0b1c30]">
             <div>
               <div className="flex items-baseline gap-1">
-                <span className="text-xl font-bold tracking-tight text-[#0b1c30]">PANAF</span>
-                <span className="text-xl font-bold tracking-tight text-[#bb0112]">CHEIKH +</span>
+                <span className="text-xl font-bold tracking-tight text-[#0b1c30]">TELECOM</span>
+                <span className="text-xl font-bold tracking-tight text-[#bb0112]">BROADCAST</span>
               </div>
               <div className="text-[10px] uppercase font-bold text-[#76777d] tracking-wider">
                 Cellule Anti-Piratage • Protection des Droits & Contenus

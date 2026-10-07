@@ -18,17 +18,21 @@ import {
 } from 'lucide-react';
 import { SiteForumItem } from '../types';
 import { semrushService, SemrushEnrichedData } from '../utils/semrushService';
+import { auditTrailService } from '../utils/auditTrailService';
+import { UserRole } from '../utils/userAccounts';
 
 interface SemrushDataImportTabProps {
   sitesForums: SiteForumItem[];
   onApplyEnrichment: (enrichedSites: SiteForumItem[]) => void;
   onShowToast: (message: string) => void;
+  currentRole?: UserRole;
 }
 
 export const SemrushDataImportTab: React.FC<SemrushDataImportTabProps> = ({
   sitesForums,
   onApplyEnrichment,
   onShowToast,
+  currentRole = 'admin',
 }) => {
   const [inputDomains, setInputDomains] = useState<string>(
     'stream-foot-dakar.xyz\ndirect-match-afrique.net\nfoot-direct-live.sn\nsat-sharing-forum.org\nafrica-sat-keys.net'
@@ -193,6 +197,17 @@ export const SemrushDataImportTab: React.FC<SemrushDataImportTabProps> = ({
     const finalFullList = [...newCreatedItems, ...updatedExisting];
     onApplyEnrichment(finalFullList);
     setHasApplied(true);
+
+    auditTrailService.log({
+      actorRole: currentRole,
+      actionCode: 'SEMRUSH_BATCH_APPLIED',
+      actionLabel: 'Injection Enrichissement SEMrush',
+      category: 'DATA_INTEGRITY',
+      severity: 'WARNING',
+      targetLabel: `${enrichedData.length} domaines analysés`,
+      details: `Application en base des métriques d'audience SEMrush : ${updatedExisting.length} sites actualisés, ${newCreatedItems.length} nouveau(x) site(s) pirate(s) répertorié(s).`,
+    });
+
     onShowToast(
       `Succès ! Les métriques SEMrush ont été injectées dans l'application (${updatedExisting.length} mis à jour, ${newCreatedItems.length} nouveau(x) site(s)).`
     );
@@ -205,6 +220,17 @@ export const SemrushDataImportTab: React.FC<SemrushDataImportTabProps> = ({
       return;
     }
     semrushService.exportToExcel(enrichedData, 'RAPPORT_AUDIT_SEMRUSH_PIRATAGE_PANAF.xlsx');
+
+    auditTrailService.log({
+      actorRole: currentRole,
+      actionCode: 'EXPORT_SEMRUSH_REPORT',
+      actionLabel: 'Export Rapport SEMrush Pan-Afrique',
+      category: 'EXPORT',
+      severity: 'INFO',
+      targetLabel: 'RAPPORT_AUDIT_SEMRUSH_PIRATAGE_PANAF.xlsx',
+      details: `Téléchargement du rapport Excel consolidé des métriques d'audience et mots-clés pirates (${enrichedData.length} domaines).`,
+    });
+
     onShowToast('Classeur Excel SEMrush généré et téléchargé.');
   };
 

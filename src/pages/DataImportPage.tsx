@@ -44,6 +44,7 @@ import {
 } from '../utils/excelTemplates';
 import { SemrushDataImportTab } from '../components/SemrushDataImportTab';
 import { UserRole, getUserAccount } from '../utils/userAccounts';
+import { auditTrailService } from '../utils/auditTrailService';
 
 interface DataImportPageProps {
   threats: Threat[];
@@ -251,7 +252,7 @@ export const DataImportPage: React.FC<DataImportPageProps> = ({
         const id = row.identifiant || `INC-IMP-${Date.now()}-${idx + 1}`;
         const name = row.nom_menace || row.nom || `Flux Pirate #${idx + 1}`;
         const channel = row.plateforme_vecteur || row.vecteur_plateforme || row.plateforme || 'IPTV / Web';
-        const target = row.cible_programme || 'CHEIKH + Afrique';
+        const target = row.cible_programme || 'Bouquet Premium Panafricain';
         const country = row.filiale_pays || 'Sénégal';
         const countryCode = row.code_pays || (country === "Côte d'Ivoire" ? 'CI' : 'SN');
         const severity = (row.severite || 'high') as any;
@@ -369,6 +370,17 @@ export const DataImportPage: React.FC<DataImportPageProps> = ({
       details: `${count} entrées intégrées avec succès dans la base de données.`,
     };
     setImportHistory([newRecord, ...importHistory]);
+
+    auditTrailService.log({
+      actorRole: currentRole,
+      actionCode: 'DATA_IMPORTED',
+      actionLabel: `Ingestion de Fichier (${IMPORT_TEMPLATES[selectedCategory].title})`,
+      category: 'DATA_INTEGRITY',
+      severity: 'WARNING',
+      targetId: parsedFileName || `FICHIER-${selectedCategory}`,
+      targetLabel: `${count} lignes (${IMPORT_TEMPLATES[selectedCategory].title})`,
+      details: `Injection validée de ${count} enregistrements pour la catégorie "${IMPORT_TEMPLATES[selectedCategory].title}" depuis "${parsedFileName || 'import_manuel.xlsx'}".`,
+    });
 
     onShowToast(`Félicitations ! ${count} entrées intégrées avec succès dans le module "${IMPORT_TEMPLATES[selectedCategory].title}".`);
     handleClearParsed();

@@ -52,9 +52,10 @@ export const USER_ACCOUNTS_CONFIG: Record<'admin' | 'direction' | 'juridique', U
       'sites-forums',
       'market',
       'data-import',
+      'audit-trail',
       'expert',
     ],
-    accessiblePerimeterSummary: 'Accès intégral à l’ensemble des modules, importation de données Excel et modifications.',
+    accessiblePerimeterSummary: 'Accès intégral à l’ensemble des modules, importation de données Excel, journal d’audit et modifications.',
   },
   direction: {
     id: 'direction',
@@ -68,7 +69,7 @@ export const USER_ACCOUNTS_CONFIG: Record<'admin' | 'direction' | 'juridique', U
     canExecuteActions: false,
     badgeLabel: 'Lecture Seule Globale',
     badgeColor: 'slate',
-    description: 'Accès étendu à tous les modules d’analyse et de veille en lecture seule stricte : Vue d’ensemble, Menaces, Applications, Réseaux, Sites & Intelligence Marché.',
+    description: 'Accès étendu à tous les modules d’analyse et de veille en lecture seule stricte : Vue d’ensemble, Menaces, Applications, Réseaux, Sites, Intelligence Marché & Audit Trail de gouvernance.',
     allowedPages: [
       'overview',
       'threats',
@@ -78,8 +79,9 @@ export const USER_ACCOUNTS_CONFIG: Record<'admin' | 'direction' | 'juridique', U
       'accounts',
       'sites-forums',
       'market',
+      'audit-trail',
     ],
-    accessiblePerimeterSummary: 'Consultation complète de tous les écrans d’analyse et d’intelligence marché (Lecture seule stricte, pas d’import).',
+    accessiblePerimeterSummary: 'Consultation complète de tous les écrans d’analyse, d’intelligence marché et de gouvernance (Lecture seule stricte, pas d’import).',
   },
   juridique: {
     id: 'juridique',
@@ -93,7 +95,7 @@ export const USER_ACCOUNTS_CONFIG: Record<'admin' | 'direction' | 'juridique', U
     canExecuteActions: false,
     badgeLabel: 'Lecture Seule Juridique',
     badgeColor: 'slate',
-    description: 'Accès aux dossiers contentieux, preuves techniques, signalements pirates et export des constats d’huissier PDF horodatés. Aucun accès à l’Intelligence Marché ni à l’Import.',
+    description: 'Accès aux dossiers contentieux, preuves techniques, signalements pirates, export des constats d’huissier PDF horodatés et journal d’audit des actes légaux.',
     allowedPages: [
       'overview',
       'threats',
@@ -101,8 +103,9 @@ export const USER_ACCOUNTS_CONFIG: Record<'admin' | 'direction' | 'juridique', U
       'applications',
       'accounts',
       'sites-forums',
+      'audit-trail',
     ],
-    accessiblePerimeterSummary: 'Consultation des menaces, preuves techniques, applications et sites/forums pirates avec génération des constats d’huissier (Pas d’accès Intelligence Marché ni Import).',
+    accessiblePerimeterSummary: 'Consultation des menaces, preuves techniques, génération des constats d’huissier et journal d’audit légal.',
   },
 };
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Threat, ThreatStatus } from '../types';
 import { UserRole, getUserAccount } from '../utils/userAccounts';
+import { auditTrailService } from '../utils/auditTrailService';
 import {
   ChevronRight,
   User,
@@ -46,6 +47,7 @@ export const ThreatDetailPage: React.FC<ThreatDetailPageProps> = ({
       onShowToast(`Action restreinte : Le compte ${currentAccount.title} est en lecture seule.`);
       return;
     }
+    const prev = selectedStatus;
     setSelectedStatus(status);
     onUpdateStatus(threat.id, status);
 
@@ -55,12 +57,38 @@ export const ThreatDetailPage: React.FC<ThreatDetailPageProps> = ({
       transmit: 'Menace qualifiée : Prête pour transmission légale / Takedown',
       close: 'Dossier de menace marqué comme clôturé',
     };
+
+    auditTrailService.log({
+      actorRole: currentRole,
+      actionCode: 'THREAT_STATUS_UPDATED',
+      actionLabel: 'Mise à jour du statut contentieux',
+      category: 'LEGAL',
+      severity: status === 'close' || status === 'transmit' ? 'WARNING' : 'INFO',
+      targetId: threat.id,
+      targetLabel: threat.name,
+      territory: threat.country,
+      previousState: prev,
+      newState: status,
+      details: `Modification de statut du dossier #${threat.id} (${threat.name}) de "${prev}" vers "${status}". Motif : ${labels[status]}`,
+    });
+
     onShowToast(labels[status]);
   };
 
   const handleTransmit = () => {
     handleStatusChange('transmit');
-    onShowToast(`Transmission immédiate envoyée à la plateforme ${threat.channel} & Pôle Juridique CHEIKH +`);
+    auditTrailService.log({
+      actorRole: currentRole,
+      actionCode: 'DMCA_SENT',
+      actionLabel: 'Notification Takedown transmise',
+      category: 'LEGAL',
+      severity: 'CRITICAL',
+      targetId: threat.id,
+      targetLabel: threat.name,
+      territory: threat.country,
+      details: `Transmission formelle d’injonction légale DMCA et réquisition de suspension envoyée à ${threat.channel} et au Pôle Juridique Groupe pour ${threat.name}.`,
+    });
+    onShowToast(`Transmission immédiate envoyée à la plateforme ${threat.channel} & Pôle Juridique Groupe`);
   };
 
   const handleDownloadLog = () => {
