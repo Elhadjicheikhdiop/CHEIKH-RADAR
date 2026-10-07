@@ -3,13 +3,14 @@ import {
   Globe,
   TrendingUp,
   ShieldAlert,
+  ShieldCheck,
   Download,
   ExternalLink,
-  Sparkles,
   ArrowRight,
   BarChart3,
   Search,
-  Zap,
+  Activity,
+  Layers,
 } from 'lucide-react';
 import { SiteForumItem } from '../types';
 import { semrushService, SemrushEnrichedData } from '../utils/semrushService';
@@ -31,7 +32,7 @@ export const SemrushOverviewMetrics: React.FC<SemrushOverviewMetricsProps> = ({
   // Top requêtes pirates captées
   const topKeywordsList = [
     {
-      keyword: 'cheikh sport direct streaming',
+      keyword: 'match direct streaming panaf gratuit',
       volume: '32 000 / mois',
       position: '#1',
       trafficShare: '42%',
@@ -83,13 +84,13 @@ export const SemrushOverviewMetrics: React.FC<SemrushOverviewMetricsProps> = ({
       domainAuthority: s.semrushAuthority || 38,
       semrushRank: 115000,
       africaTrafficShare: '78%',
-      topKeyword: s.semrushTopKeyword || 'cheikh sport direct',
+      topKeyword: s.semrushTopKeyword || 'stream sport direct live',
       searchVolume: '32 000 / mois',
       hostingCountry: s.hostingAsn || 'Cloudflare CDN',
       threatLevel: 'Critique',
       topKeywordsList: [
         {
-          keyword: s.semrushTopKeyword || 'cheikh sport streaming',
+          keyword: s.semrushTopKeyword || 'stream sport streaming panaf',
           position: 1,
           searchVolume: 32000,
           cpc: '0.12 $',
@@ -110,13 +111,13 @@ export const SemrushOverviewMetrics: React.FC<SemrushOverviewMetricsProps> = ({
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-[#f1f5f9]">
         <div className="space-y-1">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="w-6 h-6 rounded-lg bg-orange-500 text-white flex items-center justify-center font-black text-[11px]">
+            <span className="w-6 h-6 rounded bg-[#0b1c30] text-white flex items-center justify-center font-bold text-[11px]">
               SE
             </span>
-            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-orange-50 text-orange-900 border border-orange-200 uppercase tracking-wider">
+            <span className="px-2.5 py-0.5 rounded text-[11px] font-bold bg-slate-100 text-slate-800 border border-slate-300 uppercase tracking-wider">
               MÉTRIQUES & AUDIENCE SEMRUSH
             </span>
-            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#eff6ff] text-[#1e40af] border border-[#dbeafe]">
+            <span className="px-2.5 py-0.5 rounded text-[11px] font-bold bg-[#eff6ff] text-[#1e40af] border border-[#dbeafe]">
               SEO & Audience Intelligence
             </span>
           </div>
@@ -131,7 +132,7 @@ export const SemrushOverviewMetrics: React.FC<SemrushOverviewMetricsProps> = ({
         <div className="flex items-center gap-2.5 flex-wrap shrink-0">
           <button
             onClick={handleExportSemrush}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#f8fafc] hover:bg-[#f1f5f9] border border-[#cbd5e1] text-[#0b1c30] text-[12px] font-bold transition-all shadow-2xs cursor-pointer"
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-[#f8fafc] border border-[#cbd5e1] text-[#0b1c30] text-[12px] font-bold transition-all shadow-2xs cursor-pointer"
           >
             <Download className="w-3.5 h-3.5" />
             <span>Exporter Rapport (.xlsx)</span>
@@ -140,9 +141,9 @@ export const SemrushOverviewMetrics: React.FC<SemrushOverviewMetricsProps> = ({
           {onNavigateToImport && (
             <button
               onClick={onNavigateToImport}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-orange-600 hover:bg-orange-500 text-white text-[12px] font-bold shadow-xs transition-all cursor-pointer"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#0b1c30] hover:bg-[#162f4f] text-white text-[12px] font-bold shadow-xs transition-all cursor-pointer"
             >
-              <Sparkles className="w-3.5 h-3.5" />
+              <Activity className="w-3.5 h-3.5" />
               <span>Gérer l'Enrichissement SEMrush</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
@@ -153,12 +154,12 @@ export const SemrushOverviewMetrics: React.FC<SemrushOverviewMetricsProps> = ({
       {/* 4 KPI CARDS SEMRUSH */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* KPI 1 : Trafic Organique Total */}
-        <div className="p-4 rounded-xl bg-linear-to-br from-[#f8fafc] to-[#eff6ff] border border-[#dbeafe] shadow-2xs">
+        <div className="p-4 rounded-xl bg-[#f8fafc] border border-[#e2e8f0] shadow-2xs">
           <div className="flex items-center justify-between text-[#64748b] mb-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#1e40af]">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#0b1c30]">
               Audience Mensuelle Drainée
             </span>
-            <Globe className="w-4 h-4 text-[#1e40af]" />
+            <Globe className="w-4 h-4 text-[#0b1c30]" />
           </div>
           <div className="text-[28px] font-black text-[#0b1c30] font-mono leading-none">
             3.15M
@@ -166,67 +167,67 @@ export const SemrushOverviewMetrics: React.FC<SemrushOverviewMetricsProps> = ({
           <p className="text-[11px] text-[#64748b] mt-2">
             Visites estimées/mois sur les portails identifiés
           </p>
-          <div className="mt-3 pt-2 border-t border-[#dbeafe] flex items-center justify-between text-[11px]">
+          <div className="mt-3 pt-2 border-t border-[#e2e8f0] flex items-center justify-between text-[11px]">
             <span className="text-[#64748b]">Équivalent abonnés</span>
-            <span className="font-bold text-red-600 font-mono">~300 000 foyers</span>
+            <span className="font-bold text-red-700 font-mono">~300 000 foyers</span>
           </div>
         </div>
 
         {/* KPI 2 : Authority Score Moyen */}
-        <div className="p-4 rounded-xl bg-linear-to-br from-[#f8fafc] to-[#fff7ed] border border-orange-200 shadow-2xs">
+        <div className="p-4 rounded-xl bg-[#f8fafc] border border-[#e2e8f0] shadow-2xs">
           <div className="flex items-center justify-between text-[#64748b] mb-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-orange-950">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#0b1c30]">
               Authority Score Moyen
             </span>
-            <Sparkles className="w-4 h-4 text-orange-600" />
+            <Activity className="w-4 h-4 text-slate-700" />
           </div>
-          <div className="text-[28px] font-black text-orange-950 font-mono leading-none">
+          <div className="text-[28px] font-black text-[#0b1c30] font-mono leading-none">
             37.8 <span className="text-[14px] font-medium text-gray-500">/ 100</span>
           </div>
           <p className="text-[11px] text-[#64748b] mt-2">
             Score d'autorité Google et puissance de ranking SEO
           </p>
-          <div className="mt-3 pt-2 border-t border-orange-200 flex items-center justify-between text-[11px]">
+          <div className="mt-3 pt-2 border-t border-[#e2e8f0] flex items-center justify-between text-[11px]">
             <span className="text-[#64748b]">Niveau de visibilité</span>
-            <span className="font-bold text-orange-900">Élevée sur requêtes sport</span>
+            <span className="font-bold text-slate-800">Élevée sur requêtes sport</span>
           </div>
         </div>
 
         {/* KPI 3 : Concentration Afrique */}
-        <div className="p-4 rounded-xl bg-linear-to-br from-[#f8fafc] to-[#faf5ff] border border-purple-200 shadow-2xs">
+        <div className="p-4 rounded-xl bg-[#f8fafc] border border-[#e2e8f0] shadow-2xs">
           <div className="flex items-center justify-between text-[#64748b] mb-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-purple-900">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#0b1c30]">
               Part Afrique Subsaharienne
             </span>
-            <TrendingUp className="w-4 h-4 text-purple-700" />
+            <TrendingUp className="w-4 h-4 text-slate-700" />
           </div>
-          <div className="text-[28px] font-black text-purple-900 font-mono leading-none">
+          <div className="text-[28px] font-black text-[#0b1c30] font-mono leading-none">
             78.4%
           </div>
           <p className="text-[11px] text-[#64748b] mt-2">
             Trafic local ciblé depuis le Sénégal, CI, CM et RDC
           </p>
-          <div className="mt-3 pt-2 border-t border-purple-200 flex items-center justify-between text-[11px]">
+          <div className="mt-3 pt-2 border-t border-[#e2e8f0] flex items-center justify-between text-[11px]">
             <span className="text-[#64748b]">Impact territorial</span>
-            <span className="font-bold text-purple-800">Filiales directes</span>
+            <span className="font-bold text-slate-800">Filiales directes</span>
           </div>
         </div>
 
         {/* KPI 4 : Mots-clés Indexés */}
-        <div className="p-4 rounded-xl bg-linear-to-br from-[#f8fafc] to-[#f0fdf4] border border-emerald-200 shadow-2xs">
+        <div className="p-4 rounded-xl bg-[#f8fafc] border border-[#e2e8f0] shadow-2xs">
           <div className="flex items-center justify-between text-[#64748b] mb-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-900">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#0b1c30]">
               Mots-Clés Piratage Indexés
             </span>
-            <Search className="w-4 h-4 text-emerald-700" />
+            <Search className="w-4 h-4 text-slate-700" />
           </div>
-          <div className="text-[28px] font-black text-emerald-900 font-mono leading-none">
+          <div className="text-[28px] font-black text-[#0b1c30] font-mono leading-none">
             3 750
           </div>
           <p className="text-[11px] text-[#64748b] mt-2">
             Expressions captées positionnées dans le Top 10 Google
           </p>
-          <div className="mt-3 pt-2 border-t border-emerald-200 flex items-center justify-between text-[11px]">
+          <div className="mt-3 pt-2 border-t border-[#e2e8f0] flex items-center justify-between text-[11px]">
             <span className="text-[#64748b]">Taux d'intention pirate</span>
             <span className="font-bold text-emerald-800 font-mono">92.4%</span>
           </div>
@@ -239,7 +240,7 @@ export const SemrushOverviewMetrics: React.FC<SemrushOverviewMetricsProps> = ({
         <div className="p-5 rounded-xl border border-[#e2e8f0] bg-[#f8fafc]/50 space-y-3">
           <div className="flex items-center justify-between">
             <h3 className="text-[14px] font-bold text-[#0b1c30] uppercase tracking-wider flex items-center gap-2">
-              <Globe className="w-4 h-4 text-[#1e40af]" />
+              <Globe className="w-4 h-4 text-[#0b1c30]" />
               Top Portails de Streaming Surveillés
             </h3>
             <span className="text-[11px] font-mono text-[#64748b]">
@@ -265,21 +266,21 @@ export const SemrushOverviewMetrics: React.FC<SemrushOverviewMetricsProps> = ({
                         {item.siteDomain}
                       </div>
                     </td>
-                    <td className="py-2.5 px-3 font-mono font-bold text-orange-600">
+                    <td className="py-2.5 px-3 font-mono font-bold text-slate-800">
                       {item.semrushTraffic || '450K / mois'}
                     </td>
-                    <td className="py-2.5 px-3 font-mono font-bold text-blue-700">
+                    <td className="py-2.5 px-3 font-mono font-bold text-[#0b1c30]">
                       <div className="flex items-center gap-1.5">
                         <span>{item.semrushAuthority ?? 38}</span>
                         <div className="w-8 h-1 bg-gray-200 rounded-full overflow-hidden">
                           <div
-                            className="h-full bg-blue-600"
+                            className="h-full bg-[#0b1c30]"
                             style={{ width: `${(item.semrushAuthority ?? 38) * 2}%` }}
                           ></div>
                         </div>
                       </div>
                     </td>
-                    <td className="py-2.5 px-3 font-semibold text-purple-700">
+                    <td className="py-2.5 px-3 font-semibold text-slate-700">
                       78%
                     </td>
                   </tr>
@@ -293,7 +294,7 @@ export const SemrushOverviewMetrics: React.FC<SemrushOverviewMetricsProps> = ({
         <div className="p-5 rounded-xl border border-[#e2e8f0] bg-[#f8fafc]/50 space-y-3">
           <div className="flex items-center justify-between">
             <h3 className="text-[14px] font-bold text-[#0b1c30] uppercase tracking-wider flex items-center gap-2">
-              <Search className="w-4 h-4 text-orange-600" />
+              <Search className="w-4 h-4 text-[#0b1c30]" />
               Mots-Clés & Requêtes de Piratage Interceptés
             </h3>
             <span className="text-[11px] font-mono text-[#64748b]">
@@ -308,7 +309,7 @@ export const SemrushOverviewMetrics: React.FC<SemrushOverviewMetricsProps> = ({
                 className="p-2.5 rounded-lg bg-white border border-[#e2e8f0] flex items-center justify-between gap-2 text-[12px] hover:border-[#cbd5e1] transition-all"
               >
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <span className="w-6 h-6 rounded-md bg-orange-100 text-orange-950 font-bold font-mono text-[11px] flex items-center justify-center shrink-0">
+                  <span className="w-6 h-6 rounded bg-slate-100 text-[#0b1c30] font-bold font-mono text-[11px] flex items-center justify-center shrink-0 border border-slate-200">
                     {kw.position}
                   </span>
                   <div className="min-w-0">
@@ -325,7 +326,7 @@ export const SemrushOverviewMetrics: React.FC<SemrushOverviewMetricsProps> = ({
                   <span className="font-mono font-bold text-[#0b1c30] block">
                     {kw.volume}
                   </span>
-                  <span className="text-[11px] font-mono text-blue-700 font-bold">
+                  <span className="text-[11px] font-mono text-slate-700 font-bold">
                     {kw.trafficShare} du trafic
                   </span>
                 </div>
@@ -336,17 +337,17 @@ export const SemrushOverviewMetrics: React.FC<SemrushOverviewMetricsProps> = ({
       </div>
 
       {/* FOOTER CALLOUT */}
-      <div className="p-4 rounded-xl bg-orange-50/70 border border-orange-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-[12px]">
-        <div className="flex items-center gap-2.5 text-orange-950">
-          <Zap className="w-4 h-4 text-orange-600 shrink-0" />
-          <span>
+      <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-[12px]">
+        <div className="flex items-center gap-2.5 text-[#0b1c30]">
+          <ShieldCheck className="w-4 h-4 text-[#0b1c30] shrink-0" />
+          <span className="text-slate-700">
             L'intelligence de trafic SEMrush alimente directement les dossiers de notification DMCA et les requêtes judiciaires de blocage DNS transmises aux FAI locaux.
           </span>
         </div>
         {onNavigateToImport && (
           <button
             onClick={onNavigateToImport}
-            className="text-[12px] font-bold text-orange-900 hover:text-orange-950 underline shrink-0 cursor-pointer self-start sm:self-auto"
+            className="text-[12px] font-bold text-[#0b1c30] hover:text-blue-800 underline shrink-0 cursor-pointer self-start sm:self-auto"
           >
             Lancer un nouvel enrichissement →
           </button>

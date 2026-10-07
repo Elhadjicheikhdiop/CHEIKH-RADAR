@@ -728,8 +728,8 @@ export const ThreatsPage: React.FC<ThreatsPageProps> = ({
               {
                 id: 'transmit' as ThreatStatus,
                 title: 'À transmettre',
-                color: 'bg-amber-50 text-amber-800 border-amber-200',
-                badgeBg: 'bg-amber-600 text-white',
+                color: 'bg-slate-100 text-slate-800 border-slate-300',
+                badgeBg: 'bg-slate-700 text-white',
               },
               {
                 id: 'close' as ThreatStatus,

@@ -500,7 +500,7 @@ export const ExpertModePage: React.FC<ExpertModePageProps> = ({ onShowToast, ini
                       log.level === 'CRITICAL'
                         ? 'bg-[#bb0112] text-white'
                         : log.level === 'WARN'
-                        ? 'bg-amber-500 text-black'
+                        ? 'bg-slate-800 text-amber-300 border border-amber-600/40'
                         : 'bg-white/10 text-white'
                     }`}
                   >

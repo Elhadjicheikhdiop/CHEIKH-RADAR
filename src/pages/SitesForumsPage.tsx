@@ -11,7 +11,6 @@ import {
   List,
   ShieldCheck,
   Ban,
-  Sparkles,
   TrendingUp,
   Download,
   RefreshCw,
@@ -271,9 +270,9 @@ export const SitesForumsPage: React.FC<SitesForumsPageProps> = ({
       </div>
 
       {/* BANDEAU ENRICHISSEMENT SEMRUSH API */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-linear-to-r from-[#0b1c30] to-[#1e3a8a] text-white shadow-sm mb-6 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+      <div className="p-4 sm:p-5 rounded-2xl bg-[#0b1c30] border border-slate-800 text-white shadow-sm mb-6 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div className="flex items-start sm:items-center gap-3.5">
-          <div className="w-11 h-11 rounded-xl bg-orange-500 text-white flex items-center justify-center font-black text-[15px] shrink-0 shadow-md">
+          <div className="w-11 h-11 rounded-xl bg-[#1e293b] border border-slate-700 text-white flex items-center justify-center font-bold text-[15px] shrink-0 shadow-md">
             SE
           </div>
           <div>
@@ -281,11 +280,11 @@ export const SitesForumsPage: React.FC<SitesForumsPageProps> = ({
               <span className="font-bold text-[15px] tracking-tight">
                 Enrichissement de Données via l'API SEMrush
               </span>
-              <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-white/15 text-orange-200 border border-white/20">
+              <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-white/10 text-slate-200 border border-white/20">
                 SEO & Audience Intelligence
               </span>
             </div>
-            <p className="text-[12px] text-blue-100/80 mt-0.5 max-w-2xl">
+            <p className="text-[12px] text-slate-300 mt-0.5 max-w-2xl">
               Interrogez l'API SEMrush en temps réel pour mesurer l'audience organique mensuelle, l'autorité de domaine (AS) et extraire les mots-clés de piratage qui alimentent les flux de streaming illégaux.
             </p>
           </div>
@@ -296,9 +295,9 @@ export const SitesForumsPage: React.FC<SitesForumsPageProps> = ({
             <>
               <button
                 onClick={() => handleOpenSemrushModal(localSites[0]?.siteDomain || 'stream-foot-dakar.xyz')}
-                className="px-3.5 py-2 rounded-xl bg-orange-600 hover:bg-orange-500 text-white text-[12px] font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
+                className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/20 text-[12px] font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
               >
-                <Sparkles className="w-3.5 h-3.5" />
+                <Search className="w-3.5 h-3.5" />
                 <span>Inspecteur SEMrush</span>
               </button>
 
@@ -313,7 +312,7 @@ export const SitesForumsPage: React.FC<SitesForumsPageProps> = ({
             </>
           ) : (
             <div className="px-3 py-1.5 rounded-xl bg-white/10 text-white/90 border border-white/20 text-[11px] font-semibold flex items-center gap-1.5">
-              <Lock className="w-3 h-3 text-amber-400" />
+              <Lock className="w-3 h-3 text-slate-400" />
               <span>Consultation Données SEO</span>
             </div>
           )}
@@ -497,46 +496,46 @@ export const SitesForumsPage: React.FC<SitesForumsPageProps> = ({
                   </div>
 
                   {/* BLOC MÉTRIQUES SEMRUSH API */}
-                  <div className="mt-3 p-3 rounded-xl bg-orange-50/60 border border-orange-200 text-[12px]">
+                  <div className="mt-3 p-3 rounded-xl bg-[#f8fafc] border border-[#e2e8f0] text-[12px]">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-orange-950 flex items-center gap-1.5">
-                        <span className="w-2 h-2 rounded-full bg-orange-600"></span>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-[#0b1c30] flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-[#0b1c30]"></span>
                         MÉTRIQUES SEMRUSH API
                       </span>
                       <button
                         onClick={() => handleOpenSemrushModal(item.siteDomain)}
-                        className="text-[11px] font-bold text-orange-800 hover:text-orange-950 flex items-center gap-1 cursor-pointer transition-colors"
+                        className="text-[11px] font-bold text-[#0b1c30] hover:text-blue-800 flex items-center gap-1 cursor-pointer transition-colors"
                       >
-                        <Sparkles className="w-3 h-3" />
+                        <Search className="w-3 h-3" />
                         <span>Inspecter</span>
                       </button>
                     </div>
 
                     <div className="grid grid-cols-3 gap-2 text-center">
-                      <div className="p-2 rounded-lg bg-white/80 border border-orange-200">
+                      <div className="p-2 rounded-lg bg-white border border-[#e2e8f0]">
                         <span className="text-[9px] font-bold text-gray-500 uppercase block">Trafic Est.</span>
                         <span className="text-[13px] font-black text-[#0b1c30] font-mono block">
                           {item.semrushTraffic || '850K / mois'}
                         </span>
                       </div>
-                      <div className="p-2 rounded-lg bg-white/80 border border-orange-200">
+                      <div className="p-2 rounded-lg bg-white border border-[#e2e8f0]">
                         <span className="text-[9px] font-bold text-gray-500 uppercase block">Authority Score</span>
-                        <span className="text-[13px] font-black text-blue-700 font-mono block">
+                        <span className="text-[13px] font-black text-[#0b1c30] font-mono block">
                           {item.semrushAuthority ?? 41} / 100
                         </span>
                       </div>
-                      <div className="p-2 rounded-lg bg-white/80 border border-orange-200">
+                      <div className="p-2 rounded-lg bg-white border border-[#e2e8f0]">
                         <span className="text-[9px] font-bold text-gray-500 uppercase block">Part Afrique</span>
-                        <span className="text-[13px] font-black text-purple-700 font-mono block">
+                        <span className="text-[13px] font-black text-slate-700 font-mono block">
                           78%
                         </span>
                       </div>
                     </div>
 
                     {item.semrushTopKeyword && (
-                      <div className="mt-2 pt-2 border-t border-orange-200/70 text-[11px] text-orange-950 flex items-center justify-between">
+                      <div className="mt-2 pt-2 border-t border-[#e2e8f0] text-[11px] text-slate-700 flex items-center justify-between">
                         <span className="text-gray-600">Top mot-clé piraté :</span>
-                        <span className="font-semibold text-red-700 truncate max-w-[200px]">
+                        <span className="font-semibold text-slate-900 truncate max-w-[200px]">
                           "{item.semrushTopKeyword}"
                         </span>
                       </div>
@@ -581,10 +580,10 @@ export const SitesForumsPage: React.FC<SitesForumsPageProps> = ({
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => handleOpenSemrushModal(item.siteDomain)}
-                        className="px-2.5 py-2 rounded-lg bg-orange-100 hover:bg-orange-200 text-orange-950 text-[11px] font-bold border border-orange-300 transition-colors shrink-0 cursor-pointer flex items-center gap-1"
+                        className="px-2.5 py-2 rounded-lg bg-white hover:bg-slate-100 text-[#0b1c30] text-[11px] font-bold border border-[#cbd5e1] transition-colors shrink-0 cursor-pointer flex items-center gap-1"
                         title="Auditer via SEMrush API"
                       >
-                        <Sparkles className="w-3.5 h-3.5 text-orange-600" />
+                        <Search className="w-3.5 h-3.5 text-[#0b1c30]" />
                         <span>SEMrush</span>
                       </button>
 
@@ -644,7 +643,7 @@ export const SitesForumsPage: React.FC<SitesForumsPageProps> = ({
                     <td className="py-3.5 px-4 text-right space-x-1.5">
                       <button
                         onClick={() => handleOpenSemrushModal(item.siteDomain)}
-                        className="px-2.5 py-1.5 rounded-lg bg-orange-100 hover:bg-orange-200 text-orange-950 text-[11px] font-bold border border-orange-300 transition-colors cursor-pointer"
+                        className="px-2.5 py-1.5 rounded-lg bg-white hover:bg-slate-100 text-[#0b1c30] text-[11px] font-bold border border-[#cbd5e1] transition-colors cursor-pointer"
                         title="Analyser avec SEMrush API"
                       >
                         SEMrush

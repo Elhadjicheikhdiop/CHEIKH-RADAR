@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Sparkles,
   RefreshCw,
   Download,
   Search,
@@ -218,10 +217,10 @@ export const SemrushDataImportTab: React.FC<SemrushDataImportTabProps> = ({
   return (
     <div className="space-y-6">
       {/* BANDEAU SUPÉRIEUR STATUT & CONFIGURATION API SEMRUSH */}
-      <div className="bg-linear-to-r from-[#0b1c30] to-[#1e3a8a] text-white rounded-2xl p-5 sm:p-6 shadow-sm">
+      <div className="bg-[#0b1c30] text-white rounded-2xl p-5 sm:p-6 shadow-sm border border-slate-800">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-start sm:items-center gap-3.5">
-            <div className="w-12 h-12 rounded-xl bg-orange-500 text-white flex items-center justify-center font-black text-[18px] shrink-0 shadow-md">
+            <div className="w-12 h-12 rounded-xl bg-[#1e293b] border border-slate-700 text-white flex items-center justify-center font-bold text-[18px] shrink-0 shadow-md">
               SE
             </div>
             <div>
@@ -229,11 +228,11 @@ export const SemrushDataImportTab: React.FC<SemrushDataImportTabProps> = ({
                 <h2 className="text-[18px] font-bold tracking-tight">
                   Enrichissement de Données via l'API SEMrush
                 </h2>
-                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-white/15 text-orange-200 border border-white/20">
+                <span className="px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-white/10 text-slate-200 border border-white/20">
                   {apiStatus?.configured ? 'API SEMrush Connectée' : 'Moteur SEMrush Actif'}
                 </span>
               </div>
-              <p className="text-[12px] text-blue-100/80 mt-1 max-w-2xl">
+              <p className="text-[12px] text-slate-300 mt-1 max-w-2xl">
                 Alimentez la base de données avec les métriques d'audience Google de SEMrush : volume de trafic mensuel, Authority Score (AS), part d'audience locale en Afrique et mots-clés de piratage interceptés.
               </p>
             </div>
@@ -251,7 +250,7 @@ export const SemrushDataImportTab: React.FC<SemrushDataImportTabProps> = ({
 
             <button
               onClick={handleExportExcel}
-              className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-[12px] font-bold shadow-xs transition-all cursor-pointer"
+              className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white text-[12px] font-bold shadow-xs transition-all cursor-pointer"
             >
               <Download className="w-4 h-4" />
               <span>Exporter Excel (.xlsx)</span>
@@ -262,7 +261,7 @@ export const SemrushDataImportTab: React.FC<SemrushDataImportTabProps> = ({
         {/* MÉTRIQUES CLÉS ENRICHIES */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5 pt-4 border-t border-white/10">
           <div className="p-3 bg-white/5 rounded-xl border border-white/10">
-            <span className="text-[10px] font-bold text-blue-200 uppercase tracking-wider block">
+            <span className="text-[10px] font-bold text-slate-300 uppercase tracking-wider block">
               Domaines Enregistrés
             </span>
             <span className="text-[20px] font-bold text-white font-mono mt-0.5 block">
@@ -271,28 +270,28 @@ export const SemrushDataImportTab: React.FC<SemrushDataImportTabProps> = ({
           </div>
 
           <div className="p-3 bg-white/5 rounded-xl border border-white/10">
-            <span className="text-[10px] font-bold text-blue-200 uppercase tracking-wider block">
+            <span className="text-[10px] font-bold text-slate-300 uppercase tracking-wider block">
               Audience Mensuelle Cumulée
             </span>
-            <span className="text-[20px] font-bold text-orange-400 font-mono mt-0.5 block">
+            <span className="text-[20px] font-bold text-white font-mono mt-0.5 block">
               {(totalTrafficVisits / 1000000).toFixed(2)}M visites
             </span>
           </div>
 
           <div className="p-3 bg-white/5 rounded-xl border border-white/10">
-            <span className="text-[10px] font-bold text-blue-200 uppercase tracking-wider block">
+            <span className="text-[10px] font-bold text-slate-300 uppercase tracking-wider block">
               Authority Score Moyen
             </span>
-            <span className="text-[20px] font-bold text-blue-300 font-mono mt-0.5 block">
+            <span className="text-[20px] font-bold text-slate-100 font-mono mt-0.5 block">
               {avgAuthority} / 100
             </span>
           </div>
 
           <div className="p-3 bg-white/5 rounded-xl border border-white/10">
-            <span className="text-[10px] font-bold text-blue-200 uppercase tracking-wider block">
+            <span className="text-[10px] font-bold text-slate-300 uppercase tracking-wider block">
               Part Afrique Subsaharienne
             </span>
-            <span className="text-[20px] font-bold text-purple-300 font-mono mt-0.5 block">
+            <span className="text-[20px] font-bold text-slate-100 font-mono mt-0.5 block">
               78.2%
             </span>
           </div>
@@ -304,7 +303,7 @@ export const SemrushDataImportTab: React.FC<SemrushDataImportTabProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#f1f5f9]">
           <div>
             <h3 className="text-[16px] font-bold text-[#0b1c30] flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-orange-600" />
+              <Search className="w-4 h-4 text-[#0b1c30]" />
               Saisir ou coller des domaines à interroger via l'API SEMrush
             </h3>
             <p className="text-[12px] text-[#64748b]">
@@ -335,9 +334,9 @@ export const SemrushDataImportTab: React.FC<SemrushDataImportTabProps> = ({
             <button
               onClick={handleRunEnrichment}
               disabled={isLoading}
-              className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white text-[13px] font-bold shadow-xs transition-all cursor-pointer disabled:opacity-50"
+              className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#0b1c30] hover:bg-[#162f4f] text-white text-[13px] font-bold shadow-xs transition-all cursor-pointer disabled:opacity-50"
             >
-              <Sparkles className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
+              <Search className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
               <span>{isLoading ? 'Interrogation SEMrush en cours...' : "Interroger l'API SEMrush"}</span>
             </button>
           </div>
@@ -421,27 +420,25 @@ export const SemrushDataImportTab: React.FC<SemrushDataImportTabProps> = ({
                       </div>
                     </td>
                     <td className="py-3 px-4 font-mono font-bold text-[#0b1c30]">
-                      <span className="px-2 py-0.5 rounded bg-orange-50 text-orange-900 border border-orange-200">
+                      <span className="px-2 py-0.5 rounded bg-slate-100 text-[#0b1c30] border border-slate-200">
                         {item.monthlyTraffic}
                       </span>
                     </td>
-                    <td className="py-3 px-4 font-mono font-bold text-blue-700">
+                    <td className="py-3 px-4 font-mono font-bold text-[#0b1c30]">
                       <div className="flex items-center gap-2">
                         <span>{item.domainAuthority} / 100</span>
                         <div className="w-12 h-1.5 bg-gray-200 rounded-full overflow-hidden">
                           <div
-                            className={`h-full ${
-                              item.domainAuthority > 40 ? 'bg-red-500' : 'bg-orange-500'
-                            }`}
+                            className="h-full bg-[#0b1c30]"
                             style={{ width: `${item.domainAuthority}%` }}
                           ></div>
                         </div>
                       </div>
                     </td>
-                    <td className="py-3 px-4 font-semibold text-purple-700">
+                    <td className="py-3 px-4 font-semibold text-slate-700">
                       {item.africaTrafficShare}
                     </td>
-                    <td className="py-3 px-4 text-red-700 font-medium truncate max-w-[200px]" title={item.topKeyword}>
+                    <td className="py-3 px-4 text-slate-800 font-medium truncate max-w-[200px]" title={item.topKeyword}>
                       "{item.topKeyword}"
                     </td>
                     <td className="py-3 px-4 font-mono text-[#64748b]">
@@ -476,7 +473,7 @@ export const SemrushDataImportTab: React.FC<SemrushDataImportTabProps> = ({
           >
             <div className="flex items-center justify-between pb-3 border-b border-[#f1f5f9]">
               <div>
-                <span className="text-[11px] font-bold text-orange-600 uppercase tracking-wider">
+                <span className="text-[11px] font-bold text-[#0b1c30] uppercase tracking-wider">
                   Audit Mots-Clés SEMrush
                 </span>
                 <h3 className="text-[17px] font-bold text-[#0b1c30] font-mono">
@@ -492,7 +489,7 @@ export const SemrushDataImportTab: React.FC<SemrushDataImportTabProps> = ({
             </div>
 
             {/* Détails du domaine */}
-            <div className="grid grid-cols-3 gap-3 text-center p-3 rounded-xl bg-orange-50/70 border border-orange-200">
+            <div className="grid grid-cols-3 gap-3 text-center p-3 rounded-xl bg-slate-50 border border-slate-200">
               <div>
                 <span className="text-[10px] text-gray-500 uppercase font-bold">Trafic Organique</span>
                 <span className="text-[14px] font-black text-[#0b1c30] font-mono block">
@@ -501,13 +498,13 @@ export const SemrushDataImportTab: React.FC<SemrushDataImportTabProps> = ({
               </div>
               <div>
                 <span className="text-[10px] text-gray-500 uppercase font-bold">Authority Score</span>
-                <span className="text-[14px] font-black text-blue-700 font-mono block">
+                <span className="text-[14px] font-black text-[#0b1c30] font-mono block">
                   {selectedItemForModal.domainAuthority} / 100
                 </span>
               </div>
               <div>
                 <span className="text-[10px] text-gray-500 uppercase font-bold">Mots-clés Indexés</span>
-                <span className="text-[14px] font-black text-purple-700 font-mono block">
+                <span className="text-[14px] font-black text-[#0b1c30] font-mono block">
                   {selectedItemForModal.organicKeywordsCount}
                 </span>
               </div>

@@ -1238,13 +1238,13 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({
               <div className="flex flex-col gap-1.5">
                 <div className="flex items-center justify-between text-[12px]">
                   <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-amber-500"></span>
+                    <span className="w-2 h-2 rounded-full bg-slate-600"></span>
                     <span className="font-semibold text-[#0b1c30]">Sites Web de streaming & Hébergeurs</span>
                   </div>
-                  <span className="font-mono font-bold text-amber-700">2h 30 min - 4h</span>
+                  <span className="font-mono font-bold text-slate-700">2h 30 min - 4h</span>
                 </div>
                 <div className="w-full h-2 bg-[#f1f5f9] rounded-full overflow-hidden">
-                  <div className="h-full bg-amber-500 rounded-full" style={{ width: '60%' }}></div>
+                  <div className="h-full bg-slate-600 rounded-full" style={{ width: '60%' }}></div>
                 </div>
                 <span className="text-[11px] text-[#64748b]">
                   Notification aux hébergeurs Cloudflare / ASN et filtrage DNS opérateurs.

@@ -69,7 +69,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
         return {
           level: 'Niveau 1',
           label: 'Contentieux & Constats',
-          badge: 'bg-indigo-50 text-indigo-800 border-indigo-200',
+          badge: 'bg-slate-100 text-slate-800 border-slate-300',
         };
     }
   };
@@ -117,8 +117,8 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
           
           {/* Left Column: Corporate Overview & Strategic Pillars */}
           <div className="lg:col-span-6 space-y-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-800 text-[11px] font-bold">
-              <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-slate-100 border border-slate-300 text-slate-800 text-[11px] font-bold">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#0b1c30]" />
               <span>Système d'Information & Protection Audiovisuelle</span>
             </div>
 
@@ -148,7 +148,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
               </div>
 
               <div className="p-4 rounded-xl bg-white border border-[#e2e8f0] shadow-2xs flex items-start gap-3.5">
-                <div className="w-9 h-9 rounded-lg bg-indigo-50 text-indigo-700 flex items-center justify-center shrink-0 mt-0.5 font-bold">
+                <div className="w-9 h-9 rounded-lg bg-slate-100 text-[#0b1c30] flex items-center justify-center shrink-0 mt-0.5 font-bold">
                   <Globe2 className="w-4 h-4" />
                 </div>
                 <div>
@@ -162,7 +162,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
               </div>
 
               <div className="p-4 rounded-xl bg-white border border-[#e2e8f0] shadow-2xs flex items-start gap-3.5">
-                <div className="w-9 h-9 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center shrink-0 mt-0.5 font-bold">
+                <div className="w-9 h-9 rounded-lg bg-slate-100 text-[#0b1c30] flex items-center justify-center shrink-0 mt-0.5 font-bold">
                   <Scale className="w-4 h-4" />
                 </div>
                 <div>
@@ -206,7 +206,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                   </h2>
                 </div>
                 <div className="text-right">
-                  <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-[#f1f5f9] text-[#475569] border border-[#e2e8f0]">
+                  <span className="text-[10px] font-bold px-2.5 py-1 rounded bg-[#f1f5f9] text-[#475569] border border-[#e2e8f0]">
                     3 Profils Habilités
                   </span>
                 </div>
@@ -238,7 +238,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                     }}
                     className={`w-full text-left p-3 rounded-xl border transition-all cursor-pointer flex items-start justify-between gap-3 ${
                       isSelected
-                        ? 'bg-blue-50/70 border-blue-500 shadow-xs ring-1 ring-blue-400/50'
+                        ? 'bg-slate-50 border-[#0b1c30] shadow-xs ring-1 ring-[#0b1c30]/20'
                         : 'bg-[#f8fafc] hover:bg-[#f1f5f9] border-[#e2e8f0]'
                     }`}
                   >
@@ -248,8 +248,8 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                           acc.id === 'admin'
                             ? 'bg-[#0b1c30]'
                             : acc.id === 'juridique'
-                            ? 'bg-purple-700'
-                            : 'bg-slate-700'
+                            ? 'bg-[#1e293b]'
+                            : 'bg-[#334155]'
                         }`}
                       >
                         <IconComponent className="w-4 h-4" />
@@ -272,12 +272,12 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
 
                     <div className="shrink-0 text-right flex flex-col items-end gap-1.5">
                       <span
-                        className={`inline-block text-[9px] font-bold px-2 py-0.5 rounded-full border ${clearance.badge}`}
+                        className={`inline-block text-[9px] font-bold px-2 py-0.5 rounded border ${clearance.badge}`}
                       >
                         {clearance.level}
                       </span>
                       {isSelected ? (
-                        <div className="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center mt-1 shadow-2xs">
+                        <div className="w-5 h-5 rounded-full bg-[#0b1c30] text-white flex items-center justify-center mt-1 shadow-2xs">
                           <Check className="w-3 h-3 stroke-[3]" />
                         </div>
                       ) : (

@@ -79,23 +79,23 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={onNavigateToImport}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-800 text-[11px] font-bold transition-all cursor-pointer shadow-2xs active:scale-95"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#0b1c30] hover:bg-[#162f4f] text-white text-[11px] font-bold transition-all cursor-pointer shadow-2xs active:scale-95"
             title="Importer des données Excel ou formulaires (Réservé Binôme Administrateur)"
           >
-            <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-700" />
+            <FileSpreadsheet className="w-3.5 h-3.5 text-slate-300" />
             <span className="hidden xl:inline">Import Excel & Données</span>
           </button>
         )}
 
         {/* Badge d'accès lecture seule pour les directions */}
         {!currentAccount.canEdit && (
-          <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 border border-slate-300 text-slate-700 text-[10px] font-bold">
-            <Lock className="w-3 h-3 text-amber-600" />
+          <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-100 border border-slate-300 text-slate-700 text-[10px] font-bold">
+            <Lock className="w-3 h-3 text-slate-500" />
             <span>Consultation Seule</span>
           </div>
         )}
 
-        <div className="hidden 2xl:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-[11px] font-semibold">
+        <div className="hidden 2xl:flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-100 border border-slate-200 text-slate-700 text-[11px] font-medium">
           <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
           <span>Surveillance Active</span>
         </div>

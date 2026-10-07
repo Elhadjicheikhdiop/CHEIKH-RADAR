@@ -38,10 +38,10 @@ export const AccountSwitcher: React.FC<AccountSwitcherProps> = ({
         <div
           className={`w-7 h-7 rounded-lg flex items-center justify-center font-black text-[12px] text-white shrink-0 ${
             currentAccount.canEdit
-              ? 'bg-blue-600'
+              ? 'bg-[#0b1c30]'
               : currentAccount.id === 'juridique'
-              ? 'bg-purple-700'
-              : 'bg-slate-700'
+              ? 'bg-[#1e293b]'
+              : 'bg-[#334155]'
           }`}
         >
           <IconComponent className="w-3.5 h-3.5" />
@@ -60,9 +60,9 @@ export const AccountSwitcher: React.FC<AccountSwitcherProps> = ({
 
         {/* Badge lecture seule ou administration */}
         <span
-          className={`hidden md:inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full border shrink-0 ${
+          className={`hidden md:inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded border shrink-0 ${
             currentAccount.canEdit
-              ? 'bg-blue-50 text-blue-700 border-blue-200'
+              ? 'bg-slate-100 text-[#0b1c30] border-slate-300'
               : 'bg-slate-100 text-slate-700 border-slate-300'
           }`}
         >
@@ -70,7 +70,7 @@ export const AccountSwitcher: React.FC<AccountSwitcherProps> = ({
             <span>Admin</span>
           ) : (
             <>
-              <Lock className="w-2.5 h-2.5 text-amber-600" />
+              <Lock className="w-2.5 h-2.5 text-slate-500" />
               <span>Lecture Seule</span>
             </>
           )}
@@ -82,10 +82,10 @@ export const AccountSwitcher: React.FC<AccountSwitcherProps> = ({
         <button
           type="button"
           onClick={onLogout}
-          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 border border-red-200 text-red-700 text-[11px] font-bold transition-all cursor-pointer shadow-2xs active:scale-95 shrink-0"
+          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 hover:text-red-700 text-[11px] font-bold transition-all cursor-pointer shadow-2xs active:scale-95 shrink-0"
           title="Se déconnecter et retourner à la page de sélection des comptes"
         >
-          <LogOut className="w-3.5 h-3.5 text-red-600" />
+          <LogOut className="w-3.5 h-3.5" />
           <span className="hidden lg:inline">Déconnexion</span>
         </button>
       )}

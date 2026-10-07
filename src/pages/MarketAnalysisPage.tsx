@@ -605,15 +605,15 @@ export const MarketAnalysisPage: React.FC<MarketAnalysisPageProps> = ({ onShowTo
               </div>
             </div>
 
-            <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 text-[11px] text-amber-950">
-              <div className="font-bold text-amber-900 flex items-center gap-1.5 mb-0.5">
-                <Wallet className="w-3.5 h-3.5 text-amber-700" />
+            <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-[#0b1c30]">
+              <div className="font-bold text-[#0b1c30] flex items-center gap-1.5 mb-0.5">
+                <Wallet className="w-3.5 h-3.5 text-slate-700" />
                 <span>Revenu estimé sur 4,5 mois (durée moyenne de réabonnement) :</span>
               </div>
-              <div className="text-[16px] font-black text-amber-900 font-mono">
+              <div className="text-[16px] font-black text-[#0b1c30] font-mono">
                 +{(selectedOperation.ltvRetentionFcfa / 1000000).toFixed(1)} Millions FCFA
               </div>
-              <p className="text-[10px] text-amber-800 mt-1">
+              <p className="text-[10px] text-[#64748b] mt-1">
                 Calculé d'après la réabonnement moyen de 4,5 mois constaté sur les clients recrutés.
               </p>
             </div>
