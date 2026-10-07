@@ -1247,7 +1247,7 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({
                   <div className="h-full bg-slate-600 rounded-full" style={{ width: '60%' }}></div>
                 </div>
                 <span className="text-[11px] text-[#64748b]">
-                  Notification aux hébergeurs Cloudflare / ASN et filtrage DNS opérateurs.
+                  Notification aux hébergeurs de serveurs et blocage d'accès auprès des opérateurs internet.
                 </span>
               </div>
 

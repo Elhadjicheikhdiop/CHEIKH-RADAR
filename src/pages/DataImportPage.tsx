@@ -1364,7 +1364,7 @@ export const DataImportPage: React.FC<DataImportPageProps> = ({
                   Répertoire des Preuves & Captures d'Écran ({evidenceList.length})
                 </h3>
                 <p className="text-[12px] text-[#64748b]">
-                  Dossier probatoire pour constats d'huissier, plaintes pénales et notifications DMCA.
+                  Dossier de preuves pour les constats d'huissier, plaintes juridiques et demandes de retrait.
                 </p>
               </div>
             </div>
@@ -1505,47 +1505,121 @@ export const DataImportPage: React.FC<DataImportPageProps> = ({
         </div>
       )}
 
-      {/* MODAL PRÉVISUALISATION PLEIN ÉCRAN D'UNE CAPTURE */}
+      {/* MODAL PRÉVISUALISATION D'UNE CAPTURE - VUE RAPIDE AVEC SCROLLER */}
       {previewModalEvidence && (
-        <div className="fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-4 backdrop-blur-xs animate-fade-in">
-          <div className="bg-white rounded-2xl max-w-3xl w-full overflow-hidden shadow-2xl border border-[#cbd5e1]">
-            <div className="p-4 border-b border-[#e2e8f0] flex items-center justify-between bg-[#f8fafc]">
-              <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#64748b]">
-                  Dossier de Preuve Numérique
-                </span>
-                <h3 className="text-[15px] font-bold text-[#0b1c30]">{previewModalEvidence.title}</h3>
+        <div
+          className="fixed inset-0 bg-slate-900/40 z-50 flex items-center justify-center p-3 sm:p-4 backdrop-blur-xs animate-fade-in overflow-y-auto"
+          onClick={() => setPreviewModalEvidence(null)}
+        >
+          <div
+            className="bg-white rounded-2xl max-w-3xl w-full max-h-[88vh] flex flex-col overflow-hidden shadow-xl border border-slate-200 text-slate-900"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* 1. EN-TÊTE FIXE */}
+            <div className="p-4 sm:p-5 border-b border-slate-200 flex items-center justify-between bg-white shrink-0">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 flex items-center justify-center font-bold text-[13px]">
+                  PR
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+                      Pièce à Conviction Numérique
+                    </span>
+                    <span className="px-2 py-0.5 rounded text-[9.5px] font-medium bg-slate-100 text-slate-700 border border-slate-200">
+                      {previewModalEvidence.type || 'Capture Écran'}
+                    </span>
+                  </div>
+                  <h3 className="text-[15.5px] font-bold text-slate-900">{previewModalEvidence.title}</h3>
+                </div>
               </div>
               <button
+                type="button"
                 onClick={() => setPreviewModalEvidence(null)}
-                className="p-1.5 rounded-lg text-[#64748b] hover:text-[#0b1c30] hover:bg-[#e2e8f0] cursor-pointer"
+                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900 flex items-center justify-center cursor-pointer transition-colors"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="p-4 bg-black/5 flex items-center justify-center max-h-[500px] overflow-hidden">
-              <img
-                src={previewModalEvidence.fileUrl}
-                alt={previewModalEvidence.title}
-                className="max-h-[460px] max-w-full rounded-lg object-contain shadow-md"
-              />
+            {/* BARRE INDICATRICE DE DÉFILEMENT POUR CERVEAU PRESSÉ */}
+            <div className="px-4 py-1.5 bg-slate-50 border-b border-slate-200 text-[11px] text-slate-600 font-medium flex items-center justify-between shrink-0">
+              <span className="flex items-center gap-1.5 font-medium text-slate-700">
+                <span>↕</span> Défilement vertical complet disponible (haut en bas)
+              </span>
+              <span className="text-[10px] text-slate-500 font-mono">
+                {previewModalEvidence.country || 'Pan-Afrique'} • {previewModalEvidence.type}
+              </span>
             </div>
 
-            <div className="p-4 bg-white border-t border-[#e2e8f0] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-[12px]">
-              <div>
-                <span className="text-[#64748b] block">Nom du fichier : <strong className="text-[#0b1c30]">{previewModalEvidence.fileName}</strong> ({previewModalEvidence.fileSize})</span>
-                <span className="text-[#64748b] block">Filiale / Territoire : <strong className="text-[#0b1c30]">{previewModalEvidence.country || 'Panafrique'}</strong> • {previewModalEvidence.uploadedAt}</span>
+            {/* 2. CORPS DÉFILABLE DE HAUT EN BAS (SCROLLER DÉDIÉ) */}
+            <div className="flex-1 overflow-y-auto custom-scrollbar p-5 space-y-4 text-[12px]">
+              {/* SYNTHÈSE EXPRESS */}
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-[11px]">
+                <div className="bg-white border border-slate-200 p-2 rounded-lg">
+                  <span className="text-[9.5px] text-slate-500 uppercase block font-medium">Territoire</span>
+                  <span className="font-bold text-slate-900 truncate block">{previewModalEvidence.country || 'Pan-Afrique'}</span>
+                </div>
+                <div className="bg-white border border-slate-200 p-2 rounded-lg">
+                  <span className="text-[9.5px] text-slate-500 uppercase block font-medium">Date Dépôt</span>
+                  <span className="font-bold text-slate-900 truncate block">{previewModalEvidence.uploadedAt}</span>
+                </div>
+                <div className="bg-white border border-slate-200 p-2 rounded-lg">
+                  <span className="text-[9.5px] text-slate-500 uppercase block font-medium">Poids Fichier</span>
+                  <span className="font-mono font-bold text-slate-900 block">{previewModalEvidence.fileSize}</span>
+                </div>
+                <div className="bg-white border border-slate-200 p-2 rounded-lg">
+                  <span className="text-[9.5px] text-slate-500 uppercase block font-medium">Validité Légale</span>
+                  <span className="font-bold text-slate-800 block">Preuve scellée</span>
+                </div>
               </div>
-              <button
-                onClick={() => {
-                  window.open(previewModalEvidence.fileUrl, '_blank');
-                }}
-                className="px-3.5 py-2 rounded-xl bg-[#0b1c30] hover:bg-[#1a365d] text-white font-bold text-[11px] shadow-xs cursor-pointer flex items-center gap-1.5"
-              >
-                <ExternalLink className="w-3.5 h-3.5" />
-                Ouvrir en Haute Définition
-              </button>
+
+              {/* IMAGE DE PREUVE */}
+              <div className="bg-slate-50 p-2 rounded-xl flex items-center justify-center border border-slate-200 overflow-hidden shadow-2xs">
+                <img
+                  src={previewModalEvidence.fileUrl}
+                  alt={previewModalEvidence.title}
+                  className="max-h-[460px] max-w-full rounded-lg object-contain border border-slate-200"
+                />
+              </div>
+
+              {/* NOTES / DÉTAILS D'INVESTIGATION */}
+              {previewModalEvidence.notes && (
+                <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                  <span className="text-[10.5px] font-bold uppercase tracking-wider text-slate-600 block">
+                    Notes d'Instruction & Contexte d'Interception
+                  </span>
+                  <p className="text-[12px] text-slate-800 leading-relaxed">
+                    {previewModalEvidence.notes}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* 3. PIED DE PAGE FIXE */}
+            <div className="p-4 bg-white border-t border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-[12px] shrink-0">
+              <span className="text-slate-500">
+                Fichier source : <strong className="text-slate-900 font-mono">{previewModalEvidence.fileName}</strong>
+              </span>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    window.open(previewModalEvidence.fileUrl, '_blank');
+                  }}
+                  className="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 text-slate-800 font-medium text-[11px] shadow-2xs cursor-pointer flex items-center gap-1.5 transition-colors"
+                >
+                  <ExternalLink className="w-3.5 h-3.5 text-slate-600" />
+                  <span>Ouvrir en HD</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPreviewModalEvidence(null)}
+                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-medium text-[12px] cursor-pointer transition-colors"
+                >
+                  Fermer
+                </button>
+              </div>
             </div>
           </div>
         </div>

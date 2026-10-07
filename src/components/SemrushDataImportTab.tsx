@@ -487,90 +487,153 @@ export const SemrushDataImportTab: React.FC<SemrushDataImportTabProps> = ({
         )}
       </div>
 
-      {/* MODALE D'INSPECTION DES MOTS-CLÉS DÉTAILLÉS */}
+      {/* MODALE D'INSPECTION DES MOTS-CLÉS DÉTAILLÉS - VUE RAPIDE AVEC SCROLLER */}
       {selectedItemForModal && (
         <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto"
           onClick={() => setSelectedItemForModal(null)}
         >
           <div
-            className="bg-white rounded-2xl max-w-2xl w-full p-6 border border-[#e2e8f0] shadow-2xl space-y-4"
+            className="bg-white rounded-2xl max-w-2xl w-full max-h-[88vh] flex flex-col border border-slate-200 shadow-xl overflow-hidden text-slate-900 animate-fade-in"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between pb-3 border-b border-[#f1f5f9]">
-              <div>
-                <span className="text-[11px] font-bold text-[#0b1c30] uppercase tracking-wider">
-                  Audit Mots-Clés SEMrush
-                </span>
-                <h3 className="text-[17px] font-bold text-[#0b1c30] font-mono">
-                  {selectedItemForModal.domain}
-                </h3>
+            {/* 1. EN-TÊTE FIXE */}
+            <div className="p-4 sm:p-5 border-b border-slate-200 bg-white flex items-center justify-between shrink-0">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 flex items-center justify-center font-bold text-[14px]">
+                  SE
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider block">
+                      Audit Mots-Clés & Trafic SEMrush
+                    </span>
+                    <span className="px-2 py-0.5 rounded text-[9.5px] font-medium bg-red-50 text-red-700 border border-red-200">
+                      {selectedItemForModal.threatLevel || 'Critique'}
+                    </span>
+                  </div>
+                  <h3 className="text-[16px] font-bold text-slate-900 font-mono">
+                    {selectedItemForModal.domain}
+                  </h3>
+                </div>
               </div>
+
               <button
+                type="button"
                 onClick={() => setSelectedItemForModal(null)}
-                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-black flex items-center justify-center cursor-pointer transition-colors"
+                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900 flex items-center justify-center cursor-pointer transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            {/* Détails du domaine */}
-            <div className="grid grid-cols-3 gap-3 text-center p-3 rounded-xl bg-slate-50 border border-slate-200">
-              <div>
-                <span className="text-[10px] text-gray-500 uppercase font-bold">Trafic Organique</span>
-                <span className="text-[14px] font-black text-[#0b1c30] font-mono block">
-                  {selectedItemForModal.monthlyTraffic}
-                </span>
-              </div>
-              <div>
-                <span className="text-[10px] text-gray-500 uppercase font-bold">Authority Score</span>
-                <span className="text-[14px] font-black text-[#0b1c30] font-mono block">
-                  {selectedItemForModal.domainAuthority} / 100
-                </span>
-              </div>
-              <div>
-                <span className="text-[10px] text-gray-500 uppercase font-bold">Mots-clés Indexés</span>
-                <span className="text-[14px] font-black text-[#0b1c30] font-mono block">
-                  {selectedItemForModal.organicKeywordsCount}
-                </span>
-              </div>
+            {/* BARRE INDICATRICE DE DÉFILEMENT POUR CERVEAU PRESSÉ */}
+            <div className="px-4 py-1.5 bg-slate-50 border-b border-slate-200 text-[11px] text-slate-600 font-medium flex items-center justify-between shrink-0">
+              <span className="flex items-center gap-1.5 font-medium text-slate-700">
+                <span>↕</span> Défilement vertical complet disponible (haut en bas)
+              </span>
+              <span className="text-[10px] text-slate-500 font-mono">
+                {selectedItemForModal.domain} • Détail Mots-Clés
+              </span>
             </div>
 
-            {/* Tableau des mots-clés */}
-            <div>
-              <h4 className="text-[12px] font-bold text-[#64748b] uppercase tracking-wider mb-2">
-                Top requêtes Google captées par ce domaine
-              </h4>
-              <div className="rounded-xl border border-[#e2e8f0] overflow-hidden max-h-60 overflow-y-auto">
-                <table className="w-full text-left border-collapse text-[12px]">
-                  <thead className="bg-[#f8fafc] border-b border-[#e2e8f0] text-[10px] font-bold uppercase text-[#64748b] sticky top-0">
-                    <tr>
-                      <th className="py-2.5 px-3">Requête / Mot-Clé</th>
-                      <th className="py-2.5 px-3">Position</th>
-                      <th className="py-2.5 px-3">Volume Mensuel</th>
-                      <th className="py-2.5 px-3">CPC</th>
-                      <th className="py-2.5 px-3">Part Trafic</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-[#f1f5f9]">
-                    {selectedItemForModal.topKeywordsList?.map((kw, i) => (
-                      <tr key={i} className="hover:bg-[#f8fafc]">
-                        <td className="py-2.5 px-3 font-semibold text-[#0b1c30]">{kw.keyword}</td>
-                        <td className="py-2.5 px-3 font-mono font-bold text-emerald-700">#{kw.position}</td>
-                        <td className="py-2.5 px-3 font-mono">{kw.searchVolume.toLocaleString()}</td>
-                        <td className="py-2.5 px-3 font-mono text-[#64748b]">{kw.cpc}</td>
-                        <td className="py-2.5 px-3 font-mono text-blue-700">{kw.trafficShare}</td>
+            {/* 2. CORPS DÉFILABLE DE HAUT EN BAS (SCROLLER DÉDIÉ) */}
+            <div className="flex-1 overflow-y-auto custom-scrollbar p-5 space-y-4 text-[12px]">
+              {/* SYNTHÈSE EXPRESS */}
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10.5px] font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-slate-600" />
+                    Synthèse d'Audience • Top Métriques
+                  </span>
+                  <span className="text-[10.5px] font-mono text-slate-500">
+                    Hébergeur : {selectedItemForModal.hostingCountry || 'CDN Cloudflare'}
+                  </span>
+                </div>
+                <div className="grid grid-cols-3 gap-2 pt-1 border-t border-slate-200 text-center">
+                  <div className="bg-white border border-slate-200 p-2 rounded-lg">
+                    <span className="text-[9.5px] text-slate-500 uppercase block font-semibold">Trafic Mensuel</span>
+                    <span className="text-[15px] font-bold text-slate-900 font-mono">
+                      {selectedItemForModal.monthlyTraffic}
+                    </span>
+                  </div>
+                  <div className="bg-white border border-slate-200 p-2 rounded-lg">
+                    <span className="text-[9.5px] text-slate-500 uppercase block font-semibold">Authority Score</span>
+                    <span className="text-[15px] font-bold text-slate-900 font-mono">
+                      {selectedItemForModal.domainAuthority} / 100
+                    </span>
+                  </div>
+                  <div className="bg-white border border-slate-200 p-2 rounded-lg">
+                    <span className="text-[9.5px] text-slate-500 uppercase block font-semibold">Requêtes Indexées</span>
+                    <span className="text-[15px] font-bold text-slate-900 font-mono">
+                      {selectedItemForModal.organicKeywordsCount}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* DÉTAILS DU DOMAINE & MOT-CLÉ PRINCIPAL */}
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                <div>
+                  <span className="text-[10px] font-bold uppercase text-slate-500 block">
+                    Mot-clé N°1 captant le flux en Afrique
+                  </span>
+                  <span className="text-[13px] font-bold text-slate-900 flex items-center gap-1.5 mt-0.5">
+                    <TrendingUp className="w-4 h-4 text-slate-700 shrink-0" />
+                    « {selectedItemForModal.topKeyword || 'stream foot gratuit'} »
+                  </span>
+                </div>
+                <span className="px-2.5 py-1 rounded-lg bg-white border border-slate-200 font-mono text-[11px] font-semibold text-slate-700 shrink-0">
+                  Part trafic Afrique : {selectedItemForModal.africaTrafficShare || '76%'}
+                </span>
+              </div>
+
+              {/* TABLEAU DES MOTS-CLÉS AVEC DÉFILEMENT */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="text-[11.5px] font-bold text-slate-800 uppercase tracking-wider">
+                    Top requêtes Google captées par ce domaine
+                  </h4>
+                  <span className="text-[11px] text-slate-500 font-mono">
+                    {selectedItemForModal.topKeywordsList?.length || 0} requêtes clés
+                  </span>
+                </div>
+                <div className="rounded-xl border border-slate-200 overflow-hidden bg-white">
+                  <table className="w-full text-left border-collapse text-[12px]">
+                    <thead className="bg-slate-50 border-b border-slate-200 text-[10px] font-bold uppercase text-slate-500">
+                      <tr>
+                        <th className="py-2.5 px-3">Requête / Mot-Clé</th>
+                        <th className="py-2.5 px-3">Position</th>
+                        <th className="py-2.5 px-3">Volume Mensuel</th>
+                        <th className="py-2.5 px-3">CPC</th>
+                        <th className="py-2.5 px-3 text-right">Part Trafic</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                      {selectedItemForModal.topKeywordsList?.map((kw, i) => (
+                        <tr key={i} className="hover:bg-slate-50/70">
+                          <td className="py-2.5 px-3 font-semibold text-slate-900">{kw.keyword}</td>
+                          <td className="py-2.5 px-3 font-mono font-bold text-slate-900">#{kw.position}</td>
+                          <td className="py-2.5 px-3 font-mono text-slate-700">{kw.searchVolume.toLocaleString()}</td>
+                          <td className="py-2.5 px-3 font-mono text-slate-500">{kw.cpc}</td>
+                          <td className="py-2.5 px-3 font-mono text-slate-900 font-bold text-right">{kw.trafficShare}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
 
-            <div className="pt-3 border-t border-[#f1f5f9] flex justify-end">
+            {/* 3. PIED DE MODALE FIXE */}
+            <div className="p-3.5 sm:p-4 border-t border-slate-200 bg-white flex items-center justify-between shrink-0">
+              <span className="text-[11px] text-slate-500 font-medium">
+                Données certifiées modèle SEMrush
+              </span>
               <button
+                type="button"
                 onClick={() => setSelectedItemForModal(null)}
-                className="px-4 py-2 rounded-xl bg-[#0b1c30] text-white text-[12px] font-bold hover:bg-[#1a365d] cursor-pointer"
+                className="px-4 py-2 rounded-xl bg-slate-800 text-white text-[12px] font-medium hover:bg-slate-900 cursor-pointer transition-colors"
               >
                 Fermer
               </button>

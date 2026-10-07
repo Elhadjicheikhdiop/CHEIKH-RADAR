@@ -115,9 +115,9 @@ export const AuditTrailPage: React.FC<AuditTrailPageProps> = ({
   const handleCopyHash = (hash: string) => {
     try {
       navigator.clipboard.writeText(hash);
-      onShowToast(`Empreinte SHA-256 copiée : ${hash.slice(0, 16)}...`);
+      onShowToast(`Signature de sécurité copiée : ${hash.slice(0, 16)}...`);
     } catch {
-      onShowToast(`Empreinte SHA-256 : ${hash.slice(0, 16)}...`);
+      onShowToast(`Signature de sécurité : ${hash.slice(0, 16)}...`);
     }
   };
 
@@ -130,38 +130,38 @@ export const AuditTrailPage: React.FC<AuditTrailPageProps> = ({
         verified: res.isValid,
         date: new Date().toLocaleTimeString('fr-FR'),
       });
-      onShowToast(`Chaîne de traçabilité certifiée conforme • ${res.totalEvents} actes vérifiés.`);
+      onShowToast(`Historique vérifié et certifié intact • ${res.totalEvents} actions validées.`);
     }, 600);
   };
 
   const handleExport = (format: 'csv' | 'json') => {
     auditTrailService.exportAuditTrail(currentRole, format);
-    onShowToast(`Export du journal d'audit (${format.toUpperCase()}) téléchargé avec succès.`);
+    onShowToast(`Export du journal des actions (${format.toUpperCase()}) téléchargé.`);
   };
 
   const getCategoryBadge = (cat: AuditCategory) => {
     switch (cat) {
       case 'LEGAL':
         return {
-          label: 'Acte Juridique & Preuve',
-          className: 'bg-slate-100 text-[#0b1c30] border-slate-300',
+          label: 'Action juridique & Preuve',
+          className: 'bg-slate-100 text-slate-900 border-slate-300',
           icon: Scale,
         };
       case 'DATA_INTEGRITY':
         return {
-          label: 'Intégrité Données / Import',
+          label: 'Mise à jour & Import',
           className: 'bg-slate-100 text-slate-800 border-slate-300',
           icon: FileSpreadsheet,
         };
       case 'SECURITY':
         return {
-          label: 'Sécurité & Session',
+          label: 'Sécurité & Connexion',
           className: 'bg-slate-100 text-slate-700 border-slate-300',
           icon: Lock,
         };
       case 'EXPORT':
         return {
-          label: 'Export Confidentiel',
+          label: 'Export de rapport',
           className: 'bg-slate-100 text-slate-700 border-slate-300',
           icon: Download,
         };
@@ -183,89 +183,89 @@ export const AuditTrailPage: React.FC<AuditTrailPageProps> = ({
   return (
     <div className="space-y-6">
       {/* 1. EN-TÊTE PRINCIPAL CORPORATE */}
-      <div className="bg-white rounded-2xl border border-[#e2e8f0] p-5 sm:p-6 shadow-2xs">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-[#f1f5f9]">
+      <div className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-2xs">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-100">
           <div>
             <div className="flex items-center gap-2 flex-wrap mb-1.5">
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-[11px] font-bold bg-[#0b1c30] text-white">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-[11px] font-medium bg-slate-800 text-white">
                 <ShieldCheck className="w-3.5 h-3.5" />
-                Journal d'Audit Immuable
+                Journal des actions sécurisé
               </span>
-              <span className="px-2.5 py-0.5 rounded text-[11px] font-bold bg-slate-100 text-slate-800 border border-slate-300 font-mono">
-                ISO 27001 • Norme OHADA • WORM
+              <span className="px-2.5 py-0.5 rounded text-[11px] font-medium bg-slate-100 text-slate-700 border border-slate-200">
+                Conforme aux règles légales
               </span>
-              <span className="px-2.5 py-0.5 rounded text-[11px] font-semibold bg-[#eff6ff] text-[#1e40af] border border-[#dbeafe]">
-                Scellement SHA-256
+              <span className="px-2.5 py-0.5 rounded text-[11px] font-medium bg-emerald-50 text-emerald-800 border border-emerald-200">
+                Signature certifiée
               </span>
             </div>
 
-            <h1 className="text-2xl font-black text-[#0b1c30] tracking-tight">
-              Registre Centralisé d'Audit Trail & Preuves Opposables
+            <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+              Historique certifié des actions & journal de bord
             </h1>
-            <p className="text-[13px] text-[#64748b] mt-1 max-w-3xl leading-relaxed">
-              Enregistrement immuable et horodaté de l'ensemble des actes contentieux, notifications DMCA, générations de PV d'huissier, ingestions de données sources et exports confidentiels.
+            <p className="text-[13px] text-slate-600 mt-1 max-w-3xl leading-relaxed">
+              Consultez l'historique complet, sécurisé et horodaté de toutes les actions : signalements, procès-verbaux, blocages, ajouts de preuves et téléchargements de rapports.
             </p>
           </div>
 
           <div className="flex items-center gap-2.5 flex-wrap shrink-0">
             <button
               onClick={() => setIsPolicyModalOpen(true)}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-300 text-[#0b1c30] text-[12px] font-bold transition-all shadow-2xs cursor-pointer"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-800 text-[12px] font-medium transition-all shadow-2xs cursor-pointer"
             >
-              <BookOpen className="w-3.5 h-3.5 text-[#0b1c30]" />
-              <span>Matrice & Politique d'Audit</span>
+              <BookOpen className="w-3.5 h-3.5 text-slate-700" />
+              <span>Guide & Droits d'accès</span>
             </button>
 
             <button
               onClick={handleVerifyIntegrity}
               disabled={isVerifying}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 border border-[#cbd5e1] text-[#0b1c30] text-[12px] font-bold transition-all shadow-2xs cursor-pointer disabled:opacity-50"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 text-slate-800 text-[12px] font-medium transition-all shadow-2xs cursor-pointer disabled:opacity-50"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isVerifying ? 'animate-spin' : ''}`} />
-              <span>{isVerifying ? 'Vérification...' : "Contrôler l'Intégrité de Chaîne"}</span>
+              <span>{isVerifying ? 'Vérification...' : "Vérifier la validité des preuves"}</span>
             </button>
 
             <button
               onClick={() => handleExport('csv')}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#0b1c30] hover:bg-[#162f4f] text-white text-[12px] font-bold shadow-xs transition-all cursor-pointer"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-[12px] font-medium shadow-xs transition-all cursor-pointer"
             >
               <Download className="w-3.5 h-3.5" />
-              <span>Exporter Journal (.csv)</span>
+              <span>Télécharger le journal (.csv)</span>
             </button>
           </div>
         </div>
 
-        {/* BANDEAU DE PÉRIMÈTRE & CONTRÔLE RBAC */}
-        <div className="mt-4 p-3.5 rounded-xl bg-[#f8fafc] border border-[#e2e8f0] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-[12px]">
+        {/* BANDEAU DE PÉRIMÈTRE & CONTRÔLE D'ACCÈS */}
+        <div className="mt-4 p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-[12px]">
           <div className="flex items-start sm:items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-[#0b1c30] text-white flex items-center justify-center font-bold text-[13px] shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-slate-800 text-white flex items-center justify-center font-bold text-[13px] shrink-0">
               {activeAccount.id === 'admin' ? 'DS' : activeAccount.id === 'juridique' ? 'DJ' : 'DG'}
             </div>
             <div>
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="font-bold text-[#0b1c30]">
-                  Périmètre appliqué : {activeAccount.title} ({activeAccount.holderName})
+                <span className="font-bold text-slate-900">
+                  Profil connecté : {activeAccount.title} ({activeAccount.holderName})
                 </span>
                 {/* Sélecteur de simulation de vue pour tester les habilitations */}
-                <div className="inline-flex items-center gap-1.5 bg-white border border-[#cbd5e1] rounded-md px-2 py-0.5 shadow-2xs">
-                  <span className="text-[10px] text-slate-500 font-semibold uppercase">Perspective :</span>
+                <div className="inline-flex items-center gap-1.5 bg-white border border-slate-300 rounded-md px-2 py-0.5 shadow-2xs">
+                  <span className="text-[10px] text-slate-500 font-semibold uppercase">Vue active :</span>
                   <select
                     value={activePerspectiveRole}
                     onChange={(e) => setActivePerspectiveRole(e.target.value as UserRole)}
-                    className="text-[11px] font-bold text-[#0b1c30] bg-transparent outline-none cursor-pointer"
+                    className="text-[11px] font-bold text-slate-900 bg-transparent outline-none cursor-pointer"
                   >
-                    <option value="admin">Administrateur (Complet - 100%)</option>
-                    <option value="juridique">Direction Juridique (Actes & Preuves)</option>
-                    <option value="direction">Direction Générale (Gouvernance)</option>
+                    <option value="admin">Administrateur (Vue complète à 100%)</option>
+                    <option value="juridique">Direction Juridique (Actions & Preuves)</option>
+                    <option value="direction">Direction Générale (Vue globale)</option>
                   </select>
                 </div>
               </div>
-              <span className="text-[11px] text-[#64748b] block mt-0.5">
+              <span className="text-[11px] text-slate-600 block mt-0.5">
                 {activePerspectiveRole === 'admin'
-                  ? "Accès complet DSI / Cellule Anti-Piratage : traçabilité technique, juridique, sécurité et intégrité des bases."
+                  ? "Accès complet : toutes les actions techniques, juridiques, de sécurité et d'import de données sont visibles."
                   : activePerspectiveRole === 'juridique'
-                  ? "Accès Direction Juridique : visualisation exclusive des constats, demandes de blocage DMCA et preuves contentieuses."
-                  : "Accès Direction Générale : synthèse globale de conformité, gouvernance et volume d'actes en lecture seule."}
+                  ? "Accès Direction Juridique : affichage ciblé des constats, demandes de blocage et pièces de preuve."
+                  : "Accès Direction Générale : vue synthétique et globale de l'activité, sans détails informatiques complexes."}
               </span>
             </div>
           </div>
@@ -274,11 +274,11 @@ export const AuditTrailPage: React.FC<AuditTrailPageProps> = ({
             {integrityStatus && (
               <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                Scellé intact à {integrityStatus.date}
+                Preuves vérifiées intactes à {integrityStatus.date}
               </span>
             )}
-            <span className="text-[11px] font-mono font-bold text-[#64748b]">
-              {filteredEvents.length} / {roleEvents.length} entrées
+            <span className="text-[11px] font-mono font-medium text-slate-600">
+              {filteredEvents.length} / {roleEvents.length} actions
             </span>
           </div>
         </div>
@@ -286,63 +286,63 @@ export const AuditTrailPage: React.FC<AuditTrailPageProps> = ({
 
       {/* 2. CARTES KPI AUDIT TRAIL */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-4 rounded-xl bg-white border border-[#e2e8f0] shadow-2xs">
-          <div className="flex items-center justify-between text-[#64748b] mb-1.5">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#0b1c30]">
-              Total Actes Enregistrés
+        <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-2xs">
+          <div className="flex items-center justify-between text-slate-500 mb-1.5">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-800">
+              Total des Actions Enregistrées
             </span>
             <Layers className="w-4 h-4 text-slate-700" />
           </div>
-          <div className="text-[28px] font-black text-[#0b1c30] font-mono leading-none">
+          <div className="text-[28px] font-bold text-slate-900 font-mono leading-none">
             {stats.total}
           </div>
-          <p className="text-[11px] text-[#64748b] mt-2">
-            Journal complet WORM sans possibilité d'effacement
+          <p className="text-[11px] text-slate-500 mt-2">
+            Historique complet, aucune suppression possible
           </p>
         </div>
 
-        <div className="p-4 rounded-xl bg-white border border-[#e2e8f0] shadow-2xs">
-          <div className="flex items-center justify-between text-[#64748b] mb-1.5">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#0b1c30]">
-              Actes Juridiques & Constats
+        <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-2xs">
+          <div className="flex items-center justify-between text-slate-500 mb-1.5">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-800">
+              Actions Juridiques & Constats
             </span>
-            <Scale className="w-4 h-4 text-[#0b1c30]" />
+            <Scale className="w-4 h-4 text-slate-800" />
           </div>
-          <div className="text-[28px] font-black text-[#0b1c30] font-mono leading-none">
+          <div className="text-[28px] font-bold text-slate-900 font-mono leading-none">
             {stats.legalCount}
           </div>
-          <p className="text-[11px] text-[#64748b] mt-2">
-            PV d'huissier PDF générés et notifications FAI
+          <p className="text-[11px] text-slate-500 mt-2">
+            Procès-verbaux générés et demandes de coupure
           </p>
         </div>
 
-        <div className="p-4 rounded-xl bg-white border border-[#e2e8f0] shadow-2xs">
-          <div className="flex items-center justify-between text-[#64748b] mb-1.5">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#0b1c30]">
-              Contrôles Intégrité Données
+        <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-2xs">
+          <div className="flex items-center justify-between text-slate-500 mb-1.5">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-800">
+              Imports & Mises à Jour
             </span>
             <FileSpreadsheet className="w-4 h-4 text-slate-700" />
           </div>
-          <div className="text-[28px] font-black text-[#0b1c30] font-mono leading-none">
+          <div className="text-[28px] font-bold text-slate-900 font-mono leading-none">
             {stats.dataCount}
           </div>
-          <p className="text-[11px] text-[#64748b] mt-2">
-            Ingestions Excel, CSV et formulaires terrain tracés
+          <p className="text-[11px] text-slate-500 mt-2">
+            Fichiers Excel, CSV et formulaires enregistrés
           </p>
         </div>
 
-        <div className="p-4 rounded-xl bg-white border border-[#e2e8f0] shadow-2xs">
-          <div className="flex items-center justify-between text-[#64748b] mb-1.5">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#0b1c30]">
-              Actions Hautement Sensibles
+        <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-2xs">
+          <div className="flex items-center justify-between text-slate-500 mb-1.5">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-800">
+              Actions Prioritaires / Critiques
             </span>
             <ShieldAlert className="w-4 h-4 text-red-700" />
           </div>
-          <div className="text-[28px] font-black text-red-700 font-mono leading-none">
+          <div className="text-[28px] font-bold text-red-700 font-mono leading-none">
             {stats.criticalCount}
           </div>
-          <p className="text-[11px] text-[#64748b] mt-2">
-            Injonctions légales et fermetures de flux en coordination
+          <p className="text-[11px] text-slate-500 mt-2">
+            Demandes de coupures urgentes et signalements
           </p>
         </div>
       </div>
@@ -352,13 +352,13 @@ export const AuditTrailPage: React.FC<AuditTrailPageProps> = ({
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
           {/* Recherche plein texte */}
           <div className="relative flex-1">
-            <Search className="w-4 h-4 text-[#94a3b8] absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Rechercher par identifiant d'acte (AUD-...), cible, acteur, email ou mot-clé..."
-              className="w-full pl-9 pr-4 py-2 rounded-lg bg-[#f8fafc] border border-[#cbd5e1] text-[13px] text-[#0b1c30] focus:outline-none focus:border-[#0b1c30] focus:bg-white transition-all font-mono"
+              placeholder="Rechercher par référence, cible, auteur, email ou mot-clé..."
+              className="w-full pl-9 pr-4 py-2 rounded-lg bg-slate-50 border border-slate-300 text-[13px] text-slate-900 focus:outline-none focus:border-slate-500 focus:bg-white transition-all font-mono"
             />
             {searchQuery && (
               <button
@@ -375,25 +375,25 @@ export const AuditTrailPage: React.FC<AuditTrailPageProps> = ({
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value as AuditCategory | 'ALL')}
-              className="px-3 py-2 rounded-lg bg-[#f8fafc] border border-[#cbd5e1] text-[12px] font-bold text-[#0b1c30] focus:outline-none cursor-pointer"
+              className="px-3 py-2 rounded-lg bg-slate-50 border border-slate-300 text-[12px] font-semibold text-slate-800 focus:outline-none cursor-pointer"
             >
               <option value="ALL">Toutes les catégories</option>
-              <option value="LEGAL">Actes Juridiques & Preuves</option>
-              <option value="DATA_INTEGRITY">Intégrité Données & Ingestion</option>
-              <option value="SECURITY">Sécurité & Sessions</option>
-              <option value="EXPORT">Exports Confidentiels</option>
+              <option value="LEGAL">Actions Juridiques & Preuves</option>
+              <option value="DATA_INTEGRITY">Imports & Mises à jour</option>
+              <option value="SECURITY">Sécurité & Connexions</option>
+              <option value="EXPORT">Téléchargements de rapports</option>
             </select>
 
             {/* Filtre Criticité */}
             <select
               value={selectedSeverity}
               onChange={(e) => setSelectedSeverity(e.target.value as AuditSeverity | 'ALL')}
-              className="px-3 py-2 rounded-lg bg-[#f8fafc] border border-[#cbd5e1] text-[12px] font-bold text-[#0b1c30] focus:outline-none cursor-pointer"
+              className="px-3 py-2 rounded-lg bg-slate-50 border border-slate-300 text-[12px] font-semibold text-slate-800 focus:outline-none cursor-pointer"
             >
-              <option value="ALL">Toutes les criticités</option>
-              <option value="CRITICAL">Critique</option>
+              <option value="ALL">Tous les niveaux</option>
+              <option value="CRITICAL">Priorité Haute / Critique</option>
               <option value="WARNING">Avertissement</option>
-              <option value="INFO">Information</option>
+              <option value="INFO">Information standard</option>
             </select>
 
             {/* Filtre Territoire */}
@@ -401,7 +401,7 @@ export const AuditTrailPage: React.FC<AuditTrailPageProps> = ({
               <select
                 value={selectedTerritory}
                 onChange={(e) => setSelectedTerritory(e.target.value)}
-                className="px-3 py-2 rounded-lg bg-[#f8fafc] border border-[#cbd5e1] text-[12px] font-bold text-[#0b1c30] focus:outline-none cursor-pointer"
+                className="px-3 py-2 rounded-lg bg-slate-50 border border-slate-300 text-[12px] font-semibold text-slate-800 focus:outline-none cursor-pointer"
               >
                 <option value="ALL">Tous les territoires</option>
                 {territoriesList.map((t) => (
@@ -416,27 +416,27 @@ export const AuditTrailPage: React.FC<AuditTrailPageProps> = ({
       </div>
 
       {/* 4. TABLEAU DU JOURNAL D'AUDIT HAUTE DENSITÉ */}
-      <div className="bg-white rounded-2xl border border-[#e2e8f0] shadow-2xs overflow-hidden">
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-[12px]">
-            <thead className="bg-[#f8fafc] border-b border-[#e2e8f0] text-[10px] font-bold uppercase text-[#64748b] tracking-wider">
+            <thead className="bg-slate-50 border-b border-slate-200 text-[10px] font-semibold uppercase text-slate-500 tracking-wider">
               <tr>
-                <th className="py-3 px-4">Réf. Acte / Date UTC</th>
-                <th className="py-3 px-4">Auteur & Direction</th>
-                <th className="py-3 px-4">Action Exécutée</th>
+                <th className="py-3 px-4">Réf. Action / Date</th>
+                <th className="py-3 px-4">Auteur & Service</th>
+                <th className="py-3 px-4">Action Réalisée</th>
                 <th className="py-3 px-4">Cible / Territoire</th>
                 <th className="py-3 px-4">Détails de l'Opération</th>
-                <th className="py-3 px-4">Empreinte SHA-256</th>
-                <th className="py-3 px-4 text-right">Récépissé</th>
+                <th className="py-3 px-4">Signature de Sécurité</th>
+                <th className="py-3 px-4 text-right">Fiche</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#f1f5f9]">
+            <tbody className="divide-y divide-slate-100">
               {filteredEvents.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="py-12 text-center text-[#64748b]">
-                    <ShieldCheck className="w-8 h-8 text-[#94a3b8] mx-auto mb-2" />
+                  <td colSpan={7} className="py-12 text-center text-slate-500">
+                    <ShieldCheck className="w-8 h-8 text-slate-400 mx-auto mb-2" />
                     <p className="font-medium text-[13px]">Aucun enregistrement ne correspond aux critères.</p>
-                    <p className="text-[11px] text-[#94a3b8] mt-0.5">
+                    <p className="text-[11px] text-slate-400 mt-0.5">
                       Modifiez les filtres de catégorie ou de recherche ci-dessus.
                     </p>
                   </td>
@@ -446,41 +446,41 @@ export const AuditTrailPage: React.FC<AuditTrailPageProps> = ({
                   const catBadge = getCategoryBadge(entry.category);
                   const Icon = catBadge.icon;
                   return (
-                    <tr key={entry.id} className="hover:bg-[#f8fafc] transition-colors">
+                    <tr key={entry.id} className="hover:bg-slate-50/70 transition-colors">
                       {/* Réf. Acte & Date */}
                       <td className="py-3 px-4 font-mono">
-                        <span className="font-bold text-[#0b1c30] block">
+                        <span className="font-bold text-slate-900 block">
                           {entry.id}
                         </span>
-                        <span className="text-[10px] text-[#64748b] block mt-0.5" title={`UTC: ${entry.timestampUtc}`}>
+                        <span className="text-[10px] text-slate-500 block mt-0.5" title={`UTC: ${entry.timestampUtc}`}>
                           {entry.timestampLocal}
                         </span>
                       </td>
 
                       {/* Auteur & Direction */}
                       <td className="py-3 px-4">
-                        <span className="font-bold text-[#0b1c30] block">
+                        <span className="font-bold text-slate-900 block">
                           {entry.actorName}
                         </span>
-                        <span className="text-[10.5px] text-[#64748b] font-mono block mt-0.5 truncate max-w-[190px]" title={entry.actorEmail}>
+                        <span className="text-[10.5px] text-slate-500 font-mono block mt-0.5 truncate max-w-[190px]" title={entry.actorEmail}>
                           {entry.actorEmail}
                         </span>
-                        <span className="text-[9.5px] text-slate-500 block truncate max-w-[190px]">
-                          {entry.ipAddress}
+                        <span className="text-[9.5px] text-slate-400 block truncate max-w-[190px]">
+                          Poste : {entry.ipAddress}
                         </span>
                       </td>
 
                       {/* Action & Catégorie */}
                       <td className="py-3 px-4">
-                        <span className="font-bold text-[#0b1c30] block leading-tight">
+                        <span className="font-semibold text-slate-900 block leading-tight">
                           {entry.actionLabel}
                         </span>
                         <div className="flex items-center gap-1.5 mt-1 flex-wrap">
-                          <span className={`inline-flex items-center gap-1 text-[9.5px] font-bold px-1.5 py-0.2 rounded border ${catBadge.className}`}>
+                          <span className={`inline-flex items-center gap-1 text-[9.5px] font-medium px-1.5 py-0.5 rounded border ${catBadge.className}`}>
                             <Icon className="w-3 h-3" />
                             {catBadge.label}
                           </span>
-                          <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded border ${getSeverityBadge(entry.severity)}`}>
+                          <span className={`text-[9px] font-medium px-1.5 py-0.5 rounded border ${getSeverityBadge(entry.severity)}`}>
                             {entry.severity}
                           </span>
                         </div>
@@ -490,39 +490,39 @@ export const AuditTrailPage: React.FC<AuditTrailPageProps> = ({
                       <td className="py-3 px-4 font-mono">
                         {entry.targetLabel ? (
                           <>
-                            <span className="font-bold text-[#0b1c30] block truncate max-w-[160px]" title={entry.targetLabel}>
+                            <span className="font-bold text-slate-900 block truncate max-w-[160px]" title={entry.targetLabel}>
                               {entry.targetLabel}
                             </span>
-                            <span className="text-[10px] text-[#64748b] block">
+                            <span className="text-[10px] text-slate-500 block">
                               {entry.territory || 'Régional'}
                             </span>
                           </>
                         ) : (
-                          <span className="text-[11px] text-[#94a3b8] italic">— Système —</span>
+                          <span className="text-[11px] text-slate-400 italic">— Système —</span>
                         )}
                       </td>
 
                       {/* Détails */}
-                      <td className="py-3 px-4 text-[#475569] max-w-xs">
+                      <td className="py-3 px-4 text-slate-700 max-w-xs">
                         <p className="line-clamp-2 text-[11.5px] leading-snug">
                           {entry.details}
                         </p>
                         {entry.previousState && entry.newState && (
                           <span className="text-[10px] text-slate-600 block mt-0.5 font-medium">
-                            Statut : <span className="line-through">{entry.previousState}</span> ➔ <strong>{entry.newState}</strong>
+                            Statut : <span className="line-through text-slate-400">{entry.previousState}</span> ➔ <strong className="text-slate-900">{entry.newState}</strong>
                           </span>
                         )}
                       </td>
 
-                      {/* Empreinte SHA-256 */}
+                      {/* Empreinte / Signature */}
                       <td className="py-3 px-4 font-mono text-[11px]">
                         <button
                           type="button"
                           onClick={() => handleCopyHash(entry.sha256Hash)}
-                          className="flex items-center gap-1 text-slate-600 hover:text-[#0b1c30] bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded border border-slate-200 transition-colors cursor-pointer group"
-                          title="Cliquer pour copier l'empreinte complète SHA-256"
+                          className="flex items-center gap-1 text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded border border-slate-200 transition-colors cursor-pointer group"
+                          title="Cliquer pour copier la signature de sécurité"
                         >
-                          <span className="font-bold text-[#0b1c30]">
+                          <span className="font-semibold text-slate-800">
                             {entry.sha256Hash.slice(0, 8)}...{entry.sha256Hash.slice(-6)}
                           </span>
                           <Copy className="w-3 h-3 opacity-60 group-hover:opacity-100" />
@@ -534,10 +534,10 @@ export const AuditTrailPage: React.FC<AuditTrailPageProps> = ({
                         <button
                           type="button"
                           onClick={() => setSelectedEntry(entry)}
-                          className="px-2.5 py-1 rounded-lg bg-white hover:bg-slate-100 text-[#0b1c30] text-[11px] font-bold border border-[#cbd5e1] transition-colors cursor-pointer flex items-center gap-1 ml-auto"
+                          className="px-2.5 py-1 rounded-lg bg-white hover:bg-slate-50 text-slate-800 text-[11px] font-medium border border-slate-300 transition-colors cursor-pointer flex items-center gap-1 ml-auto"
                         >
-                          <Eye className="w-3 h-3 text-[#64748b]" />
-                          <span>Récépissé</span>
+                          <Eye className="w-3 h-3 text-slate-500" />
+                          <span>Détails</span>
                         </button>
                       </td>
                     </tr>
@@ -549,126 +549,170 @@ export const AuditTrailPage: React.FC<AuditTrailPageProps> = ({
         </div>
       </div>
 
-      {/* 5. MODALE RÉCÉPISSÉ & CERTIFICAT D'AUDIT SCELLÉ */}
+      {/* 5. MODALE RÉCÉPISSÉ & CERTIFICAT D'ACTION SCELLÉ - VUE RAPIDE AVEC SCROLLER */}
       {selectedEntry && (
         <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto"
           onClick={() => setSelectedEntry(null)}
         >
           <div
-            className="bg-white rounded-2xl max-w-2xl w-full p-6 border border-[#e2e8f0] shadow-2xl space-y-4 animate-fade-in"
+            className="bg-white rounded-2xl max-w-2xl w-full max-h-[88vh] flex flex-col border border-slate-200 shadow-xl overflow-hidden text-slate-900 animate-fade-in"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between pb-3 border-b border-[#f1f5f9]">
+            {/* 1. EN-TÊTE FIXE */}
+            <div className="p-4 sm:p-5 border-b border-slate-200 bg-white flex items-center justify-between shrink-0">
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-lg bg-[#0b1c30] text-white flex items-center justify-center">
-                  <ShieldCheck className="w-5 h-5" />
+                <div className="w-9 h-9 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 flex items-center justify-center shadow-xs">
+                  <ShieldCheck className="w-5 h-5 text-slate-700" />
                 </div>
                 <div>
-                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">
-                    Certificat d'Enregistrement Horodaté
-                  </span>
-                  <h3 className="text-[16px] font-bold text-[#0b1c30] font-mono">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10.5px] font-semibold text-slate-500 uppercase tracking-wider block">
+                      Fiche d'enregistrement certifiée
+                    </span>
+                    <span className={`text-[9.5px] font-semibold px-1.5 py-0.5 rounded border ${getSeverityBadge(selectedEntry.severity)}`}>
+                      {selectedEntry.severity}
+                    </span>
+                  </div>
+                  <h3 className="text-[16px] font-bold text-slate-900 font-mono">
                     {selectedEntry.id}
                   </h3>
                 </div>
               </div>
 
               <button
+                type="button"
                 onClick={() => setSelectedEntry(null)}
-                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-black flex items-center justify-center cursor-pointer transition-colors"
+                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900 flex items-center justify-center cursor-pointer transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            {/* Corps du certificat */}
-            <div className="space-y-3 text-[12px]">
-              <div className="grid grid-cols-2 gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200 font-mono">
-                <div>
-                  <span className="text-[10px] text-gray-500 uppercase font-bold block">Date & Heure UTC</span>
-                  <span className="text-[#0b1c30] font-bold block">{selectedEntry.timestampUtc}</span>
+            {/* BARRE INDICATRICE DE DÉFILEMENT POUR CERVEAU PRESSÉ */}
+            <div className="px-4 py-1.5 bg-slate-50 border-b border-slate-200 text-[11px] text-slate-600 font-medium flex items-center justify-between shrink-0">
+              <span className="flex items-center gap-1.5 font-medium text-slate-700">
+                <span>↕</span> Défilement vertical complet disponible (haut en bas)
+              </span>
+              <span className="text-[10px] text-slate-500 font-mono">
+                {selectedEntry.territory || 'Pan-Afrique'} • {selectedEntry.actionCode}
+              </span>
+            </div>
+
+            {/* 2. CORPS DÉFILABLE DE HAUT EN BAS (SCROLLER DÉDIÉ) */}
+            <div className="flex-1 overflow-y-auto custom-scrollbar p-5 space-y-4 text-[12px]">
+              {/* SYNTHÈSE EXPRESS */}
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/90 space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10.5px] font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-slate-600" />
+                    Synthèse de l'action enregistrée
+                  </span>
+                  <span className="text-[10.5px] font-mono text-slate-500">
+                    {selectedEntry.timestampLocal}
+                  </span>
                 </div>
-                <div>
-                  <span className="text-[10px] text-gray-500 uppercase font-bold block">Date & Heure Locale</span>
-                  <span className="text-[#0b1c30] font-bold block">{selectedEntry.timestampLocal}</span>
+                <div className="text-[14px] font-bold text-slate-900 leading-tight">
+                  {selectedEntry.actionLabel}
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1 border-t border-slate-200 text-[11px]">
+                  <div className="bg-white border border-slate-200 p-2 rounded-lg">
+                    <span className="text-[9.5px] text-slate-500 block uppercase font-medium">Auteur de l'action</span>
+                    <span className="font-bold text-slate-900 truncate block" title={selectedEntry.actorName}>
+                      {selectedEntry.actorName}
+                    </span>
+                  </div>
+                  <div className="bg-white border border-slate-200 p-2 rounded-lg">
+                    <span className="text-[9.5px] text-slate-500 block uppercase font-medium">Cible / Territoire</span>
+                    <span className="font-bold text-slate-900 truncate block">
+                      {selectedEntry.targetLabel || 'Système'} ({selectedEntry.territory || 'Pan-Afrique'})
+                    </span>
+                  </div>
+                  <div className="bg-white border border-slate-200 p-2 rounded-lg col-span-2 sm:col-span-1">
+                    <span className="text-[9.5px] text-slate-500 block uppercase font-medium">Protection</span>
+                    <span className="font-mono font-bold text-slate-800 block">
+                      Verrouillé & Certifié
+                    </span>
+                  </div>
                 </div>
               </div>
 
-              <div className="p-3.5 rounded-xl border border-slate-200 space-y-2">
-                <div className="flex justify-between py-1 border-b border-slate-100">
-                  <span className="text-slate-500">Auteur de l'action :</span>
-                  <span className="font-bold text-[#0b1c30]">{selectedEntry.actorName}</span>
-                </div>
-                <div className="flex justify-between py-1 border-b border-slate-100 font-mono">
-                  <span className="text-slate-500">Adresse Email :</span>
-                  <span className="text-[#0b1c30] font-semibold">{selectedEntry.actorEmail}</span>
-                </div>
-                <div className="flex justify-between py-1 border-b border-slate-100">
-                  <span className="text-slate-500">Direction / Service :</span>
-                  <span className="text-[#0b1c30]">{selectedEntry.actorDepartment}</span>
-                </div>
-                <div className="flex justify-between py-1 border-b border-slate-100 font-mono">
-                  <span className="text-slate-500">Origine réseau (IP) :</span>
-                  <span className="text-[#0b1c30]">{selectedEntry.ipAddress}</span>
-                </div>
-                <div className="flex justify-between py-1 border-b border-slate-100">
-                  <span className="text-slate-500">Intitulé de l'acte :</span>
-                  <span className="font-bold text-[#0b1c30]">{selectedEntry.actionLabel}</span>
-                </div>
-                {selectedEntry.targetLabel && (
-                  <div className="flex justify-between py-1 border-b border-slate-100">
-                    <span className="text-slate-500">Cible concernée :</span>
-                    <span className="font-bold text-[#0b1c30] font-mono">
-                      {selectedEntry.targetLabel} ({selectedEntry.territory || 'Panafricain'})
-                    </span>
-                  </div>
-                )}
-                {selectedEntry.previousState && selectedEntry.newState && (
-                  <div className="flex justify-between py-1 border-b border-slate-100">
-                    <span className="text-slate-500">Transition de statut :</span>
-                    <span className="text-[#0b1c30]">
-                      {selectedEntry.previousState} ➔ <strong>{selectedEntry.newState}</strong>
-                    </span>
-                  </div>
-                )}
-              </div>
-
-              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
-                <span className="text-[10px] text-slate-500 uppercase font-bold block mb-1">
-                  Description détaillée de l'acte
+              {/* DÉTAILS DE L'OPÉRATION */}
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                <span className="text-[10.5px] text-slate-500 uppercase font-semibold block">
+                  Description de l'Opération
                 </span>
-                <p className="text-[12px] text-slate-800 leading-relaxed">
+                <p className="text-[12.5px] text-slate-800 leading-relaxed font-normal">
                   {selectedEntry.details}
                 </p>
+                {selectedEntry.previousState && selectedEntry.newState && (
+                  <div className="p-2 rounded-lg bg-white border border-slate-200 flex items-center justify-between text-[11px] font-mono">
+                    <span className="text-slate-500">Changement de statut :</span>
+                    <span className="text-slate-900">
+                      <span className="line-through text-slate-400">{selectedEntry.previousState}</span> ➔ <strong className="text-slate-900 font-bold">{selectedEntry.newState}</strong>
+                    </span>
+                  </div>
+                )}
               </div>
 
-              {/* Empreinte cryptographique */}
-              <div className="p-3.5 rounded-xl bg-[#0b1c30] text-white space-y-1">
+              {/* HORODATAGE & MÉTADONNÉES TECHNIQUES */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11.5px] font-mono">
+                <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <span className="text-[10px] text-slate-400 uppercase font-bold block">Date & Heure officielles (UTC)</span>
+                  <span className="text-slate-900 font-bold block select-all">{selectedEntry.timestampUtc}</span>
+                  <span className="text-[10px] text-slate-500 block">Horodatage de référence légale</span>
+                </div>
+                <div className="p-3 rounded-xl bg-white border border-slate-200 space-y-1">
+                  <span className="text-[10px] text-slate-400 uppercase font-bold block">Poste de travail / IP</span>
+                  <span className="text-slate-900 font-bold block select-all">{selectedEntry.ipAddress}</span>
+                  <span className="text-[10px] text-slate-500 block">{selectedEntry.actorDepartment}</span>
+                </div>
+              </div>
+
+              {/* ACTEUR ET SERVICE DÉCLARANT */}
+              <div className="p-3 rounded-xl border border-slate-200 bg-white space-y-1.5 text-[11.5px]">
+                <div className="flex justify-between py-1 border-b border-slate-100">
+                  <span className="text-slate-500">Email professionnel :</span>
+                  <span className="font-mono font-bold text-slate-900 select-all">{selectedEntry.actorEmail}</span>
+                </div>
+                <div className="flex justify-between py-1 border-b border-slate-100">
+                  <span className="text-slate-500">Service / Direction :</span>
+                  <span className="text-slate-900">{selectedEntry.actorDepartment}</span>
+                </div>
+                <div className="flex justify-between py-1">
+                  <span className="text-slate-500">Type d'opération :</span>
+                  <span className="font-mono font-bold text-slate-900 bg-slate-100 px-1.5 py-0.5 rounded">{selectedEntry.actionCode}</span>
+                </div>
+              </div>
+
+              {/* SIGNATURE DE SÉCURITÉ INFALSIFIABLE */}
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                    <Lock className="w-3 h-3 text-emerald-400" />
-                    Empreinte Numérique SHA-256 (Scellement d'Intégrité)
+                  <span className="text-[10px] font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1.5">
+                    <Lock className="w-3.5 h-3.5 text-slate-600" />
+                    Signature de sécurité numérique
                   </span>
                   <button
                     type="button"
                     onClick={() => handleCopyHash(selectedEntry.sha256Hash)}
-                    className="text-[10px] text-slate-300 hover:text-white underline cursor-pointer"
+                    className="text-[10.5px] text-slate-700 hover:text-slate-950 underline cursor-pointer flex items-center gap-1 font-semibold"
                   >
-                    Copier
+                    <Copy className="w-3 h-3" />
+                    <span>Copier la signature</span>
                   </button>
                 </div>
-                <p className="font-mono text-[11px] text-emerald-300 break-all">
+                <p className="font-mono text-[11px] text-slate-900 break-all bg-white p-2 rounded-lg border border-slate-200 select-all">
                   {selectedEntry.sha256Hash}
                 </p>
-                <p className="text-[10px] text-slate-400 pt-1">
-                  Cette empreinte garantit la non-répudiation de l'acte devant les juridictions compétentes et les autorités de régulation (OHADA & UEMOA).
+                <p className="text-[10px] text-slate-500 pt-0.5 leading-relaxed">
+                  Cette signature unique prouve que l'action a bien eu lieu à cette date et garantit qu'aucune information n'a été modifiée après son enregistrement.
                 </p>
               </div>
             </div>
 
-            <div className="pt-3 border-t border-[#f1f5f9] flex items-center justify-between">
-              {selectedEntry.targetId && onNavigateToThreat && (
+            {/* 3. PIED DE MODALE FIXE */}
+            <div className="p-3.5 sm:p-4 border-t border-slate-200 bg-white flex items-center justify-between shrink-0">
+              {selectedEntry.targetId && onNavigateToThreat ? (
                 <button
                   type="button"
                   onClick={() => {
@@ -676,17 +720,21 @@ export const AuditTrailPage: React.FC<AuditTrailPageProps> = ({
                     setSelectedEntry(null);
                     onNavigateToThreat(id);
                   }}
-                  className="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-[#0b1c30] text-[11px] font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+                  className="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-[11px] font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
                 >
-                  <ExternalLink className="w-3.5 h-3.5" />
-                  <span>Voir le dossier cible</span>
+                  <ExternalLink className="w-3.5 h-3.5 text-slate-600" />
+                  <span>Voir le dossier concerné</span>
                 </button>
+              ) : (
+                <span className="text-[11px] text-slate-500 font-medium">
+                  Document certifié conforme
+                </span>
               )}
 
               <button
                 type="button"
                 onClick={() => setSelectedEntry(null)}
-                className="ml-auto px-4 py-2 rounded-xl bg-[#0b1c30] text-white text-[12px] font-bold hover:bg-[#162f4f] cursor-pointer"
+                className="px-4 py-2 rounded-xl bg-slate-800 text-white text-[12px] font-medium hover:bg-slate-900 cursor-pointer transition-colors ml-auto"
               >
                 Fermer
               </button>
@@ -698,30 +746,30 @@ export const AuditTrailPage: React.FC<AuditTrailPageProps> = ({
       {/* 6. MODALE CORPORATE : MATRICE DE TRAÇABILITÉ & POLITIQUE D'AUDIT TRAIL */}
       {isPolicyModalOpen && (
         <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 overflow-y-auto"
+          className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4 overflow-y-auto"
           onClick={() => setIsPolicyModalOpen(false)}
         >
           <div
-            className="bg-white rounded-2xl max-w-4xl w-full max-h-[92vh] flex flex-col border border-[#cbd5e1] shadow-2xl overflow-hidden my-4"
+            className="bg-white rounded-2xl max-w-4xl w-full max-h-[92vh] flex flex-col border border-slate-200 shadow-xl overflow-hidden my-4 text-slate-900"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Entête de la modale */}
-            <div className="p-5 border-b border-[#e2e8f0] bg-[#f8fafc] flex items-center justify-between shrink-0">
+            <div className="p-5 border-b border-slate-200 bg-white flex items-center justify-between shrink-0">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#0b1c30] text-white flex items-center justify-center shrink-0">
-                  <BookOpen className="w-5 h-5 text-emerald-400" />
+                <div className="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 flex items-center justify-center shrink-0">
+                  <BookOpen className="w-5 h-5 text-slate-700" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h2 className="text-[16px] font-bold text-[#0b1c30]">
-                      Politique d'Audit Trail & Matrice des Habilitations RBAC
+                    <h2 className="text-[16px] font-bold text-slate-900">
+                      Guide de Traçabilité & Droits d'Accès par Profil
                     </h2>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200 text-slate-800">
-                      Cadre de Référence
+                    <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-700 border border-slate-200">
+                      Règles de fonctionnement
                     </span>
                   </div>
-                  <p className="text-[12px] text-[#64748b] mt-0.5">
-                    Définition stricte des actions tracées, ségrégation des privilèges d'accès aux logs et valeur probatoire.
+                  <p className="text-[12px] text-slate-500 mt-0.5">
+                    Comprendre simplement ce qui est enregistré, qui a accès aux informations et la valeur légale des preuves.
                   </p>
                 </div>
               </div>
@@ -729,111 +777,146 @@ export const AuditTrailPage: React.FC<AuditTrailPageProps> = ({
               <button
                 type="button"
                 onClick={() => setIsPolicyModalOpen(false)}
-                className="w-8 h-8 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-600 flex items-center justify-center transition-colors cursor-pointer"
+                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900 flex items-center justify-center transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             {/* Onglets internes */}
-            <div className="px-5 pt-3 bg-white border-b border-[#e2e8f0] flex items-center gap-2 shrink-0">
+            <div className="px-5 pt-3 bg-white border-b border-slate-200 flex items-center gap-2 shrink-0">
               <button
                 type="button"
                 onClick={() => setPolicyTab('actions')}
-                className={`px-3.5 py-2 text-[12px] font-bold border-b-2 transition-colors cursor-pointer ${
+                className={`px-3.5 py-2 text-[12px] font-semibold border-b-2 transition-colors cursor-pointer ${
                   policyTab === 'actions'
-                    ? 'border-[#0b1c30] text-[#0b1c30]'
+                    ? 'border-slate-800 text-slate-900'
                     : 'border-transparent text-slate-500 hover:text-slate-800'
                 }`}
               >
-                1. Actions Soumises à Traçabilité (Quoi ?)
+                1. Ce qui est enregistré
               </button>
               <button
                 type="button"
                 onClick={() => setPolicyTab('roles')}
-                className={`px-3.5 py-2 text-[12px] font-bold border-b-2 transition-colors cursor-pointer ${
+                className={`px-3.5 py-2 text-[12px] font-semibold border-b-2 transition-colors cursor-pointer ${
                   policyTab === 'roles'
-                    ? 'border-[#0b1c30] text-[#0b1c30]'
+                    ? 'border-slate-800 text-slate-900'
                     : 'border-transparent text-slate-500 hover:text-slate-800'
                 }`}
               >
-                2. Matrice d'Habilitation (Qui voit quoi ?)
+                2. Qui a accès à quoi
               </button>
               <button
                 type="button"
                 onClick={() => setPolicyTab('compliance')}
-                className={`px-3.5 py-2 text-[12px] font-bold border-b-2 transition-colors cursor-pointer ${
+                className={`px-3.5 py-2 text-[12px] font-semibold border-b-2 transition-colors cursor-pointer ${
                   policyTab === 'compliance'
-                    ? 'border-[#0b1c30] text-[#0b1c30]'
+                    ? 'border-slate-800 text-slate-900'
                     : 'border-transparent text-slate-500 hover:text-slate-800'
                 }`}
               >
-                3. Valeur Probatoire & Normes
+                3. Sécurité & Valeur juridique
               </button>
             </div>
 
-            {/* Corps défilable */}
-            <div className="p-5 overflow-y-auto space-y-6 text-[12.5px] text-slate-700">
+            {/* BARRE INDICATRICE DE DÉFILEMENT POUR CERVEAU PRESSÉ */}
+            <div className="px-4 py-1.5 bg-slate-50 border-b border-slate-200 text-[11px] text-slate-600 font-medium flex items-center justify-between shrink-0">
+              <span className="flex items-center gap-1.5 font-medium text-slate-700">
+                <span>↕</span> Défilement vertical complet disponible (haut en bas)
+              </span>
+              <span className="text-[10px] text-slate-500 font-mono">
+                Guide des droits d'accès
+              </span>
+            </div>
+
+            {/* Corps défilable avec scroller dédié */}
+            <div className="p-5 overflow-y-auto custom-scrollbar flex-1 space-y-6 text-[12.5px] text-slate-700">
+              {/* SYNTHÈSE EXPRESS */}
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10.5px] font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-slate-600" />
+                    L'essentiel en résumé
+                  </span>
+                  <span className="text-[10px] text-slate-500 font-mono">Conformité légale garantie</span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1 border-t border-slate-200 text-[11px]">
+                  <div className="bg-white border border-slate-200 p-2.5 rounded-lg">
+                    <span className="text-[9.5px] text-slate-500 block uppercase font-medium">1. Ce qui est enregistré</span>
+                    <strong className="text-slate-900">4 domaines :</strong> PV & actions légales, imports de fichiers, connexions d'utilisateurs, exports de rapports.
+                  </div>
+                  <div className="bg-white border border-slate-200 p-2.5 rounded-lg">
+                    <span className="text-[9.5px] text-slate-500 block uppercase font-medium">2. Qui voit quoi</span>
+                    <strong className="text-slate-900">Chacun son rôle :</strong> L'administrateur voit tout, le juriste voit les dossiers légaux, la direction a une vue synthétique.
+                  </div>
+                  <div className="bg-white border border-slate-200 p-2.5 rounded-lg">
+                    <span className="text-[9.5px] text-slate-500 block uppercase font-medium">3. Valeur légale</span>
+                    <strong className="text-slate-900">Infalsifiable :</strong> Chaque action reçoit une signature numérique unique qui garantit qu'elle n'a jamais été modifiée.
+                  </div>
+                </div>
+              </div>
+
               {/* TAB 1 : ACTIONS TRACÉES */}
               {policyTab === 'actions' && (
                 <div className="space-y-5">
                   <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
                     <p className="text-[12px] leading-relaxed text-slate-800">
-                      <strong>Principe fondamental :</strong> Pour garantir l'inviolabilité des preuves et la gouvernance institutionnelle, chaque action ayant un impact probatoire, financier, technique ou sécuritaire génère un enregistrement immuable scellé par une empreinte SHA-256.
+                      <strong>Principe simple :</strong> Pour que les preuves soient reconnues en justice et devant les opérateurs internet, chaque action importante (génération de constat, signalement, mise à jour, import) est automatiquement enregistrée avec son auteur, sa date et son heure exacte.
                     </p>
                   </div>
 
                   {/* 1. Actes Juridiques */}
-                  <div className="border border-[#e2e8f0] rounded-xl overflow-hidden">
-                    <div className="bg-[#f8fafc] px-4 py-2.5 border-b border-[#e2e8f0] flex items-center justify-between">
-                      <div className="flex items-center gap-2 font-bold text-[#0b1c30]">
-                        <Scale className="w-4 h-4 text-[#0b1c30]" />
-                        <span>Pilier 1 : Actes Juridiques & Preuves Contentieuses (LEGAL)</span>
+                  <div className="border border-slate-200 rounded-xl overflow-hidden bg-white">
+                    <div className="bg-slate-50 px-4 py-2.5 border-b border-slate-200 flex items-center justify-between">
+                      <div className="flex items-center gap-2 font-bold text-slate-900">
+                        <Scale className="w-4 h-4 text-slate-700" />
+                        <span>Catégorie 1 : Actions Juridiques & Preuves de Piratage</span>
                       </div>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-red-100 text-red-800 border border-red-200">
-                        Criticité Haute
+                      <span className="text-[10px] font-medium px-2 py-0.5 rounded bg-red-50 text-red-700 border border-red-200">
+                        Priorité Haute
                       </span>
                     </div>
                     <div className="overflow-x-auto">
                       <table className="w-full text-left text-[11.5px]">
-                        <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase text-[10px]">
+                        <thead className="bg-slate-50/70 border-b border-slate-200 text-slate-500 font-semibold uppercase text-[10px]">
                           <tr>
-                            <th className="p-2.5">Code Action</th>
-                            <th className="p-2.5">Événement Déclencheur</th>
-                            <th className="p-2.5">Données Collectées</th>
-                            <th className="p-2.5">Portée Juridique & Justification</th>
+                            <th className="p-2.5">Type d'action</th>
+                            <th className="p-2.5">Quand cela se produit</th>
+                            <th className="p-2.5">Informations conservées</th>
+                            <th className="p-2.5">Utilité concrète</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
                           <tr>
-                            <td className="p-2.5 font-mono font-bold text-[#0b1c30]">CONSTAT_GENERATED</td>
-                            <td className="p-2.5">Export du PV d'huissier PDF horodaté</td>
-                            <td className="p-2.5">ID Menace, URLs flux, IP serveur, preuve Wave/Orange Money</td>
-                            <td className="p-2.5 text-slate-600">Constitution de preuve opposable devant le Tribunal de Commerce</td>
+                            <td className="p-2.5 font-bold text-slate-900">Création de constat</td>
+                            <td className="p-2.5">Téléchargement du procès-verbal officiel en PDF</td>
+                            <td className="p-2.5">Nom de la cible, lien du flux pirate, preuve de paiement</td>
+                            <td className="p-2.5 text-slate-600">Preuve officielle à remettre à l'huissier ou au tribunal</td>
                           </tr>
                           <tr>
-                            <td className="p-2.5 font-mono font-bold text-[#0b1c30]">CONSTAT_PRINTED</td>
-                            <td className="p-2.5">Impression physique du constat pour signification</td>
-                            <td className="p-2.5">ID Menace, Nom de la cible, Auteur de l'impression</td>
-                            <td className="p-2.5 text-slate-600">Traçabilité de la matérialisation papier pour huissier audiencier</td>
+                            <td className="p-2.5 font-bold text-slate-900">Impression de document</td>
+                            <td className="p-2.5">Impression papier d'un constat</td>
+                            <td className="p-2.5">Numéro de dossier, nom de la personne qui imprime</td>
+                            <td className="p-2.5 text-slate-600">Garder trace des exemplaires physiques remis en main propre</td>
                           </tr>
                           <tr>
-                            <td className="p-2.5 font-mono font-bold text-[#0b1c30]">DMCA_SENT</td>
-                            <td className="p-2.5">Transmission d'injonction Takedown / Cloudflare</td>
-                            <td className="p-2.5">Hébergeur, CDN, FAI assigné (Sonatel, Camtel, etc.)</td>
-                            <td className="p-2.5 text-slate-600">Preuve de notification formelle préalable à l'assignation en référé</td>
+                            <td className="p-2.5 font-bold text-slate-900">Demande de coupure</td>
+                            <td className="p-2.5">Envoi d'un signalement aux opérateurs internet</td>
+                            <td className="p-2.5">Hébergeur, opérateur internet concerné (Orange, Sonatel...)</td>
+                            <td className="p-2.5 text-slate-600">Prouver que l'opérateur a bien été averti pour couper le signal</td>
                           </tr>
                           <tr>
-                            <td className="p-2.5 font-mono font-bold text-[#0b1c30]">THREAT_STATUS_UPDATED</td>
-                            <td className="p-2.5">Changement d'état contentieux (ex: Coupé / Clôturé)</td>
-                            <td className="p-2.5">Statut antérieur, nouveau statut, motif de transition</td>
-                            <td className="p-2.5 text-slate-600">Historique chronologique de la neutralisation du flux pirate</td>
+                            <td className="p-2.5 font-bold text-slate-900">Changement de statut</td>
+                            <td className="p-2.5">Mise à jour de l'état d'une menace (ex : flux coupé)</td>
+                            <td className="p-2.5">Ancien statut, nouveau statut, motif</td>
+                            <td className="p-2.5 text-slate-600">Suivre l'avancement de la résolution du problème</td>
                           </tr>
                           <tr>
-                            <td className="p-2.5 font-mono font-bold text-[#0b1c30]">EVIDENCE_RECORDED</td>
-                            <td className="p-2.5">Dépôt d'une capture d'écran ou reçu financier</td>
-                            <td className="p-2.5">Nom de fichier, empreinte SHA-256, type de pièce</td>
-                            <td className="p-2.5 text-slate-600">Scellement de la chaîne de garde de la pièce à conviction</td>
+                            <td className="p-2.5 font-bold text-slate-900">Ajout d'une preuve</td>
+                            <td className="p-2.5">Dépôt d'une capture d'écran ou d'un reçu financier</td>
+                            <td className="p-2.5">Nom du fichier, signature de sécurité, date</td>
+                            <td className="p-2.5 text-slate-600">Conserver la capture sans qu'elle puisse être contestée</td>
                           </tr>
                         </tbody>
                       </table>
@@ -841,44 +924,44 @@ export const AuditTrailPage: React.FC<AuditTrailPageProps> = ({
                   </div>
 
                   {/* 2. Intégrité Données */}
-                  <div className="border border-[#e2e8f0] rounded-xl overflow-hidden">
-                    <div className="bg-[#f8fafc] px-4 py-2.5 border-b border-[#e2e8f0] flex items-center justify-between">
-                      <div className="flex items-center gap-2 font-bold text-[#0b1c30]">
+                  <div className="border border-slate-200 rounded-xl overflow-hidden bg-white">
+                    <div className="bg-slate-50 px-4 py-2.5 border-b border-slate-200 flex items-center justify-between">
+                      <div className="flex items-center gap-2 font-bold text-slate-900">
                         <FileSpreadsheet className="w-4 h-4 text-slate-700" />
-                        <span>Pilier 2 : Intégrité des Données & Ingestion (DATA_INTEGRITY)</span>
+                        <span>Catégorie 2 : Imports de Données & Mises à Jour</span>
                       </div>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-800 border border-slate-300">
-                        Intégrité Bases
+                      <span className="text-[10px] font-medium px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">
+                        Suivi des fichiers
                       </span>
                     </div>
                     <div className="overflow-x-auto">
                       <table className="w-full text-left text-[11.5px]">
-                        <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase text-[10px]">
+                        <thead className="bg-slate-50/70 border-b border-slate-200 text-slate-500 font-semibold uppercase text-[10px]">
                           <tr>
-                            <th className="p-2.5">Code Action</th>
-                            <th className="p-2.5">Événement Déclencheur</th>
-                            <th className="p-2.5">Données Collectées</th>
-                            <th className="p-2.5">Portée & Justification</th>
+                            <th className="p-2.5">Type d'action</th>
+                            <th className="p-2.5">Quand cela se produit</th>
+                            <th className="p-2.5">Informations conservées</th>
+                            <th className="p-2.5">Utilité concrète</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
                           <tr>
-                            <td className="p-2.5 font-mono font-bold text-[#0b1c30]">DATA_IMPORTED_*</td>
-                            <td className="p-2.5">Ingestion d'un classeur Excel / CSV (Menaces, APK, Comptes)</td>
-                            <td className="p-2.5">Nom de fichier, nombre de lignes, catégorie de modèle</td>
-                            <td className="p-2.5 text-slate-600">Contrôle anti-corruption et traçabilité de la source d'alimentation</td>
+                            <td className="p-2.5 font-bold text-slate-900">Import de fichier</td>
+                            <td className="p-2.5">Ajout d'un tableau Excel ou CSV (sites, applications, comptes)</td>
+                            <td className="p-2.5">Nom du fichier, nombre de lignes ajoutées, utilisateur</td>
+                            <td className="p-2.5 text-slate-600">Savoir qui a importé quelles données et quand</td>
                           </tr>
                           <tr>
-                            <td className="p-2.5 font-mono font-bold text-[#0b1c30]">SEMRUSH_BATCH_APPLIED</td>
-                            <td className="p-2.5">Application en base de l'enrichissement SEMrush API</td>
-                            <td className="p-2.5">Volume de domaines, trafic mensuel estimé, autorités DA</td>
-                            <td className="p-2.5 text-slate-600">Garantie d'exactitude des volumétries d'audience présentées au DG</td>
+                            <td className="p-2.5 font-bold text-slate-900">Mise à jour d'audience</td>
+                            <td className="p-2.5">Analyse automatique du trafic des sites pirates</td>
+                            <td className="p-2.5">Nombre de sites, trafic estimé, popularité</td>
+                            <td className="p-2.5 text-slate-600">Garantir la fiabilité des chiffres présentés à la Direction</td>
                           </tr>
                           <tr>
-                            <td className="p-2.5 font-mono font-bold text-[#0b1c30]">DATA_IMPORTED_SURVEYS</td>
-                            <td className="p-2.5">Saisie d'enquêtes terrain des auditeurs en filiales</td>
-                            <td className="p-2.5">Ville, quartier, auditeur déclarant, pénétration constatée</td>
-                            <td className="p-2.5 text-slate-600">Validation des relevés de terrain physique (marchés, revendeurs IPTV)</td>
+                            <td className="p-2.5 font-bold text-slate-900">Enquêtes de terrain</td>
+                            <td className="p-2.5">Saisie des retours d'auditeurs locaux dans les pays</td>
+                            <td className="p-2.5">Pays, ville, quartier, auditeur, boîtiers pirates constatés</td>
+                            <td className="p-2.5 text-slate-600">Valider les remontées de terrain physique (marchés, revendeurs)</td>
                           </tr>
                         </tbody>
                       </table>
@@ -887,23 +970,23 @@ export const AuditTrailPage: React.FC<AuditTrailPageProps> = ({
 
                   {/* 3. Sécurité & 4. Exports */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="border border-[#e2e8f0] rounded-xl p-3.5 bg-white space-y-2">
-                      <div className="flex items-center gap-2 font-bold text-[#0b1c30]">
+                    <div className="border border-slate-200 rounded-xl p-3.5 bg-white space-y-2">
+                      <div className="flex items-center gap-2 font-bold text-slate-900">
                         <Lock className="w-4 h-4 text-slate-700" />
-                        <span>Pilier 3 : Sécurité des Sessions (SECURITY)</span>
+                        <span>Catégorie 3 : Connexions & Sécurité</span>
                       </div>
-                      <p className="text-[11px] text-[#64748b]">
-                        Chaque connexion (<code className="font-mono text-[#0b1c30]">AUTH_LOGIN</code>), déconnexion (<code className="font-mono text-[#0b1c30]">AUTH_LOGOUT</code>), bascule de profil (<code className="font-mono text-[#0b1c30]">ROLE_SWITCHED</code>) ou tentative d'import non autorisée (<code className="font-mono text-red-700 font-bold">SECURITY_IMPORT_BLOCKED</code>) est horodatée avec l'adresse IP pour détecter toute usurpation.
+                      <p className="text-[11px] text-slate-600 leading-relaxed">
+                        Chaque connexion, déconnexion, changement de compte ou tentative d'accès non autorisée est notée avec l'heure et le poste utilisé pour protéger l'application.
                       </p>
                     </div>
 
-                    <div className="border border-[#e2e8f0] rounded-xl p-3.5 bg-white space-y-2">
-                      <div className="flex items-center gap-2 font-bold text-[#0b1c30]">
+                    <div className="border border-slate-200 rounded-xl p-3.5 bg-white space-y-2">
+                      <div className="flex items-center gap-2 font-bold text-slate-900">
                         <Download className="w-4 h-4 text-slate-700" />
-                        <span>Pilier 4 : Extractions Confidentielles (EXPORT)</span>
+                        <span>Catégorie 4 : Téléchargements de Rapports</span>
                       </div>
-                      <p className="text-[11px] text-[#64748b]">
-                        Tout téléchargement de rapport économique (<code className="font-mono text-[#0b1c30]">EXPORT_MARKET_REPORT</code>), extraction SEMrush ou export de la chaîne d'audit elle-même est journalisé pour prévenir la fuite d'informations stratégiques.
+                      <p className="text-[11px] text-slate-600 leading-relaxed">
+                        Chaque téléchargement de rapport d'impact financier ou d'export de données est enregistré pour protéger les informations confidentielles du Groupe.
                       </p>
                     </div>
                   </div>
@@ -915,94 +998,84 @@ export const AuditTrailPage: React.FC<AuditTrailPageProps> = ({
                 <div className="space-y-4">
                   <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
                     <p className="text-[12px] leading-relaxed text-slate-800">
-                      <strong>Ségrégation des tâches & Confidentialité :</strong> Conformément aux règles de gouvernance d'entreprise et au secret des instructions judiciaires, chaque direction dispose d'une visibilité adaptée à ses prérogatives strictes.
+                      <strong>Confidentialité & Simplicité :</strong> Pour que chacun accède rapidement à ce qui l'intéresse sans être submergé de données inutiles, l'affichage est adapté à votre profil professionnel.
                     </p>
                   </div>
 
-                  <div className="border border-[#e2e8f0] rounded-xl overflow-hidden">
+                  <div className="border border-slate-200 rounded-xl overflow-hidden bg-white">
                     <table className="w-full text-left text-[11.5px]">
-                      <thead className="bg-[#f8fafc] border-b border-[#e2e8f0] text-slate-600 font-bold uppercase text-[10px]">
+                      <thead className="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold uppercase text-[10px]">
                         <tr>
-                          <th className="p-3">Profil Utilisateur</th>
-                          <th className="p-3">Périmètre Visible</th>
-                          <th className="p-3">Événements Masqués</th>
-                          <th className="p-3">Justification Métier</th>
-                          <th className="p-3 text-right">Certification</th>
+                          <th className="p-3">Profil</th>
+                          <th className="p-3">Ce qui est affiché</th>
+                          <th className="p-3">Ce qui est masqué</th>
+                          <th className="p-3">Pourquoi</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-100">
                         {/* Admin */}
-                        <tr className="hover:bg-slate-50">
+                        <tr className="hover:bg-slate-50/70">
                           <td className="p-3">
-                            <span className="font-bold text-[#0b1c30] block">Compte Administrateur (Admin)</span>
-                            <span className="text-[10px] text-slate-500 font-mono">DSI & Cellule Anti-Piratage</span>
+                            <span className="font-bold text-slate-900 block">Administrateur</span>
+                            <span className="text-[10px] text-slate-500">Équipe technique & Sécurité</span>
                           </td>
                           <td className="p-3">
-                            <span className="inline-block px-2 py-0.5 rounded font-bold bg-slate-200 text-slate-800 text-[10px]">
-                              100% de la chaîne d'audit
+                            <span className="inline-block px-2 py-0.5 rounded font-medium bg-slate-200 text-slate-800 text-[10px]">
+                              Vue complète (100%)
                             </span>
                             <p className="text-[10.5px] text-slate-600 mt-1">
-                              Technique, Sécurité, Intégrité, Juridique, Exports, Alertes de blocage.
+                              Toutes les actions : techniques, juridiques, sécurité, imports et exports.
                             </p>
                           </td>
                           <td className="p-3 text-[11px] text-slate-400 italic">
-                            Aucun événement masqué
+                            Rien n'est masqué
                           </td>
                           <td className="p-3 text-[11px] text-slate-600">
-                            Responsabilité de l'infrastructure, détection d'intrusions, maintien de l'intégrité de la chaîne SHA-256.
-                          </td>
-                          <td className="p-3 text-right font-mono text-[10.5px] font-bold text-emerald-700">
-                            Contrôle SHA-256 + Export CSV/JSON
+                            Assurer la maintenance globale, la sécurité et l'intégrité de la plateforme.
                           </td>
                         </tr>
 
                         {/* Juridique */}
-                        <tr className="hover:bg-slate-50">
+                        <tr className="hover:bg-slate-50/70">
                           <td className="p-3">
-                            <span className="font-bold text-[#0b1c30] block">Compte Juridique</span>
-                            <span className="text-[10px] text-slate-500 font-mono">Direction Juridique & Contentieux</span>
+                            <span className="font-bold text-slate-900 block">Juridique</span>
+                            <span className="text-[10px] text-slate-500">Direction Juridique & Contentieux</span>
                           </td>
                           <td className="p-3">
-                            <span className="inline-block px-2 py-0.5 rounded font-bold bg-slate-100 text-[#0b1c30] text-[10px]">
-                              Actes Légaux & Preuves
+                            <span className="inline-block px-2 py-0.5 rounded font-medium bg-slate-100 text-slate-800 text-[10px]">
+                              Actions & Preuves
                             </span>
                             <p className="text-[10.5px] text-slate-600 mt-1">
-                              Constats d'huissier, injonctions DMCA, dépôts de pièces, relevés terrain probatoires.
+                              Constats d'huissier, signalements de coupures, captures d'écran et pièces officielles.
                             </p>
                           </td>
                           <td className="p-3 text-[11px] text-slate-500">
-                            Logs techniques bruts, sessions SSO administrateur, configurations API.
+                            Détails informatiques internes et configurations de serveurs.
                           </td>
                           <td className="p-3 text-[11px] text-slate-600">
-                            Constitution de dossiers contentieux exempts de pollution technique, opposabilité directe au tribunal.
-                          </td>
-                          <td className="p-3 text-right font-mono text-[10.5px] font-bold text-slate-700">
-                            Export Dossier Légal Certifié
+                            Accéder directement aux dossiers légaux prêts pour le tribunal sans jargon inutile.
                           </td>
                         </tr>
 
                         {/* Direction */}
-                        <tr className="hover:bg-slate-50">
+                        <tr className="hover:bg-slate-50/70">
                           <td className="p-3">
-                            <span className="font-bold text-[#0b1c30] block">Compte Direction</span>
-                            <span className="text-[10px] text-slate-500 font-mono">Comité de Direction Groupe</span>
+                            <span className="font-bold text-slate-900 block">Direction Générale</span>
+                            <span className="text-[10px] text-slate-500">Comité de Direction Groupe</span>
                           </td>
                           <td className="p-3">
-                            <span className="inline-block px-2 py-0.5 rounded font-bold bg-slate-100 text-slate-700 text-[10px]">
-                              Synthèse Gouvernance
+                            <span className="inline-block px-2 py-0.5 rounded font-medium bg-slate-100 text-slate-700 text-[10px]">
+                              Vue Synthétique Globale
                             </span>
                             <p className="text-[10.5px] text-slate-600 mt-1">
-                              Volume d'actes par filiale, traçabilité des exports stratégiques, conformité globale.
+                              Nombre d'actions par pays, suivi des exports importants, conformité générale.
                             </p>
                           </td>
                           <td className="p-3 text-[11px] text-slate-500">
-                            Détails cryptographiques d'exécution et tentatives de requêtes SQL/API.
+                            Détails techniques pointus et codes d'exécution.
                           </td>
                           <td className="p-3 text-[11px] text-slate-600">
-                            Supervision stratégique des risques et reporting de conformité au Conseil d'Administration.
-                          </td>
-                          <td className="p-3 text-right font-mono text-[10.5px] font-bold text-slate-700">
-                            Export Rapport Synthétique
+                            Avoir une vision stratégique claire pour le reporting et les prises de décision.
                           </td>
                         </tr>
                       </tbody>
@@ -1016,43 +1089,43 @@ export const AuditTrailPage: React.FC<AuditTrailPageProps> = ({
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-1.5">
-                      <div className="flex items-center gap-2 font-bold text-[#0b1c30]">
-                        <Lock className="w-4 h-4 text-emerald-600" />
-                        <span>Scellement SHA-256</span>
+                      <div className="flex items-center gap-2 font-bold text-slate-900">
+                        <Lock className="w-4 h-4 text-slate-700" />
+                        <span>Signature Infalsifiable</span>
                       </div>
                       <p className="text-[11.5px] text-slate-600 leading-relaxed">
-                        Chaque enregistrement génère une empreinte numérique SHA-256 calculée à partir de l'ID, de la date UTC, de l'email de l'auteur et des paramètres de l'action. Toute modification ultérieure brise la signature.
+                        Chaque action reçoit une clé de sécurité unique calculée automatiquement. Si quelqu'un essayait de modifier un chiffre ou une date, la signature deviendrait immédiatement invalide.
                       </p>
                     </div>
 
                     <div className="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-1.5">
-                      <div className="flex items-center gap-2 font-bold text-[#0b1c30]">
-                        <Clock className="w-4 h-4 text-[#1e40af]" />
-                        <span>Horodatage UTC Immuable</span>
+                      <div className="flex items-center gap-2 font-bold text-slate-900">
+                        <Clock className="w-4 h-4 text-slate-700" />
+                        <span>Date & Heure Officielles</span>
                       </div>
                       <p className="text-[11.5px] text-slate-600 leading-relaxed">
-                        Le serveur enregistre l'heure atomique UTC indépendamment du fuseau horaire de l'utilisateur pour éviter toute contestation lors de litiges transfrontaliers (Sénégal, Côte d'Ivoire, Cameroun, France).
+                        L'heure exacte universelle est enregistrée au moment précis de l'action. Cela évite toute contestation lors de litiges entre différents pays (Sénégal, Côte d'Ivoire, Cameroun, France).
                       </p>
                     </div>
 
                     <div className="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-1.5">
-                      <div className="flex items-center gap-2 font-bold text-[#0b1c30]">
-                        <Scale className="w-4 h-4 text-[#0b1c30]" />
-                        <span>Normes OHADA & ISO 27001</span>
+                      <div className="flex items-center gap-2 font-bold text-slate-900">
+                        <Scale className="w-4 h-4 text-slate-700" />
+                        <span>Conformité Légale</span>
                       </div>
                       <p className="text-[11.5px] text-slate-600 leading-relaxed">
-                        Conforme à la clause A.12.4 de la norme ISO 27001 (Journalisation et surveillance) et aux exigences probatoires de l'Acte uniforme OHADA sur le commerce électronique et la preuve numérique.
+                        Les preuves et rapports respectent les règles juridiques sur le commerce électronique et la preuve numérique pour être recevables devant les juridictions compétentes.
                       </p>
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-[#0b1c30] text-white space-y-2">
-                    <div className="flex items-center gap-2 font-bold text-[13px]">
-                      <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                      <span>Garantie WORM (Write Once, Read Many)</span>
+                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 space-y-2">
+                    <div className="flex items-center gap-2 font-bold text-[13px] text-slate-900">
+                      <ShieldCheck className="w-4 h-4 text-slate-700" />
+                      <span>Verrouillage & Protection des données</span>
                     </div>
-                    <p className="text-[11.5px] text-slate-300 leading-relaxed">
-                      Le registre d'audit est protégé contre toute suppression ou altération manuelle. Aucun administrateur, y compris disposant des privilèges les plus élevés, ne peut tronquer ou expurger un acte déjà consigné. L'intégrité de la chaîne peut être contrôlée à tout moment via le bouton de vérification cryptographique.
+                    <p className="text-[11.5px] text-slate-600 leading-relaxed">
+                      L'historique est verrouillé : aucune action enregistrée ne peut être effacée ou modifiée ultérieurement, garantissant une transparence totale et une traçabilité irréprochable.
                     </p>
                   </div>
                 </div>
@@ -1060,16 +1133,16 @@ export const AuditTrailPage: React.FC<AuditTrailPageProps> = ({
             </div>
 
             {/* Pied de page de la modale */}
-            <div className="p-4 border-t border-[#e2e8f0] bg-[#f8fafc] flex items-center justify-between shrink-0">
-              <span className="text-[11px] text-[#64748b]">
-                Registre de traçabilité certifié conforme • Réf. DOC-AUDIT-BROADCAST-2026
+            <div className="p-4 border-t border-slate-200 bg-white flex items-center justify-between shrink-0">
+              <span className="text-[11px] text-slate-500">
+                Journal des actions certifié conforme • Réf. GUIDE-ACTIVITE-2026
               </span>
               <button
                 type="button"
                 onClick={() => setIsPolicyModalOpen(false)}
-                className="px-4 py-2 rounded-xl bg-[#0b1c30] text-white text-[12px] font-bold hover:bg-[#162f4f] cursor-pointer"
+                className="px-4 py-2 rounded-xl bg-slate-800 text-white text-[12px] font-medium hover:bg-slate-900 cursor-pointer transition-colors"
               >
-                Fermer la politique
+                Fermer le guide
               </button>
             </div>
           </div>

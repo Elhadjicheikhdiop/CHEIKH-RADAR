@@ -111,39 +111,39 @@ export const SemrushEnrichmentModal: React.FC<SemrushEnrichmentModalProps> = ({
   return (
     <div
       id="semrush-modal-backdrop"
-      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto"
+      className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
       <div
         id="semrush-enrichment-modal"
-        className="bg-white rounded-2xl border border-[#cbd5e1] shadow-2xl max-w-3xl w-full max-h-[92vh] flex flex-col overflow-hidden text-[#0b1c30]"
+        className="bg-white rounded-2xl border border-slate-200 shadow-xl max-w-3xl w-full max-h-[92vh] flex flex-col overflow-hidden text-slate-900 animate-fade-in"
       >
         {/* EN-TÊTE DE LA MODALE */}
-        <div className="p-4 sm:p-5 border-b border-[#e2e8f0] bg-[#f8fafc] flex items-center justify-between">
+        <div className="p-4 sm:p-5 border-b border-slate-200 bg-white flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#0b1c30] flex items-center justify-center text-white shadow-sm font-bold text-[15px] tracking-wider">
+            <div className="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-700 shadow-2xs font-bold text-[15px] tracking-wider">
               SE
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-[16px] font-bold text-[#0b1c30]">
+                <h3 className="text-[16px] font-bold text-slate-900">
                   Audit & Enrichissement SEMrush API
                 </h3>
                 {status?.mode === 'live' ? (
-                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-[#0b1c30] border border-slate-300 flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+                  <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
                     API SEMrush Live
                   </span>
                 ) : (
-                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-800 border border-slate-300 flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-slate-600"></span>
+                  <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-700 border border-slate-200 flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-slate-500"></span>
                     Simulation Analytique
                   </span>
                 )}
               </div>
-              <p className="text-[12px] text-[#64748b]">
+              <p className="text-[12px] text-slate-500">
                 Interrogation des métriques de trafic organique, autorité de domaine et requêtes de recherche piratées.
               </p>
             </div>
@@ -151,29 +151,29 @@ export const SemrushEnrichmentModal: React.FC<SemrushEnrichmentModalProps> = ({
 
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-[#64748b] hover:text-[#0b1c30] hover:bg-[#e2e8f0] transition-colors cursor-pointer"
+            className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900 flex items-center justify-center cursor-pointer transition-colors"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* BARRE DE RECHERCHE D'URL / DOMAINE */}
-        <div className="p-4 border-b border-[#e2e8f0] bg-white">
+        <div className="p-4 border-b border-slate-200 bg-white">
           <form onSubmit={handleSearchNewDomain} className="flex gap-2">
             <div className="relative flex-1">
-              <Search className="w-4 h-4 text-[#94a3b8] absolute left-3 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 value={domainInput}
                 onChange={(e) => setDomainInput(e.target.value)}
                 placeholder="Entrez un nom de domaine (ex: livefootball-afrique.com)"
-                className="w-full pl-9 pr-3 py-2 bg-[#f8fafc] border border-[#cbd5e1] rounded-xl text-[13px] text-[#0b1c30] font-mono outline-hidden focus:border-[#0b1c30] focus:bg-white"
+                className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-[13px] text-slate-900 font-mono outline-hidden focus:border-slate-400 focus:bg-white"
               />
             </div>
             <button
               type="submit"
               disabled={loading}
-              className="px-4 py-2 bg-[#0b1c30] hover:bg-[#1e40af] text-white rounded-xl text-[12px] font-bold transition-colors cursor-pointer flex items-center gap-2 shrink-0 disabled:opacity-50"
+              className="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-[12px] font-medium transition-colors cursor-pointer flex items-center gap-2 shrink-0 disabled:opacity-50"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
               <span>{loading ? 'Interrogation...' : 'Analyser le domaine'}</span>
@@ -181,8 +181,18 @@ export const SemrushEnrichmentModal: React.FC<SemrushEnrichmentModalProps> = ({
           </form>
         </div>
 
-        {/* CONTENU PRINCIPAL */}
-        <div className="p-5 overflow-y-auto space-y-5 flex-1">
+        {/* BARRE INDICATRICE DE DÉFILEMENT POUR CERVEAU PRESSÉ */}
+        <div className="px-4 py-1.5 bg-slate-50 border-b border-slate-200 text-[11px] text-slate-600 font-medium flex items-center justify-between shrink-0">
+          <span className="flex items-center gap-1.5 font-medium text-slate-700">
+            <span>↕</span> Défilement vertical complet disponible (haut en bas)
+          </span>
+          <span className="text-[10px] text-slate-500 font-mono">
+            {domainInput} • Mots-clés & Audience
+          </span>
+        </div>
+
+        {/* CONTENU PRINCIPAL AVEC SCROLLER DÉDIÉ */}
+        <div className="p-5 overflow-y-auto custom-scrollbar space-y-5 flex-1">
           {loading ? (
             <div className="py-16 flex flex-col items-center justify-center gap-3 text-[#64748b]">
               <div className="w-10 h-10 border-3 border-[#0b1c30] border-t-transparent rounded-full animate-spin"></div>
@@ -195,6 +205,39 @@ export const SemrushEnrichmentModal: React.FC<SemrushEnrichmentModalProps> = ({
             </div>
           ) : enrichedData ? (
             <>
+              {/* SYNTHÈSE EXPRESS POUR CERVEAU PRESSÉ (3 SECONDES CHRONO) */}
+              <div className="p-3.5 rounded-xl bg-slate-900 text-white shadow-sm space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                    Synthèse Immédiate • Fiche Technique
+                  </span>
+                  <span className="text-[10.5px] font-mono text-slate-300">
+                    Hébergeur : {enrichedData.hostingCountry}
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 border-t border-slate-800 text-center">
+                  <div className="bg-slate-800/80 p-2 rounded-lg">
+                    <span className="text-[9px] text-slate-400 uppercase block font-semibold">Trafic Mensuel</span>
+                    <span className="text-[15px] font-black text-white font-mono">{enrichedData.monthlyTraffic}</span>
+                  </div>
+                  <div className="bg-slate-800/80 p-2 rounded-lg">
+                    <span className="text-[9px] text-slate-400 uppercase block font-semibold">Score Autorité</span>
+                    <span className="text-[15px] font-black text-emerald-400 font-mono">{enrichedData.domainAuthority}/100</span>
+                  </div>
+                  <div className="bg-slate-800/80 p-2 rounded-lg">
+                    <span className="text-[9px] text-slate-400 uppercase block font-semibold">Trafic Afrique</span>
+                    <span className="text-[15px] font-black text-amber-300 font-mono">{enrichedData.africaTrafficShare}</span>
+                  </div>
+                  <div className="bg-slate-800/80 p-2 rounded-lg">
+                    <span className="text-[9px] text-slate-400 uppercase block font-semibold">Top Requête</span>
+                    <span className="text-[11px] font-bold text-slate-100 truncate block mt-0.5" title={enrichedData.topKeyword}>
+                      {enrichedData.topKeyword}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
               {/* BANDEAU STATUT DU DOMAINE */}
               <div className="p-3.5 rounded-xl bg-[#f1f5f9] border border-[#e2e8f0] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-center gap-2.5">
@@ -364,15 +407,15 @@ export const SemrushEnrichmentModal: React.FC<SemrushEnrichmentModalProps> = ({
                     </span>
                   </div>
                   <div className="flex items-center justify-between py-2 border-b border-[#f1f5f9]">
-                    <span className="text-[#64748b] font-medium">Backlinks Totaux Identifiés</span>
+                    <span className="text-[#64748b] font-medium">Liens externes vers le site</span>
                     <span className="font-bold font-mono text-[#0b1c30]">
                       {enrichedData.backlinksCount?.toLocaleString('fr-FR') || '3 450'} liens entrants
                     </span>
                   </div>
                   <div className="flex items-center justify-between py-2 border-b border-[#f1f5f9]">
-                    <span className="text-[#64748b] font-medium">Domaines Référents Uniques</span>
+                    <span className="text-[#64748b] font-medium">Sites web sources uniques</span>
                     <span className="font-bold font-mono text-[#0b1c30]">
-                      {enrichedData.referringDomains?.toLocaleString('fr-FR') || '142'} domaines
+                      {enrichedData.referringDomains?.toLocaleString('fr-FR') || '142'} sites
                     </span>
                   </div>
                 </div>
@@ -386,23 +429,23 @@ export const SemrushEnrichmentModal: React.FC<SemrushEnrichmentModalProps> = ({
         </div>
 
         {/* PIED DE MODALE */}
-        <div className="p-4 border-t border-[#e2e8f0] bg-[#f8fafc] flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="text-[11px] text-[#64748b]">
+        <div className="p-4 border-t border-slate-200 bg-white flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="text-[11px] text-slate-500">
             {status?.configured
               ? 'Connecté à l\'API SEMrush officielle.'
-              : 'Clé SEMRUSH_API_KEY non configurée dans .env : mode d\'estimation heuristique activé.'}
+              : 'Clé SEMRUSH_API_KEY non configurée : mode d\'estimation heuristique activé.'}
           </div>
           <div className="flex items-center gap-2 w-full sm:w-auto">
             <button
               onClick={onClose}
-              className="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-white border border-[#cbd5e1] hover:bg-[#f1f5f9] text-[#0b1c30] text-[12px] font-bold transition-colors cursor-pointer"
+              className="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-[12px] font-medium transition-colors cursor-pointer"
             >
               Fermer
             </button>
             {onApplyEnrichment && enrichedData && (
               <button
                 onClick={handleApply}
-                className="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-[#0b1c30] hover:bg-[#1e40af] text-white text-[12px] font-bold transition-colors cursor-pointer flex items-center justify-center gap-1.5"
+                className="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-[12px] font-medium transition-colors cursor-pointer flex items-center justify-center gap-1.5"
               >
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
                 <span>Enregistrer l'enrichissement</span>

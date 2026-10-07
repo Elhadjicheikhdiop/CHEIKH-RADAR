@@ -298,7 +298,7 @@ export default function App() {
       targetId: newEvidence.id,
       targetLabel: newEvidence.title,
       territory: newEvidence.country,
-      details: `Dépôt au dossier probatoire d'une pièce (${newEvidence.type}) : "${newEvidence.title}" (${newEvidence.fileName}) pour le territoire ${newEvidence.country}.`,
+      details: `Ajout d'une pièce au dossier de preuves (${newEvidence.type}) : "${newEvidence.title}" (${newEvidence.fileName}) pour le territoire ${newEvidence.country}.`,
     });
   };
 

@@ -69,7 +69,7 @@ export const USER_ACCOUNTS_CONFIG: Record<'admin' | 'direction' | 'juridique', U
     canExecuteActions: false,
     badgeLabel: 'Lecture Seule Globale',
     badgeColor: 'slate',
-    description: 'Accès étendu à tous les modules d’analyse et de veille en lecture seule stricte : Vue d’ensemble, Menaces, Applications, Réseaux, Sites, Intelligence Marché & Audit Trail de gouvernance.',
+    description: 'Accès étendu à tous les modules d’analyse et de veille en lecture seule stricte : Vue d’ensemble, Menaces, Applications, Réseaux, Sites, Intelligence Marché & Historique des actions.',
     allowedPages: [
       'overview',
       'threats',

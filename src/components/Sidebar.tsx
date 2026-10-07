@@ -94,9 +94,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
     },
     {
       id: 'audit-trail',
-      label: "Journal d'Audit Trail",
+      label: "Historique des actions",
       icon: ShieldCheck,
-      badge: 'SHA-256',
+      badge: 'Sécurisé',
     },
   ];
 

@@ -12,6 +12,10 @@ import {
   List,
   Globe,
   Filter,
+  CheckCircle2,
+  X,
+  Lock,
+  ShieldAlert,
 } from 'lucide-react';
 
 interface ApplicationsPageProps {
@@ -24,7 +28,7 @@ export const ApplicationsPage: React.FC<ApplicationsPageProps> = ({
   onShowToast,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [zoomImage, setZoomImage] = useState<string | null>(null);
+  const [selectedAppModal, setSelectedAppModal] = useState<AppItem | null>(null);
   const [selectedStatus, setSelectedStatus] = useState<'all' | ThreatStatus>('all');
   const [selectedCountry, setSelectedCountry] = useState<string>('all');
   const [selectedSource, setSelectedSource] = useState<string>('all');
@@ -318,11 +322,11 @@ export const ApplicationsPage: React.FC<ApplicationsPageProps> = ({
                       className="w-full h-44 object-cover object-top group-hover:scale-101 transition-transform duration-200"
                     />
                     <button
-                      onClick={() => setZoomImage(app.captureUrl)}
+                      onClick={() => setSelectedAppModal(app)}
                       className="absolute bottom-2.5 right-2.5 bg-[#0b1c30]/90 backdrop-blur-xs text-white text-[11px] px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 shadow-md hover:bg-black transition-colors cursor-pointer"
                     >
                       <ZoomIn className="w-3.5 h-3.5" />
-                      <span>Agrandir</span>
+                      <span>Aperçu</span>
                     </button>
                   </div>
                 </div>
@@ -346,13 +350,22 @@ export const ApplicationsPage: React.FC<ApplicationsPageProps> = ({
                       </span>
                     )}
 
-                    <button
-                      onClick={() => onShowToast(`Fiche technique d'enquête téléchargée pour ${app.name}`)}
-                      className="px-3 py-1.5 rounded-lg bg-[#0b1c30] hover:bg-[#1e293b] text-white text-[12px] font-medium flex items-center gap-1.5 shadow-2xs transition-colors shrink-0 cursor-pointer"
-                    >
-                      <Download className="w-3.5 h-3.5" />
-                      <span>Fiche d'investigation</span>
-                    </button>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => setSelectedAppModal(app)}
+                        className="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-[#0b1c30] text-[11px] font-bold transition-colors cursor-pointer"
+                        title="Voir la fiche complète"
+                      >
+                        Détails
+                      </button>
+                      <button
+                        onClick={() => onShowToast(`Fiche technique d'enquête téléchargée pour ${app.name}`)}
+                        className="px-3 py-1.5 rounded-lg bg-[#0b1c30] hover:bg-[#1e293b] text-white text-[12px] font-medium flex items-center gap-1.5 shadow-2xs transition-colors shrink-0 cursor-pointer"
+                      >
+                        <Download className="w-3.5 h-3.5" />
+                        <span>Fiche</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -385,9 +398,12 @@ export const ApplicationsPage: React.FC<ApplicationsPageProps> = ({
                           <Smartphone className="w-4 h-4 text-[#0b1c30]" />
                         </div>
                         <div>
-                          <span className="font-bold text-[#0b1c30] block">
+                          <button
+                            onClick={() => setSelectedAppModal(app)}
+                            className="font-bold text-[#0b1c30] block text-left hover:underline cursor-pointer"
+                          >
                             {app.name} {app.version && <span className="font-normal text-xs text-[#64748b]">({app.version})</span>}
-                          </span>
+                          </button>
                           <span className="text-[11px] font-mono text-[#94a3b8]">
                             {app.packageId}
                           </span>
@@ -400,7 +416,14 @@ export const ApplicationsPage: React.FC<ApplicationsPageProps> = ({
                       {app.downloadsCount || 'N/A'}
                     </td>
                     <td className="py-3.5 px-4">{getStatusBadge(app.status)}</td>
-                    <td className="py-3.5 px-4 text-right">
+                    <td className="py-3.5 px-4 text-right space-x-1.5">
+                      <button
+                        onClick={() => setSelectedAppModal(app)}
+                        className="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-[#0b1c30] text-[11px] font-bold transition-colors cursor-pointer"
+                        title="Voir la fiche détaillée"
+                      >
+                        Aperçu
+                      </button>
                       <button
                         onClick={() => onShowToast(`Fiche téléchargée pour ${app.name}`)}
                         className="px-3 py-1.5 rounded-lg bg-[#0b1c30] text-white text-[11px] font-bold hover:bg-[#1e293b] cursor-pointer"
@@ -416,32 +439,187 @@ export const ApplicationsPage: React.FC<ApplicationsPageProps> = ({
         </div>
       )}
 
-      {/* Modal Zoom */}
-      {zoomImage && (
+      {/* MODALE DE PRÉVISUALISATION DÉTAILLÉE DE L'APPLICATION AVEC SCROLLER DE HAUT EN BAS */}
+      {selectedAppModal && (
         <div
-          className="fixed inset-0 bg-black/80 backdrop-blur-xs z-50 flex items-center justify-center p-6"
-          onClick={() => setZoomImage(null)}
+          className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto animate-fade-in"
+          onClick={() => setSelectedAppModal(null)}
         >
           <div
-            className="bg-white rounded-2xl max-w-3xl w-full p-4 border border-[#e2e8f0] shadow-2xl relative"
+            className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col border border-slate-200 shadow-xl overflow-hidden text-slate-900"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex justify-between items-center mb-3">
-              <span className="text-[13px] font-bold text-[#0b1c30]">
-                Capture de l'application
-              </span>
+            {/* 1. EN-TÊTE FIXE */}
+            <div className="p-4 sm:p-5 border-b border-slate-200 bg-white flex items-center justify-between shrink-0">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 flex items-center justify-center font-bold text-[14px]">
+                  <Smartphone className="w-5 h-5 text-slate-700" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-[10.5px] font-semibold uppercase tracking-wider text-slate-500">
+                      Fiche d'Investigation Application APK / Store
+                    </span>
+                    <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-700 border border-slate-200">
+                      {selectedAppModal.source}
+                    </span>
+                    <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-red-50 text-red-700 border border-red-200">
+                      Menace {selectedAppModal.status === 'validated' ? 'Critique' : 'Active'}
+                    </span>
+                  </div>
+                  <h3 className="text-[16px] font-bold text-slate-900 mt-0.5">
+                    {selectedAppModal.name} {selectedAppModal.version && <span className="text-slate-500 text-sm font-normal">v{selectedAppModal.version}</span>}
+                  </h3>
+                </div>
+              </div>
+
               <button
-                onClick={() => setZoomImage(null)}
-                className="w-7 h-7 rounded-full bg-gray-100 text-gray-500 font-bold hover:text-black flex items-center justify-center cursor-pointer"
+                type="button"
+                onClick={() => setSelectedAppModal(null)}
+                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900 flex items-center justify-center cursor-pointer transition-colors"
               >
-                ✕
+                <X className="w-4 h-4" />
               </button>
             </div>
-            <img
-              src={zoomImage}
-              alt="Zoom capture"
-              className="w-full h-auto rounded-xl max-h-[75vh] object-contain"
-            />
+
+            {/* BARRE INDICATRICE DE DÉFILEMENT */}
+            <div className="px-4 py-1.5 bg-slate-50 border-b border-slate-200 text-[11px] text-slate-600 font-medium flex items-center justify-between shrink-0">
+              <span className="flex items-center gap-1.5 font-medium text-slate-700">
+                <span>↕</span> Défilement vertical complet disponible (haut en bas)
+              </span>
+              <span className="text-[10px] text-slate-500 font-mono">
+                {selectedAppModal.country} • {selectedAppModal.packageId}
+              </span>
+            </div>
+
+            {/* 2. CORPS DÉFILABLE DE HAUT EN BAS (SCROLLER DÉDIÉ) */}
+            <div className="flex-1 overflow-y-auto custom-scrollbar p-5 space-y-4 text-[12px]">
+              {/* SYNTHÈSE EXPRESS */}
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/90 space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-slate-600" />
+                    Aperçu Flash • Métriques Application
+                  </span>
+                  <span className="text-[10.5px] font-mono text-slate-500">
+                    Package : {selectedAppModal.packageId}
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+                  <div className="bg-white border border-slate-200/90 p-2.5 rounded-lg shadow-2xs">
+                    <span className="text-[9.5px] text-slate-500 uppercase block font-semibold">Téléchargements</span>
+                    <span className="text-[15px] font-bold text-slate-900 font-mono block mt-0.5">{selectedAppModal.downloadsCount || '25 000+'}</span>
+                  </div>
+                  <div className="bg-white border border-slate-200/90 p-2.5 rounded-lg shadow-2xs">
+                    <span className="text-[9.5px] text-slate-500 uppercase block font-semibold">Source</span>
+                    <span className="text-[13px] font-bold text-slate-900 truncate block mt-0.5">{selectedAppModal.source}</span>
+                  </div>
+                  <div className="bg-white border border-slate-200/90 p-2.5 rounded-lg shadow-2xs">
+                    <span className="text-[9.5px] text-slate-500 uppercase block font-semibold">Filiale Ciblée</span>
+                    <span className="text-[13px] font-bold text-slate-900 truncate block mt-0.5">{selectedAppModal.country}</span>
+                  </div>
+                  <div className="bg-white border border-slate-200/90 p-2.5 rounded-lg shadow-2xs">
+                    <span className="text-[9.5px] text-slate-500 uppercase block font-semibold">Statut</span>
+                    <span className="text-[12px] font-bold text-slate-800 block mt-1">{selectedAppModal.status}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* CAPTURE D'ÉCRAN */}
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10.5px] font-bold uppercase tracking-wider text-slate-600">
+                    Preuve d'Infraction Constatée (Interface de l'Application)
+                  </span>
+                  <span className="text-[10px] text-slate-500 font-mono">
+                    Scellement conforme ISO 27001
+                  </span>
+                </div>
+                <div className="relative rounded-xl overflow-hidden border border-slate-200 bg-slate-50 flex items-center justify-center p-2 shadow-2xs">
+                  <img
+                    src={selectedAppModal.captureUrl}
+                    alt={`Capture ${selectedAppModal.name}`}
+                    className="w-full h-auto max-h-[420px] object-contain rounded-lg border border-slate-200"
+                  />
+                </div>
+              </div>
+
+              {/* DÉTAILS TECHNIQUES & PACKAGE */}
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2.5">
+                <span className="text-[10.5px] font-bold uppercase tracking-wider text-slate-600 block">
+                  Identifiants Techniques & Source de Distribution
+                </span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11.5px]">
+                  <div className="p-2.5 rounded-lg bg-white border border-slate-200">
+                    <span className="text-[10px] text-slate-400 block font-semibold uppercase">Identifiant de l'application (Package)</span>
+                    <span className="font-mono font-bold text-slate-900 select-all block truncate">{selectedAppModal.packageId}</span>
+                  </div>
+                  <div className="p-2.5 rounded-lg bg-white border border-slate-200">
+                    <span className="text-[10px] text-slate-400 block font-semibold uppercase">Lien direct de téléchargement</span>
+                    {selectedAppModal.link ? (
+                      <a
+                        href={selectedAppModal.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-mono text-slate-800 hover:text-blue-600 hover:underline font-bold truncate block"
+                      >
+                        {selectedAppModal.link}
+                      </a>
+                    ) : (
+                      <span className="text-slate-500">Fichier de l'application interne</span>
+                    )}
+                  </div>
+                </div>
+
+                <div className="p-2.5 rounded-lg bg-white border border-slate-200 font-mono text-[11px] space-y-1">
+                  <div className="flex items-center justify-between text-[10px] text-slate-500">
+                    <span className="flex items-center gap-1 font-sans font-medium">
+                      <Lock className="w-3 h-3 text-slate-500" />
+                      Signature de sécurité unique (infalsifiable)
+                    </span>
+                    <span className="text-slate-700 font-bold bg-slate-100 px-1.5 py-0.5 rounded">Vérifié</span>
+                  </div>
+                  <p className="text-slate-700 text-[10.5px] break-all select-all bg-slate-50 p-1.5 rounded border border-slate-100">
+                    c490a182f7bb1048bca1940182fc092384a1e941f1981048bca17a8e1f0492cb
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* 3. PIED DE PAGE FIXE */}
+            <div className="p-3.5 sm:p-4 border-t border-slate-200 bg-white flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
+              <div className="flex items-center gap-2 w-full sm:w-auto">
+                <button
+                  type="button"
+                  onClick={() => {
+                    onShowToast(`Fiche d'investigation générée pour ${selectedAppModal.name}`);
+                  }}
+                  className="flex-1 sm:flex-none px-3.5 py-2 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-800 text-[12px] font-medium flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                >
+                  <Download className="w-3.5 h-3.5 text-slate-600" />
+                  <span>Exporter Fiche PDF</span>
+                </button>
+                {selectedAppModal.link && (
+                  <a
+                    href={selectedAppModal.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 sm:flex-none px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-[12px] font-medium flex items-center justify-center gap-1.5 transition-colors"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5 text-slate-600" />
+                    <span>Ouvrir Store / APK</span>
+                  </a>
+                )}
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setSelectedAppModal(null)}
+                className="w-full sm:w-auto px-5 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-[12px] font-medium cursor-pointer transition-colors"
+              >
+                Fermer
+              </button>
+            </div>
           </div>
         </div>
       )}

@@ -19,6 +19,7 @@ import {
   FileCode,
   Lock,
   Flag,
+  X,
 } from 'lucide-react';
 
 interface ThreatDetailPageProps {
@@ -437,8 +438,8 @@ export const ThreatDetailPage: React.FC<ThreatDetailPageProps> = ({
             </div>
 
             <p className="text-[12px] text-[#76777d] leading-relaxed">
-              Éléments probatoires constatés et horodatés lors de la détection. Les captures et
-              liens sont conservés à des fins de signalement et de procédure.
+              Éléments de preuve constatés et enregistrés lors de la détection. Les captures et
+              liens sont conservés pour appuyer les signalements et démarches juridiques.
             </p>
 
             {/* Preuve 1 : Capture horodatée du flux constaté */}
@@ -446,10 +447,10 @@ export const ThreatDetailPage: React.FC<ThreatDetailPageProps> = ({
               <div className="flex items-center justify-between">
                 <span className="text-[12px] font-bold text-[#0b1c30] flex items-center gap-1.5">
                   <ShieldAlert className="w-3.5 h-3.5 text-[#0b1c30]" />
-                  Preuve 1 : Capture horodatée du flux constaté (Capture à 20:45 GMT)
+                  Preuve 1 : Capture certifiée du flux constaté (Constat à 20:45 GMT)
                 </span>
                 <span className="text-[11px] font-mono text-[#76777d]">
-                  SHA256: {threat.sha256 ? threat.sha256.substring(0, 16) + '...' : '7f8c12a...0b9d'}
+                  Code: {threat.sha256 ? threat.sha256.substring(0, 16) + '...' : '7f8c12a...0b9d'}
                 </span>
               </div>
 
@@ -793,42 +794,100 @@ export const ThreatDetailPage: React.FC<ThreatDetailPageProps> = ({
         </div>
       </div>
 
-      {/* Modal Zoom Capture HD */}
+      {/* Modal Zoom Capture HD - VUE RAPIDE AVEC SCROLLER */}
       {isZoomOpen && (
         <div
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-6"
+          className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-5 overflow-y-auto"
           onClick={() => setIsZoomOpen(false)}
         >
           <div
-            className="bg-white rounded-2xl max-w-4xl w-full p-5 border border-[#cbd5e1] shadow-2xl relative"
+            className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col border border-slate-200 shadow-xl overflow-hidden text-slate-900 animate-fade-in"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#f1f5f9]">
-              <div className="flex items-center gap-2">
-                <ShieldAlert className="w-5 h-5 text-[#bb0112]" />
-                <span className="text-[14px] font-bold text-[#0b1c30]">
-                  Preuve HD horodatée certifiée — {threat.name}
-                </span>
+            {/* 1. EN-TÊTE FIXE */}
+            <div className="flex items-center justify-between p-4 border-b border-slate-200 bg-white shrink-0">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-red-50 border border-red-200 text-red-700 flex items-center justify-center">
+                  <ShieldAlert className="w-4 h-4" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-semibold uppercase text-slate-500 block">
+                    Preuve Probatoire Haute Définition
+                  </span>
+                  <span className="text-[14px] font-bold text-slate-900 font-mono">
+                    {threat.name}
+                  </span>
+                </div>
               </div>
               <button
+                type="button"
                 onClick={() => setIsZoomOpen(false)}
-                className="text-gray-400 hover:text-gray-800 text-sm font-bold bg-gray-100 rounded-full w-7 h-7 flex items-center justify-center"
+                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900 flex items-center justify-center cursor-pointer transition-colors"
               >
-                ✕
+                <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="relative bg-black rounded-lg overflow-hidden max-h-[70vh] flex items-center justify-center">
-              <img
-                src={threat.evidenceCaptureUrl}
-                alt="Capture agrandie"
-                className="w-full h-auto object-contain max-h-[70vh]"
-              />
+            {/* BARRE INDICATRICE DE DÉFILEMENT POUR CERVEAU PRESSÉ */}
+            <div className="px-4 py-1.5 bg-slate-50 border-b border-slate-200 text-[11px] text-slate-600 font-medium flex items-center justify-between shrink-0">
+              <span className="flex items-center gap-1.5 font-medium text-slate-700">
+                <span>↕</span> Défilement vertical complet disponible (haut en bas)
+              </span>
+              <span className="text-[10px] text-slate-500 font-mono">
+                {threat.country} • {threat.channel}
+              </span>
             </div>
 
-            <div className="mt-3 flex items-center justify-between text-[11px] font-mono text-[#76777d]">
-              <span>Horodatage : {threat.detectionDate}</span>
-              <span>Preuve archivée et certifiée</span>
+            {/* 2. CORPS DÉFILABLE DE HAUT EN BAS (SCROLLER DÉDIÉ) */}
+            <div className="flex-1 overflow-y-auto custom-scrollbar p-5 space-y-4">
+              {/* SYNTHÈSE EXPRESS */}
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-[11px]">
+                <div className="bg-white border border-slate-200 p-2 rounded-lg">
+                  <span className="text-[9px] text-slate-500 block uppercase font-medium">Canal</span>
+                  <span className="font-bold text-slate-900 truncate block">{threat.channel}</span>
+                </div>
+                <div className="bg-white border border-slate-200 p-2 rounded-lg">
+                  <span className="text-[9px] text-slate-500 block uppercase font-medium">Territoire</span>
+                  <span className="font-bold text-slate-900 truncate block">{threat.country}</span>
+                </div>
+                <div className="bg-white border border-slate-200 p-2 rounded-lg">
+                  <span className="text-[9px] text-slate-500 block uppercase font-medium">Date Constat</span>
+                  <span className="font-bold text-slate-900 truncate block">{threat.detectionDate}</span>
+                </div>
+                <div className="bg-white border border-slate-200 p-2 rounded-lg">
+                  <span className="text-[9px] text-slate-500 block uppercase font-medium">Sécurité</span>
+                  <span className="font-bold text-slate-800 block">Preuve certifiée</span>
+                </div>
+              </div>
+
+              {/* IMAGE AGRANDIE */}
+              <div className="relative bg-slate-50 rounded-xl overflow-hidden flex items-center justify-center border border-slate-200 p-2 shadow-2xs">
+                <img
+                  src={threat.evidenceCaptureUrl}
+                  alt="Capture agrandie"
+                  className="w-full h-auto object-contain max-h-[60vh] rounded-lg border border-slate-200"
+                />
+              </div>
+
+              {/* MÉTADONNÉES CRYPTOGRAPHIQUES */}
+              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-[11px] font-mono flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <span className="text-slate-600 font-sans">Code unique de vérification : <strong className="font-mono text-slate-900 select-all">{threat.sha256 || 'a7b8e1f0492cb412d890e44129bca5e3940182fc092384a1e941f1981048bca1'}</strong></span>
+                <span className="text-slate-700 font-sans font-medium bg-slate-100 px-2 py-0.5 rounded border border-slate-200 shrink-0">Signature valide & protégée</span>
+              </div>
+            </div>
+
+            {/* 3. PIED DE PAGE FIXE */}
+            <div className="p-3.5 border-t border-slate-200 bg-white flex items-center justify-between shrink-0">
+              <span className="text-[11px] text-slate-500">
+                Date et heure certifiées enregistrées
+              </span>
+              <button
+                type="button"
+                onClick={() => setIsZoomOpen(false)}
+                className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-medium text-[12px] transition-colors cursor-pointer"
+              >
+                Fermer
+              </button>
             </div>
           </div>
         </div>

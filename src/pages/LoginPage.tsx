@@ -127,7 +127,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                 Gestion Centralisée de la Veille & des Contentieux Anti-Piratage
               </h1>
               <p className="text-[14px] sm:text-[15px] text-[#475569] mt-3 leading-relaxed">
-                Environnement d’aide à la décision et d’intervention opérationnelle dédié à la détection des flux IPTV illicites, au monitoring des applications mobiles, à la mesure des pertes d’abonnés et à la constitution de constats d’huissier opposables.
+                Environnement d’aide à la décision et d’intervention opérationnelle dédié à la détection des flux IPTV illicites, au suivi des applications mobiles, à la mesure des pertes d’abonnés et à la constitution de dossiers de preuves et constats d’huissier officiels.
               </p>
             </div>
 
@@ -180,15 +180,15 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
             <div className="pt-1 flex items-center gap-5 text-[11px] text-[#64748b] flex-wrap">
               <span className="flex items-center gap-1.5 font-medium">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                Conformité OHADA & RGPD
+                Conformité Légale & Données
               </span>
               <span className="flex items-center gap-1.5 font-medium">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                Audit Trail Horodaté
+                Historique des Actions Certifié
               </span>
               <span className="flex items-center gap-1.5 font-medium">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                Contrôle RBAC Strict
+                Accès Sécurisé par Profil
               </span>
             </div>
           </div>

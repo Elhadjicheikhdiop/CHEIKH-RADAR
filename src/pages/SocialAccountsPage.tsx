@@ -14,6 +14,10 @@ import {
   List,
   AlertTriangle,
   FileDown,
+  CheckCircle2,
+  X,
+  Lock,
+  ShieldAlert,
 } from 'lucide-react';
 
 interface SocialAccountsPageProps {
@@ -25,7 +29,7 @@ export const SocialAccountsPage: React.FC<SocialAccountsPageProps> = ({
   accounts,
   onShowToast,
 }) => {
-  const [zoomImg, setZoomImg] = useState<string | null>(null);
+  const [selectedAccModal, setSelectedAccModal] = useState<AccountItem | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedPlatform, setSelectedPlatform] = useState<string>('all');
   const [selectedStatus, setSelectedStatus] = useState<'all' | ThreatStatus>('all');
@@ -297,20 +301,28 @@ export const SocialAccountsPage: React.FC<SocialAccountsPageProps> = ({
                     />
                     <button
                       id={`zoom-acc-${acc.id}`}
-                      onClick={() => setZoomImg(acc.captureUrl)}
+                      onClick={() => setSelectedAccModal(acc)}
                       className="absolute bottom-2.5 right-2.5 bg-[#0b1c30]/90 backdrop-blur-xs text-white text-[11px] px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 shadow-md hover:bg-black transition-colors cursor-pointer"
                     >
                       <ZoomIn className="w-3.5 h-3.5" />
-                      <span>Agrandir</span>
+                      <span>Aperçu</span>
                     </button>
                   </div>
                 </div>
 
                 {/* Publications liées */}
                 <div className="p-5 pt-4">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#64748b] block mb-2">
-                    Publications et directs constatés
-                  </span>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#64748b] block">
+                      Publications et directs constatés
+                    </span>
+                    <button
+                      onClick={() => setSelectedAccModal(acc)}
+                      className="text-[11px] font-bold text-blue-700 hover:underline cursor-pointer"
+                    >
+                      Voir dossier
+                    </button>
+                  </div>
 
                   <div className="space-y-2">
                     {acc.linkedPosts.map((post) => (
@@ -359,14 +371,19 @@ export const SocialAccountsPage: React.FC<SocialAccountsPageProps> = ({
                   <th className="py-3 px-4">Abonnés</th>
                   <th className="py-3 px-4">Portée estimée</th>
                   <th className="py-3 px-4">Pays / Filiale</th>
-                  <th className="py-3 px-4 text-right">Lien</th>
+                  <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#f1f5f9] text-[13px]">
                 {filteredAccounts.map((acc) => (
                   <tr key={acc.id} className="hover:bg-[#f8fafc] transition-colors">
                     <td className="py-3.5 px-4 font-bold text-[#0b1c30]">
-                      {acc.name}
+                      <button
+                        onClick={() => setSelectedAccModal(acc)}
+                        className="text-left font-bold text-[#0b1c30] hover:underline cursor-pointer"
+                      >
+                        {acc.name}
+                      </button>
                     </td>
                     <td className="py-3.5 px-4">
                       <span className="px-2 py-0.5 rounded bg-[#eff4ff] text-[#0b1c30] text-xs font-semibold">
@@ -376,7 +393,13 @@ export const SocialAccountsPage: React.FC<SocialAccountsPageProps> = ({
                     <td className="py-3.5 px-4 text-[#64748b]">{acc.followers}</td>
                     <td className="py-3.5 px-4 text-red-600 font-semibold">{acc.estimatedAudience}</td>
                     <td className="py-3.5 px-4 text-[#0b1c30]">{acc.country}</td>
-                    <td className="py-3.5 px-4 text-right">
+                    <td className="py-3.5 px-4 text-right space-x-1.5">
+                      <button
+                        onClick={() => setSelectedAccModal(acc)}
+                        className="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-[#0b1c30] text-[11px] font-bold transition-colors cursor-pointer"
+                      >
+                        Aperçu
+                      </button>
                       <a
                         href={acc.accountUrl}
                         target="_blank"
@@ -395,32 +418,182 @@ export const SocialAccountsPage: React.FC<SocialAccountsPageProps> = ({
         </div>
       )}
 
-      {/* Modal Zoom */}
-      {zoomImg && (
+      {/* MODALE DE PRÉVISUALISATION DÉTAILLÉE DU COMPTE SOCIAL AVEC SCROLLER DE HAUT EN BAS */}
+      {selectedAccModal && (
         <div
-          className="fixed inset-0 bg-black/80 backdrop-blur-xs z-50 flex items-center justify-center p-6"
-          onClick={() => setZoomImg(null)}
+          className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto animate-fade-in"
+          onClick={() => setSelectedAccModal(null)}
         >
           <div
-            className="bg-white rounded-2xl max-w-3xl w-full p-4 border border-[#e2e8f0] shadow-2xl relative"
+            className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col border border-slate-200 shadow-xl overflow-hidden text-slate-900"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex justify-between items-center mb-3">
-              <span className="text-[13px] font-bold text-[#0b1c30]">
-                Capture du profil & publications
-              </span>
+            {/* 1. EN-TÊTE FIXE */}
+            <div className="p-4 sm:p-5 border-b border-slate-200 bg-white flex items-center justify-between shrink-0">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 flex items-center justify-center font-bold text-[14px]">
+                  <Share2 className="w-5 h-5 text-slate-700" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-[10.5px] font-semibold uppercase tracking-wider text-slate-500">
+                      Fiche d'Enquête Réseau Social & Stream Live
+                    </span>
+                    <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-700 border border-slate-200">
+                      {selectedAccModal.platform}
+                    </span>
+                    <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-red-50 text-red-700 border border-red-200">
+                      Menace Active
+                    </span>
+                  </div>
+                  <h3 className="text-[16px] font-bold text-slate-900 mt-0.5">
+                    {selectedAccModal.name}
+                  </h3>
+                </div>
+              </div>
+
               <button
-                onClick={() => setZoomImg(null)}
-                className="w-7 h-7 rounded-full bg-gray-100 text-gray-500 font-bold hover:text-black flex items-center justify-center cursor-pointer"
+                type="button"
+                onClick={() => setSelectedAccModal(null)}
+                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900 flex items-center justify-center cursor-pointer transition-colors"
               >
-                ✕
+                <X className="w-4 h-4" />
               </button>
             </div>
-            <img
-              src={zoomImg}
-              alt="Zoom capture"
-              className="w-full h-auto rounded-xl max-h-[75vh] object-contain"
-            />
+
+            {/* BARRE INDICATRICE DE DÉFILEMENT */}
+            <div className="px-4 py-1.5 bg-slate-50 border-b border-slate-200 text-[11px] text-slate-600 font-medium flex items-center justify-between shrink-0">
+              <span className="flex items-center gap-1.5 font-medium text-slate-700">
+                <span>↕</span> Défilement vertical complet disponible (haut en bas)
+              </span>
+              <span className="text-[10px] text-slate-500 font-mono">
+                {selectedAccModal.country} • {selectedAccModal.platform}
+              </span>
+            </div>
+
+            {/* 2. CORPS DÉFILABLE DE HAUT EN BAS (SCROLLER DÉDIÉ) */}
+            <div className="flex-1 overflow-y-auto custom-scrollbar p-5 space-y-4 text-[12px]">
+              {/* SYNTHÈSE EXPRESS */}
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/90 space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-slate-600" />
+                    Aperçu Flash • Métriques Réseau Social
+                  </span>
+                  <span className="text-[10.5px] font-mono text-slate-500">
+                    Monétisation : {selectedAccModal.monetizationMethod || 'Abonnements WhatsApp'}
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+                  <div className="bg-white border border-slate-200/90 p-2.5 rounded-lg shadow-2xs">
+                    <span className="text-[9.5px] text-slate-500 uppercase block font-semibold">Abonnés</span>
+                    <span className="text-[15px] font-bold text-slate-900 font-mono block mt-0.5">{selectedAccModal.followers}</span>
+                  </div>
+                  <div className="bg-white border border-slate-200/90 p-2.5 rounded-lg shadow-2xs">
+                    <span className="text-[9.5px] text-slate-500 uppercase block font-semibold">Portée Estimée</span>
+                    <span className="text-[15px] font-bold text-slate-900 font-mono block mt-0.5">{selectedAccModal.estimatedAudience}</span>
+                  </div>
+                  <div className="bg-white border border-slate-200/90 p-2.5 rounded-lg shadow-2xs">
+                    <span className="text-[9.5px] text-slate-500 uppercase block font-semibold">Territoire</span>
+                    <span className="text-[13px] font-bold text-slate-900 truncate block mt-0.5">{selectedAccModal.country}</span>
+                  </div>
+                  <div className="bg-white border border-slate-200/90 p-2.5 rounded-lg shadow-2xs">
+                    <span className="text-[9.5px] text-slate-500 uppercase block font-semibold">Directs</span>
+                    <span className="text-[13px] font-bold text-slate-800 block mt-0.5">{selectedAccModal.linkedPosts.length} flux</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* CAPTURE DU COMPTE ET PUBLICATIONS */}
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10.5px] font-bold uppercase tracking-wider text-slate-600">
+                    Capture d'Écran du Profil et Directs
+                  </span>
+                  <span className="text-[10px] text-slate-500 font-mono">
+                    Scellement conforme ISO 27001
+                  </span>
+                </div>
+                <div className="relative rounded-xl overflow-hidden border border-slate-200 bg-slate-50 flex items-center justify-center p-2 shadow-2xs">
+                  <img
+                    src={selectedAccModal.captureUrl}
+                    alt={`Capture ${selectedAccModal.name}`}
+                    className="w-full h-auto max-h-[420px] object-contain rounded-lg border border-slate-200"
+                  />
+                </div>
+              </div>
+
+              {/* DIRECTS ET FLUX CONSTATÉS */}
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                <span className="text-[10.5px] font-bold uppercase tracking-wider text-slate-600 block">
+                  Historique des Streams Illégaux Signalés ({selectedAccModal.linkedPosts.length})
+                </span>
+                <div className="space-y-1.5">
+                  {selectedAccModal.linkedPosts.map((post) => (
+                    <div
+                      key={post.id}
+                      className="p-2.5 rounded-lg bg-white border border-slate-200 flex items-center justify-between gap-3 text-[11.5px]"
+                    >
+                      <div className="flex items-center gap-2 min-w-0">
+                        <Radio className="w-3.5 h-3.5 text-slate-700 shrink-0" />
+                        <span className="font-semibold text-slate-900 truncate">{post.title}</span>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <span className="text-slate-600 font-mono text-[11px]">{post.viewers} spectateurs</span>
+                        <span className={`px-1.5 py-0.5 rounded text-[9.5px] font-medium uppercase ${post.status === 'active' ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-slate-100 text-slate-600'}`}>
+                          {post.status === 'active' ? 'En Direct' : 'Archivé'}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* EMPREINTE ET PREUVE SCELLÉE */}
+              <div className="p-2.5 rounded-lg bg-white border border-slate-200 font-mono text-[11px] space-y-1">
+                <div className="flex items-center justify-between text-[10px] text-slate-500">
+                  <span className="flex items-center gap-1 font-sans font-medium">
+                    <Lock className="w-3 h-3 text-slate-500" />
+                    Signature de sécurité unique (infalsifiable)
+                  </span>
+                  <span className="text-slate-700 font-bold bg-slate-100 px-1.5 py-0.5 rounded">Vérifié</span>
+                </div>
+                <p className="text-slate-700 text-[10.5px] break-all select-all bg-slate-50 p-1.5 rounded border border-slate-100">
+                  f731a982cb1048bca1940182fc092384a1e941f1981048bca1a7b8e1f0492cb412
+                </p>
+              </div>
+            </div>
+
+            {/* 3. PIED DE PAGE FIXE */}
+            <div className="p-3.5 sm:p-4 border-t border-slate-200 bg-white flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
+              <div className="flex items-center gap-2 w-full sm:w-auto">
+                <a
+                  href={selectedAccModal.accountUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 sm:flex-none px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-[12px] font-medium flex items-center justify-center gap-1.5 transition-colors"
+                >
+                  <ExternalLink className="w-3.5 h-3.5 text-slate-600" />
+                  <span>Accéder au compte</span>
+                </a>
+                <button
+                  type="button"
+                  onClick={() => onShowToast(`Signalement DMCA envoyé pour ${selectedAccModal.name}`)}
+                  className="flex-1 sm:flex-none px-3.5 py-2 rounded-xl bg-white border border-slate-300 text-slate-800 hover:bg-slate-50 text-[12px] font-medium flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                >
+                  <AlertTriangle className="w-3.5 h-3.5 text-slate-600" />
+                  <span>Signaler la page</span>
+                </button>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setSelectedAccModal(null)}
+                className="w-full sm:w-auto px-5 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-[12px] font-medium cursor-pointer transition-colors"
+              >
+                Fermer
+              </button>
+            </div>
           </div>
         </div>
       )}

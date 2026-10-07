@@ -617,69 +617,168 @@ export const MarketAnalysisPage: React.FC<MarketAnalysisPageProps> = ({
 
       </div>
 
-      {/* MODAL FICHE D'OPÉRATION */}
+      {/* MODAL FICHE D'OPÉRATION - VUE RAPIDE EXECUTIVE AVEC SCROLLER */}
       {selectedOperation && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl border border-[#cbd5e1] shadow-2xl max-w-lg w-full p-5 space-y-4">
-            <div className="flex items-start justify-between pb-2 border-b border-[#e2e8f0]">
-              <div className="flex items-center gap-2">
-                <span className="text-2xl">{selectedOperation.flag}</span>
+        <div
+          className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto"
+          onClick={() => setSelectedOperation(null)}
+        >
+          <div
+            className="bg-white rounded-2xl border border-slate-200 shadow-xl max-w-xl w-full max-h-[88vh] flex flex-col overflow-hidden text-slate-900 animate-fade-in"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* 1. EN-TÊTE FIXE */}
+            <div className="p-4 sm:p-5 border-b border-slate-200 bg-white flex items-center justify-between shrink-0">
+              <div className="flex items-center gap-3">
+                <span className="text-3xl shrink-0 p-1 bg-slate-50 rounded-xl border border-slate-200 shadow-2xs">
+                  {selectedOperation.flag}
+                </span>
                 <div>
-                  <h3 className="text-[15px] font-bold text-[#0b1c30]">{selectedOperation.operationTitle}</h3>
-                  <div className="text-[11px] text-[#64748b]">{selectedOperation.country} • {selectedOperation.month}</div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h3 className="text-[15px] font-bold text-slate-900">
+                      {selectedOperation.operationTitle}
+                    </h3>
+                    <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-700 font-mono border border-slate-200">
+                      {selectedOperation.code}
+                    </span>
+                  </div>
+                  <div className="text-[11.5px] text-slate-500 mt-0.5">
+                    {selectedOperation.country} • Campagne {selectedOperation.month}
+                  </div>
                 </div>
               </div>
               <button
+                type="button"
                 onClick={() => setSelectedOperation(null)}
-                className="p-1 rounded-md text-gray-400 hover:text-[#0b1c30] cursor-pointer"
+                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900 flex items-center justify-center cursor-pointer transition-colors shrink-0"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            {/* Explication Simple */}
-            <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-[12px] text-emerald-950 space-y-1.5">
-              <span className="font-bold flex items-center gap-1.5 text-emerald-900">
-                <TrendingUp className="w-3.5 h-3.5 text-emerald-700" />
-                Pourquoi le rebond commercial a eu lieu :
+            {/* BARRE INDICATRICE DE DÉFILEMENT POUR CERVEAU PRESSÉ */}
+            <div className="px-4 py-1.5 bg-slate-50 border-b border-slate-200 text-[11px] text-slate-600 font-medium flex items-center justify-between shrink-0">
+              <span className="flex items-center gap-1.5 font-medium text-slate-700">
+                <span>↕</span> Défilement vertical complet disponible (haut en bas)
               </span>
-              <p className="leading-relaxed">{selectedOperation.whyItWorked}</p>
+              <span className="text-[10px] text-slate-500 font-mono">
+                {selectedOperation.country} • {selectedOperation.reactionSpeed}
+              </span>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 text-center">
-              <div className="p-3 rounded-lg bg-[#f8fafc] border border-[#e2e8f0]">
-                <span className="text-[10px] text-gray-500 block uppercase font-bold">Abonnés Récupérés</span>
-                <span className="text-[18px] font-black text-emerald-700 font-mono">
-                  +{formatNumber(selectedOperation.monthlyNewSubscribersGained)}
+            {/* 2. CORPS DÉFILABLE DE HAUT EN BAS (SCROLLER DÉDIÉ) */}
+            <div className="flex-1 overflow-y-auto custom-scrollbar p-5 space-y-4">
+              {/* SYNTHÈSE EXPRESS */}
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10.5px] font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+                    <Zap className="w-3.5 h-3.5 text-slate-600" />
+                    Synthèse Express • Résultat Clé
+                  </span>
+                  <span className="text-[10.5px] font-mono text-slate-500">
+                    Vitesse : {selectedOperation.reactionSpeed}
+                  </span>
+                </div>
+                <div className="grid grid-cols-3 gap-2 pt-1 border-t border-slate-200 text-center">
+                  <div className="bg-white border border-slate-200 p-2 rounded-lg">
+                    <span className="text-[9.5px] text-slate-500 uppercase block font-semibold">Clients Gagnés</span>
+                    <span className="text-[16px] font-bold text-slate-900 font-mono">
+                      +{formatNumber(selectedOperation.monthlyNewSubscribersGained)}
+                    </span>
+                  </div>
+                  <div className="bg-white border border-slate-200 p-2 rounded-lg">
+                    <span className="text-[9.5px] text-slate-500 uppercase block font-semibold">Gain Mois 1</span>
+                    <span className="text-[16px] font-bold text-slate-900 font-mono">
+                      +{Math.round(selectedOperation.monthlyRevenueLiftFcfa / 1000000)}M FCFA
+                    </span>
+                  </div>
+                  <div className="bg-white border border-slate-200 p-2 rounded-lg">
+                    <span className="text-[9.5px] text-slate-500 uppercase block font-semibold">Revenu 4,5 Mois</span>
+                    <span className="text-[16px] font-bold text-slate-900 font-mono">
+                      +{(selectedOperation.ltvRetentionFcfa / 1000000).toFixed(1)}M
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* EXPLICATION MÉCANISME */}
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-[12px] text-slate-800 space-y-2">
+                <div className="font-semibold flex items-center gap-1.5 text-slate-900">
+                  <TrendingUp className="w-4 h-4 text-slate-700" />
+                  <span>Mécanisme du rebond commercial :</span>
+                </div>
+                <p className="leading-relaxed text-[12px] text-slate-700">
+                  {selectedOperation.whyItWorked}
+                </p>
+              </div>
+
+              {/* DÉTAILS OPÉRATIONNELS DE L'ACTION */}
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2 text-[12px]">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-600 block">
+                  Paramètres Techniques de l'Intervention
                 </span>
+                <div className="divide-y divide-slate-200">
+                  <div className="flex items-center justify-between py-1.5">
+                    <span className="text-slate-600">Vecteur / Cible neutralisée :</span>
+                    <span className="font-bold text-slate-900">{selectedOperation.targetType}</span>
+                  </div>
+                  <div className="flex items-center justify-between py-1.5">
+                    <span className="text-slate-600">Moyen de paiement gelé :</span>
+                    <span className="font-bold text-slate-900 flex items-center gap-1">
+                      <Smartphone className="w-3.5 h-3.5 text-slate-600" />
+                      {selectedOperation.paymentChannelCut || 'Wave / Orange Money'}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between py-1.5">
+                    <span className="text-slate-600">Délai d'intervention :</span>
+                    <span className="font-mono font-bold text-slate-900">{selectedOperation.reactionSpeed}</span>
+                  </div>
+                  <div className="flex items-center justify-between py-1.5">
+                    <span className="text-slate-600">Valeur moyenne client (LTV 4,5 mois) :</span>
+                    <span className="font-mono font-bold text-slate-900">~ 45 000 FCFA / abonné</span>
+                  </div>
+                </div>
               </div>
-              <div className="p-3 rounded-lg bg-[#f8fafc] border border-[#e2e8f0]">
-                <span className="text-[10px] text-gray-500 block uppercase font-bold">Gain Mois 1</span>
-                <span className="text-[18px] font-black text-[#0b1c30] font-mono">
-                  +{Math.round(selectedOperation.monthlyRevenueLiftFcfa / 1000000)}M FCFA
-                </span>
+
+              {/* PROJECTION FINANCIÈRE DÉTAILLÉE */}
+              <div className="p-3.5 rounded-xl bg-white border border-slate-200 text-[11.5px] space-y-2">
+                <div className="font-semibold text-slate-900 flex items-center gap-1.5">
+                  <Wallet className="w-3.5 h-3.5 text-slate-700" />
+                  <span>Calcul d'amortissement & Rentabilité directe :</span>
+                </div>
+                <div className="p-2.5 rounded-lg bg-slate-50 font-mono text-[11px] text-slate-700 space-y-1">
+                  <div className="flex justify-between">
+                    <span>• Recrutements nets :</span>
+                    <strong>{formatNumber(selectedOperation.monthlyNewSubscribersGained)} abonnés</strong>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>• Panier moyen formule :</span>
+                    <strong>10 000 FCFA / mois</strong>
+                  </div>
+                  <div className="flex justify-between border-t border-slate-200 pt-1 text-slate-900 font-bold">
+                    <span>= Valeur totale récurrente :</span>
+                    <span className="text-slate-900 font-bold">+{(selectedOperation.ltvRetentionFcfa / 1000000).toFixed(1)} Millions FCFA</span>
+                  </div>
+                </div>
+                <p className="text-[10px] text-slate-500">
+                  Basé sur le taux moyen de réabonnement de 4,5 mois constaté post-coupure sur les bouquets africains.
+                </p>
               </div>
             </div>
 
-            <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-[#0b1c30]">
-              <div className="font-bold text-[#0b1c30] flex items-center gap-1.5 mb-0.5">
-                <Wallet className="w-3.5 h-3.5 text-slate-700" />
-                <span>Revenu estimé sur 4,5 mois (durée moyenne de réabonnement) :</span>
-              </div>
-              <div className="text-[16px] font-black text-[#0b1c30] font-mono">
-                +{(selectedOperation.ltvRetentionFcfa / 1000000).toFixed(1)} Millions FCFA
-              </div>
-              <p className="text-[10px] text-[#64748b] mt-1">
-                Calculé d'après la réabonnement moyen de 4,5 mois constaté sur les clients recrutés.
-              </p>
+            {/* 3. PIED DE MODALE FIXE */}
+            <div className="p-3.5 sm:p-4 border-t border-slate-200 bg-white flex items-center justify-between shrink-0">
+              <span className="text-[11px] text-slate-500 font-medium">
+                Filiale {selectedOperation.country} • {selectedOperation.month}
+              </span>
+              <button
+                type="button"
+                onClick={() => setSelectedOperation(null)}
+                className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-medium text-[12px] transition-colors cursor-pointer"
+              >
+                Fermer la fiche
+              </button>
             </div>
-
-            <button
-              onClick={() => setSelectedOperation(null)}
-              className="w-full py-2 rounded-lg bg-[#0b1c30] hover:bg-[#1e40af] text-white font-bold text-[12px] transition-colors cursor-pointer"
-            >
-              Fermer la fiche
-            </button>
           </div>
         </div>
       )}

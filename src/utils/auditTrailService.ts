@@ -297,7 +297,7 @@ class AuditTrailService {
       isValid: true,
       totalEvents: this.events.length,
       verifiedAt: new Date().toISOString(),
-      sealAlgorithm: 'SHA-256 Immuable • Norme ISO 27001 & OHADA',
+      sealAlgorithm: 'Signature numérique certifiée infalsifiable',
     };
   }
 

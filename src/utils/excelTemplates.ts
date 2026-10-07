@@ -111,7 +111,7 @@ export const IMPORT_TEMPLATES: Record<DataImportCategory, TemplateDefinition> = 
       { key: 'filiale_cible', label: 'Filiale / Pays ciblée', type: 'text', required: true, description: 'Côte d\'Ivoire, Sénégal, Cameroun, etc.', example: 'Côte d\'Ivoire' },
       { key: 'nb_telechargements', label: 'Téléchargements estimés', type: 'text', required: false, description: 'Volume de téléchargements constatés', example: '45 000+' },
       { key: 'chaines_impactees', label: 'Chaînes CHEIKH + impactées', type: 'text', required: false, description: 'Liste des flux intégrés dans l\'APK', example: 'CHEIKH + Sport 1, 2, 3, 4, CHEIKH + Action' },
-      { key: 'sha256_hash', label: 'Empreinte SHA-256 de l\'APK', type: 'text', required: false, description: 'Hash cryptographique pour preuve juridique', example: 'a9b8c7d6e5f4a3b2c1d0e9f8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c3d2e1f0a9b8' },
+      { key: 'sha256_hash', label: 'Code de sécurité / Signature de l\'APK', type: 'text', required: false, description: 'Signature unique pour vérification juridique', example: 'a9b8c7d6e5f4a3b2c1d0e9f8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c3d2e1f0a9b8' },
       { key: 'url_capture_icone', label: 'URL Capture / Icône', type: 'text', required: false, description: 'Lien vers capture d\'écran de l\'application', example: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800' },
     ],
     sampleRows: [
